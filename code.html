@@ -239,74 +239,15 @@
                 </a>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Job Card 1 -->
-                <div class="glass-premium p-6 rounded-3xl hover-gold-glow cursor-pointer transition-all flex flex-col justify-between border-t-4 border-secondary job-card-trigger">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 bg-secondary-container/20 rounded-xl flex items-center justify-center text-secondary">
-                                <span class="material-symbols-outlined font-bold">rocket_launch</span>
-                            </div>
-                            <span class="bg-primary/5 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/10">Hace 2 horas</span>
-                        </div>
-                        <p class="company-name-txt text-[10px] text-outline font-bold uppercase tracking-widest mb-1">Paqarina Hub</p>
-                        <h3 class="font-headline text-xl font-bold text-primary mb-2">Desarrollador Frontend React</h3>
-                        <p class="desc-txt text-on-surface-variant text-sm line-clamp-2">Buscamos talento UNSAAC para crear landing pages para 3 startups incubadas en el Hub Tecnológico.</p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-green-700 text-sm">payments</span>
-                            <span class="budget-txt font-bold text-green-800 text-sm">S/ 1,500</span>
-                        </div>
-                        <button type="button" class="text-primary font-bold text-sm bg-primary/5 px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Postular</button>
-                    </div>
-                </div>
-                
-                <!-- Job Card 2 -->
-                <div class="glass-premium p-6 rounded-3xl hover-gold-glow cursor-pointer transition-all flex flex-col justify-between job-card-trigger">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
-                                <span class="material-symbols-outlined font-bold">gavel</span>
-                            </div>
-                            <span class="bg-primary/5 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/10">Hoy</span>
-                        </div>
-                        <p class="company-name-txt text-[10px] text-outline font-bold uppercase tracking-widest mb-1">Cusco Turismo EIRL</p>
-                        <h3 class="font-headline text-xl font-bold text-primary mb-2">Asesoría Legal Corporativa</h3>
-                        <p class="desc-txt text-on-surface-variant text-sm line-clamp-2">Actualización de contratos bilingües y revisión de términos y condiciones para nueva temporada alta.</p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-green-700 text-sm">payments</span>
-                            <span class="budget-txt font-bold text-green-800 text-sm">S/ 800</span>
-                        </div>
-                        <button type="button" class="text-primary font-bold text-sm bg-primary/5 px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Postular</button>
-                    </div>
-                </div>
-                
-                <!-- Job Card 3 -->
-                <div class="glass-premium p-6 rounded-3xl hover-gold-glow cursor-pointer transition-all flex flex-col justify-between job-card-trigger">
-                    <div>
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
-                                <span class="material-symbols-outlined font-bold">brush</span>
-                            </div>
-                            <span class="bg-primary/5 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/10">Ayer</span>
-                        </div>
-                        <p class="company-name-txt text-[10px] text-outline font-bold uppercase tracking-widest mb-1">AATC Cusco</p>
-                        <h3 class="font-headline text-xl font-bold text-primary mb-2">Diseñador Gráfico / UI</h3>
-                        <p class="desc-txt text-on-surface-variant text-sm line-clamp-2">Creación de catálogo digital y rediseño de menú para cadena de restaurantes turísticos en el Valle Sagrado.</p>
-                    </div>
-                    <div class="mt-6 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
-                        <div class="flex items-center gap-2">
-                            <span class="material-symbols-outlined text-green-700 text-sm">payments</span>
-                            <span class="budget-txt font-bold text-green-800 text-sm">S/ 1,200</span>
-                        </div>
-                        <button type="button" class="text-primary font-bold text-sm bg-primary/5 px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Postular</button>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="jobs-grid">
+                <!-- Jobs loaded from Supabase -->
+                <div class="col-span-3 flex flex-col items-center justify-center py-20 text-on-surface-variant" id="jobs-loading">
+                    <span class="material-symbols-outlined animate-spin text-4xl text-primary mb-4">sync</span>
+                    <p class="font-semibold">Cargando convocatorias...</p>
                 </div>
             </div>
-        </section>
+
+</section>
 
         <!-- Category Ticker -->
         <div class="w-full bg-surface-container-low py-8 mt-12 relative overflow-hidden">
@@ -903,9 +844,68 @@ function doPostularme() {
     }, 800);
 }
 
+
+// ── Load Jobs from Supabase ──────────────────────────────────
+async function loadJobs() {
+    var grid = document.getElementById('jobs-grid');
+    var loading = document.getElementById('jobs-loading');
+    if (!grid) return;
+
+    try {
+        var res = await supabase
+            .from('jobs')
+            .select('*, profiles!company_id(full_name)')
+            .eq('status', 'open')
+            .order('created_at', { ascending: false })
+            .limit(6);
+
+        if (loading) loading.remove();
+
+        if (!res.data || res.data.length === 0) {
+            grid.innerHTML = '<div class="col-span-3 text-center py-20 text-on-surface-variant"><span class="material-symbols-outlined text-5xl mb-4 block text-outline">work_off</span><p class="font-semibold">No hay convocatorias abiertas aún.</p><p class="text-sm mt-1">Las empresas aún no han publicado proyectos.</p></div>';
+            return;
+        }
+
+        var icons = { 'Ingeniería de Sistemas': 'code', 'Derecho': 'gavel', 'Arte y Diseño': 'brush', 'Marketing': 'campaign', 'Contabilidad': 'calculate', 'Turismo': 'travel_explore' };
+        
+        res.data.forEach(function(job, i) {
+            var icon = icons[job.category] || 'work';
+            var company = (job.profiles && job.profiles.full_name) ? job.profiles.full_name : 'Empresa Verificada';
+            var salary = job.salary ? 'S/ ' + Number(job.salary).toLocaleString() : 'A convenir';
+            var border = i === 0 ? 'border-t-4 border-secondary' : '';
+            var card = document.createElement('div');
+            card.className = 'glass-premium p-6 rounded-3xl hover-gold-glow cursor-pointer transition-all flex flex-col justify-between ' + border;
+            card.onclick = function() { openProjectModal(job.title, company, salary, icon, job.description || ''); };
+            card.innerHTML = '<div>' +
+                '<div class="flex justify-between items-start mb-4">' +
+                    '<div class="w-12 h-12 bg-secondary-container/20 rounded-xl flex items-center justify-center text-secondary">' +
+                        '<span class="material-symbols-outlined">' + icon + '</span>' +
+                    '</div>' +
+                    '<span class="bg-primary/5 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/10">' + (job.category || 'General') + '</span>' +
+                '</div>' +
+                '<p class="text-[10px] text-outline font-bold uppercase tracking-widest mb-1">' + company + '</p>' +
+                '<h3 class="font-headline text-xl font-bold text-primary mb-2">' + job.title + '</h3>' +
+                '<p class="text-on-surface-variant text-sm line-clamp-2">' + (job.description || '') + '</p>' +
+                '</div>' +
+                '<div class="mt-6 pt-4 border-t border-outline-variant/30 flex justify-between items-center">' +
+                    '<div class="flex items-center gap-2">' +
+                        '<span class="material-symbols-outlined text-green-700 text-sm">payments</span>' +
+                        '<span class="font-bold text-green-800 text-sm">' + salary + '</span>' +
+                    '</div>' +
+                    '<button type="button" onclick="openProjectModal('' + job.title.replace(/'/g,"\'")+'','' + company.replace(/'/g,"\'")+'','' + salary + '','' + icon + '','' + (job.description||'').replace(/'/g,"\'").replace(/
+/g,' ').substring(0,200) + '')" class="text-primary font-bold text-sm bg-primary/5 px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Postular</button>' +
+                '</div>';
+            grid.appendChild(card);
+        });
+    } catch(e) {
+        console.error('[loadJobs] Error:', e);
+        if (loading) loading.innerHTML = '<p class="text-red-500">Error al cargar convocatorias.</p>';
+    }
+}
 // ── Session Check on page load ───────────────────────────────
 window.addEventListener('load', async function() {
     try {
+        loadJobs();
         var result = await syncAndeanSession();
         if (!result.session || !result.profile) return;
         var p = result.profile;

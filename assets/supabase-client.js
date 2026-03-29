@@ -1,24 +1,23 @@
 // ============================================================
-//  CuscoTalent — Supabase Real Client
-//  Proyecto: https://dtzsuxukkanyghpncjvu.supabase.co
+//  CuscoTalent / AndeanTalent — Supabase Real Client
+//  Proyecto: AndeanTalent (jxjxaadnycytpkyemohd)
 // ============================================================
 
-const SUPABASE_URL  = 'https://dtzsuxukkanyghpncjvu.supabase.co';
-const SUPABASE_KEY  = 'sb_publishable_sj7SNmlmvxGGE8-eSfSh5g_0VgOkm8j';
+const SUPABASE_URL = 'https://jxjxaadnycytpkyemohd.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4anhhYWRueWN5dHBreWVtb2hkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MDYyMDEsImV4cCI6MjA5MDI4MjIwMX0.PEqrVc1iY_R4V0Fj65Kz0RdGdhziWqB-7Okv70BLakc';
 
-// Initialize the real Supabase client
-// supabase global is provided by the CDN script loaded in <head>
+// Initialize real Supabase client (CDN provides window.supabase)
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
     auth: {
         persistSession: true,
         autoRefreshToken: true,
         detectSessionInUrl: true,
-        storageKey: 'cuscotalent-auth'
+        storageKey: 'andeantalent-auth'
     }
 });
 
-// ── Session Helper ───────────────────────────────────────────
-// syncAndeanSession: used by all pages to load session + profile
+// ── Session Sync Helper ──────────────────────────────────────
+// Used by all pages to load session and profile from Supabase
 async function syncAndeanSession() {
     try {
         const { data: { session }, error } = await supabase.auth.getSession();
@@ -30,7 +29,7 @@ async function syncAndeanSession() {
             return { session: null, profile: null };
         }
 
-        // Fetch profile row
+        // Fetch profile from Supabase
         const { data: profile } = await supabase
             .from('profiles')
             .select('*')
@@ -45,7 +44,14 @@ async function syncAndeanSession() {
 
         return { session, profile: profile || null };
     } catch (err) {
-        console.warn('[CuscoTalent] syncAndeanSession error:', err);
+        console.warn('[AndeanTalent] syncAndeanSession error:', err);
         return { session: null, profile: null };
     }
+}
+
+// ── Sign Out ─────────────────────────────────────────────────
+async function clearSession() {
+    await supabase.auth.signOut();
+    sessionStorage.clear();
+    window.location.href = 'code.html';
 }
