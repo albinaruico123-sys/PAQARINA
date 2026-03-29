@@ -1,0 +1,14 @@
+# Python helpers (temp scripts)
+gh_user.py
+gh_create.py
+gh_repos.py
+check_html.py
+fix_code.py
+fix_auth_guards.py
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

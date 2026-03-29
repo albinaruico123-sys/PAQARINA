@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CuscoTalent - El Talento del Cusco</title>
+  <!-- Google Fonts: Inter (sans) & Playfair Display (serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background with overlay -->
+  <div class="background-container">
+    <div class="mesh-overlay"></div>
+  </div>
+
+  <nav class="glass-header">
+    <div class="logo">
+      <i class="fa-solid fa-mountain-sun"></i> CuscoTalent
+    </div>
+    <div class="nav-actions">
+      <a href="#" class="btn-login">Login</a>
+      <a href="#" class="btn-primary">Join as Pro</a>
+    </div>
+  </nav>
+
+  <main class="hero-section">
+    <div class="hero-content">
+      <h1 class="headline">El Talento del Cusco,<br>Potenciando el Mundo.</h1>
+      <p class="sub-headline">Connecting UNSAAC excellence with global and local opportunities.</p>
+      
+      <div class="search-container glass-panel">
+        <form class="smart-search">
+          <div class="search-field">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="What are you looking for?" required id="search-input">
+          </div>
+          <button type="submit" class="btn-primary search-btn">Search</button>
+        </form>
+        <div class="search-categories">
+          <span class="category-tag"><i class="fa-solid fa-code"></i> Software Dev</span>
+          <span class="category-tag"><i class="fa-solid fa-map-location-dot"></i> Tour Guide</span>
+          <span class="category-tag"><i class="fa-solid fa-pen-nib"></i> Creative Design</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating 3D Elements -->
+    <div class="floating-elements">
+      <div class="float-icon icon-code" data-speed="2">
+        <i class="fa-solid fa-code"></i>
+      </div>
+      <div class="float-icon icon-camera" data-speed="4">
+        <i class="fa-solid fa-camera"></i>
+      </div>
+      <div class="float-icon icon-grad" data-speed="3">
+        <i class="fa-solid fa-graduation-cap"></i>
+      </div>
+    </div>
+  </main>
+
+  <footer class="trust-signals">
+    <p>Respaldado por la excelencia institucional</p>
+    <div class="partnerships">
+      <div class="partner-logo">
+        <i class="fa-solid fa-building-columns"></i> UNSAAC
+      </div>
+      <div class="partner-logo">
+        <i class="fa-solid fa-lightbulb"></i> Incubadora Paqarina
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

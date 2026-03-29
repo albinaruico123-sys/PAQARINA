@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Contrato Activo | Andean Talent Chat</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="assets/supabase-client.js"></script>
+    <script src="assets/reputation-engine.js" defer></script>
+    
+    <style>
+      .glass-premium { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.5); }
+      .chat-bg { background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%); }
+      .bubble-left { background: white; color: #1a1c1c; border-bottom-left-radius: 4px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+      .bubble-right { background: #002147; color: white; border-bottom-right-radius: 4px; box-shadow: 0 10px 15px -3px rgb(0 33 71 / 0.3); }
+      .system-msg { background: rgba(212, 175, 55, 0.1); border: 1px dashed #D4AF37; color: #745c00; }
+      .p2p-countdown { background: #ba1a1a; color: white; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; }
+      .notification-badge { background: #D4AF37; color: #002147; padding: 2px 8px; border-radius: 6px; font-size: 9px; font-weight: 900; position: absolute; top: -10px; right: -10px; }
+      .star-rating .material-symbols-outlined { cursor: pointer; color: #cbd5e1; transition: color 0.2s; }
+      .star-rating .material-symbols-outlined.active { color: #D4AF37; font-variation-settings: 'FILL' 1; }
+    </style>
+</head>
+<body class="chat-bg font-body text-on-surface h-screen flex flex-col overflow-hidden">
+
+<!-- Header P2P Style -->
+<header class="w-full py-4 px-8 glass-premium shadow-lg z-50 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+        <div class="w-12 h-12 bg-signature rounded-full border-2 border-secondary flex items-center justify-center text-on-primary">
+            <span class="material-symbols-outlined">security</span>
+        </div>
+        <div>
+            <h1 class="text-sm font-black text-primary font-headline" id="chat-project-title">Cargando Proyecto...</h1>
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Escrow Activo • Protegido por Paqarina</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="flex items-center gap-6">
+        <div class="hidden md:flex flex-col items-end">
+             <span class="p2p-countdown flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">timer</span>
+                Restan: <span id="timer">02:59:59</span>
+             </span>
+             <p class="text-[9px] text-outline font-bold mt-1">Tiempo para liberar pago</p>
+        </div>
+        <button onclick="history.back()" class="p-2 hover:bg-surface-container rounded-full transition-all">
+            <span class="material-symbols-outlined text-primary">close</span>
+        </button>
+    </div>
+</header>
+
+<main class="flex-1 flex overflow-hidden">
+    
+    <!-- Chat Area -->
+    <div class="flex-1 flex flex-col relative">
+        <div class="flex-1 overflow-y-auto p-6 space-y-6" id="chat-messages">
+            <!-- System Initial Message -->
+            <div class="flex justify-center">
+                <div class="system-msg py-3 px-6 rounded-2xl text-[11px] font-bold max-w-md text-center">
+                    <span class="material-symbols-outlined text-sm inline-block translate-y-0.5 mr-2">lock</span>
+                    El contrato ha sido iniciado. Los fondos están bajo custodia digital. Por favor, mantenga toda la comunicación dentro de este chat para validar reclamaciones.
+                </div>
+            </div>
+            
+            <!-- Messages will be injected here -->
+            <div class="flex justify-start">
+                <div class="bubble-left p-4 rounded-2xl max-w-sm text-xs font-semibold">
+                    ¡Hola! Acabo de aceptar el contrato. Empezaré con el despliegue de la API ahora mismo.
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <div class="bubble-right p-4 rounded-2xl max-w-sm text-xs font-semibold">
+                    Excelente. Estaré atento a los avances. Si necesitas los accesos a la base de datos avísame.
+                </div>
+            </div>
+        </div>
+
+        <!-- System Alert (Contextual) -->
+        <div id="payment-alert" class="hidden absolute bottom-24 left-1/2 -translate-x-1/2 w-[90%] md:w-md bg-secondary-container p-4 rounded-2xl shadow-xl flex items-center gap-4 animate-fadeScale">
+            <span class="material-symbols-outlined text-on-secondary-container text-2xl">info</span>
+            <p class="text-xs font-bold text-on-secondary-container">
+                El pago ha sido reportado por la empresa. Freelancer, verifica tu cuenta antes de marcar como completado.
+            </p>
+        </div>
+
+        <!-- Input Area -->
+        <div class="p-6 glass-premium">
+            <div class="flex items-center gap-4 bg-white rounded-2xl p-2 border border-outline-variant/30 shadow-sm">
+                <button class="p-2 hover:bg-surface-container rounded-xl transition-all text-on-surface-variant">
+                    <span class="material-symbols-outlined">attach_file</span>
+                </button>
+                <input type="text" id="chat-input" placeholder="Escribe un mensaje..." class="flex-1 border-none focus:ring-0 text-sm font-semibold"/>
+                <button id="btn-send" class="w-10 h-10 bg-signature rounded-xl flex items-center justify-center text-on-primary shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+                    <span class="material-symbols-outlined">send</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions Sidebar (Desktop) -->
+    <div class="w-80 glass-premium border-l hidden lg:flex flex-col p-8 space-y-8">
+        <div>
+             <h3 class="text-xs font-black text-primary uppercase tracking-widest mb-4">Estado del Contrato</h3>
+             <div class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 rounded-full bg-secondary"></div>
+                    <span class="text-xs font-bold text-on-surface">Fondos en Custodia</span>
+                </div>
+                <div class="flex items-center gap-3 opacity-30">
+                    <div class="w-2 h-2 rounded-full bg-outline"></div>
+                    <span class="text-xs font-bold text-outline">Pago Reportado</span>
+                </div>
+             </div>
+        </div>
+
+        <!-- Role Specific Actions -->
+        <div id="business-actions" class="hidden space-y-4">
+            <h3 class="text-xs font-black text-primary uppercase tracking-widest">Acciones de Empresa</h3>
+            <button id="btn-upload-receipt" class="w-full bg-secondary text-on-secondary py-3 rounded-xl font-bold flex align-center justify-center gap-2 text-xs shadow-lg shadow-secondary/20 hover:scale-105 transition-all">
+                <span class="material-symbols-outlined text-sm">upload_file</span>
+                Subir Comprobante (Yape/CCI)
+            </button>
+            <p class="text-[9px] text-on-surface-variant font-bold text-center">Una vez subido, el freelancer podrá liberar el trabajo.</p>
+        </div>
+
+        <div id="freelancer-actions" class="hidden space-y-4">
+            <h3 class="text-xs font-black text-primary uppercase tracking-widest">Acciones de Freelancer</h3>
+            <button id="btn-confirm-completed" class="w-full bg-signature text-on-primary py-3 rounded-xl font-bold flex align-center justify-center gap-2 text-xs opacity-50 cursor-not-allowed shadow-lg" disabled>
+                <span class="material-symbols-outlined text-sm">verified</span>
+                Confirmar Trabajo Completado
+            </button>
+            <p class="text-[9px] text-on-surface-variant font-bold text-center">Se activará cuando la empresa reporte el pago.</p>
+        </div>
+
+        <div class="mt-auto pt-8 border-t border-outline-variant/30">
+             <button onclick="openDisputeModal()" class="w-full py-3 flex items-center justify-center gap-2 text-[10px] font-black text-white bg-error rounded-xl transition-all shadow-lg shadow-error/20 hover:scale-105">
+                <span class="material-symbols-outlined text-sm">report</span>
+                🚨 Abrir Disputa / Reportar Incidente
+             </button>
+        </div>
+    </div>
+
+    <!-- Dispute Modal (Hidden) -->
+    <div id="dispute-modal" class="hidden fixed inset-0 bg-error/10 backdrop-blur-md z-[3000] flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden p-8 animate-fadeScale border border-error/20">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-black font-headline text-error flex items-center gap-2">
+                    <span class="material-symbols-outlined">gavel</span>
+                    Centro de Resolución de Conflictos
+                </h2>
+                <button onclick="closeDisputeModal()" class="text-on-surface-variant hover:text-primary transition-all">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            
+            <p class="text-xs text-on-surface-variant mb-6 leading-relaxed">
+                <strong class="text-primary">AVISO:</strong> Un administrador de CuscoTalent revisará este chat y las pruebas en menos de <span class="text-error font-bold italic underline">12 horas</span> para mediar. El pago quedará congelado permanentemente hasta la resolución.
+            </p>
+
+            <form id="dispute-form" class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Motivo de la Disputa</label>
+                    <textarea required id="dispute-reason" rows="4" placeholder="Explique detalladamente el problema y por qué requiere mediación..." class="w-full rounded-2xl border-outline-variant/30 text-sm focus:ring-error focus:border-error"></textarea>
+                </div>
+                
+                <div class="space-y-2">
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Adjuntar Evidencia (Pantallazos)</label>
+                    <div class="w-full border-2 border-dashed border-outline-variant/30 rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-slate-50 cursor-pointer hover:bg-slate-100 transition-all">
+                        <span class="material-symbols-outlined text-2xl text-outline-variant mb-2">add_a_photo</span>
+                        <p class="text-[10px] font-bold text-outline">SUBIR IMÁGENES</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-error text-white py-4 rounded-2xl font-black shadow-xl shadow-error/20 hover:-translate-y-1 transition-all">
+                    Enviar para Revisión Administrativa
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Feedback Loop Modal (Hidden) -->
+    <div id="feedback-modal" class="hidden fixed inset-0 bg-primary/40 backdrop-blur-md z-[2000] flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl overflow-hidden p-8 text-center animate-fadeScale">
+            <div class="w-20 h-20 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span class="material-symbols-outlined text-4xl text-secondary">workspace_premium</span>
+            </div>
+            <h2 class="text-2xl font-black font-headline text-primary mb-2">¡Felicitaciones!</h2>
+            <p class="text-sm text-on-surface-variant mb-8 px-4">El contrato ha finalizado con éxito. Califica tu experiencia para construir la reputación inmutable de la comunidad.</p>
+            
+            <div class="star-rating flex justify-center gap-2 mb-8" id="rating-stars">
+                <span class="material-symbols-outlined text-4xl" data-value="1">star</span>
+                <span class="material-symbols-outlined text-4xl" data-value="2">star</span>
+                <span class="material-symbols-outlined text-4xl" data-value="3">star</span>
+                <span class="material-symbols-outlined text-4xl" data-value="4">star</span>
+                <span class="material-symbols-outlined text-4xl" data-value="5">star</span>
+            </div>
+
+            <textarea id="feedback-text" rows="3" placeholder="Comentarios sobre el profesionalismo, calidad y comunicación..." class="w-full rounded-2xl border-outline-variant/30 text-sm focus:ring-secondary focus:border-secondary mb-8"></textarea>
+            
+            <button id="btn-submit-feedback" class="w-full bg-primary text-white py-4 rounded-2xl font-black shadow-xl shadow-primary/20 hover:-translate-y-1 transition-all">
+                Enviar Feedback Inmutable
+            </button>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: 2FA SECURITY CONFIRMATION ================= -->
+    <div id="modal-2fa" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-[#001e40]/80 backdrop-blur-xl"></div>
+        <div class="glass-premium p-10 rounded-[3rem] w-full max-w-md relative z-10 border border-white/20 shadow-2xl animate-in zoom-in-95 duration-300">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-secondary rounded-3xl flex items-center justify-center text-primary shadow-2xl shadow-secondary/40 border-4 border-white">
+                <span class="material-symbols-outlined text-4xl font-black">shield_person</span>
+            </div>
+            
+            <div class="text-center mt-8 mb-10">
+                <h3 class="font-headline text-2xl font-black text-primary mb-2">Confirmación de Seguridad</h3>
+                <p class="text-xs text-on-surface-variant font-bold leading-relaxed">Se ha enviado un código de 6 dígitos a tu <span class="text-secondary">correo institucional</span> para autorizar esta transacción.</p>
+            </div>
+
+            <div class="grid grid-cols-6 gap-2 mb-10">
+                <input type="text" maxlength="1" class="w-full aspect-square text-center text-2xl font-black bg-surface-container-low border-2 border-outline-variant/30 rounded-xl focus:border-secondary focus:ring-0 text-primary transition-all">
+                <input type="text" maxlength="1" class="w-full aspect-square text-center text-2xl font-black bg-surface-container-low border-2 border-outline-variant/30 rounded-xl focus:border-secondary focus:ring-0 text-primary transition-all">
+                <input type="text" maxlength="1" class="w-full aspect-square text-center text-2xl font-black bg-surface-container-low border-2 border-outline-variant/30 rounded-xl focus:border-secondary focus:ring-0 text-primary transition-all">
+                <input type="text" maxlength="1" class="w-full aspect-square text-center text-2xl font-black bg-surface-container-low border-2 border-outline-variant/30 rounded-xl focus:border-secondary focus:ring-0 text-primary transition-all">
+                <input type="text" maxlength="1" class="w-full aspect-square text-center text-2xl font-black bg-surface-container-low border-2 border-outline-variant/30 rounded-xl focus:border-secondary focus:ring-0 text-primary transition-all">
+                <input type="text" maxlength="1" class="w-full aspect-square text-center text-2xl font-black bg-surface-container-low border-2 border-outline-variant/30 rounded-xl focus:border-secondary focus:ring-0 text-primary transition-all">
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <button id="btn-verify-2fa" class="w-full bg-signature text-white py-4 rounded-2xl font-black shadow-xl shadow-primary/20 hover:-translate-y-1 transition-all flex items-center justify-center gap-2 group">
+                    <span>Validar Código</span>
+                    <span class="material-symbols-outlined text-sm group-hover:rotate-12 transition-transform">verified_user</span>
+                </button>
+                <button type="button" onclick="document.getElementById('modal-2fa').classList.add('hidden')" class="text-xs font-bold text-outline hover:text-primary transition-colors py-2 uppercase tracking-widest">
+                    Cancelar Transacción
+                </button>
+            </div>
+            
+            <p class="text-[10px] text-center text-outline mt-8 bg-surface-container-lowest py-3 rounded-xl border border-outline-variant/10">
+                Andean Security Layer <span class="text-secondary">v4.2</span> • CuscoTalent Cryptographic Hub
+            </p>
+        </div>
+    </div>
+
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URL(window.location.href).searchParams;
+        const contractId = urlParams.get('contract');
+        const role = sessionStorage.getItem('andesTalentRole') || 'freelancer'; // Default to freelancer for safety
+
+        if (role === 'company') {
+            document.getElementById('business-actions').classList.remove('hidden');
+        } else {
+            document.getElementById('freelancer-actions').classList.remove('hidden');
+        }
+
+        // Timer Mock
+        let totalSeconds = 3 * 3600;
+        setInterval(() => {
+            totalSeconds--;
+            let h = Math.floor(totalSeconds / 3600);
+            let m = Math.floor((totalSeconds % 3600) / 60);
+            let s = totalSeconds % 60;
+            document.getElementById('timer').textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        }, 1000);
+
+        // --- P2P PROOF OF PAYMENT FLOW ---
+        const btnUpload = document.getElementById('btn-upload-receipt');
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
+        fileInput.className = 'hidden';
+        document.body.appendChild(fileInput);
+
+        if(btnUpload) {
+            btnUpload.onclick = () => fileInput.click();
+            
+            fileInput.onchange = (e) => {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = (re) => {
+                        injectSystemMessage(`Pago reportado por la empresa. <br><div class="relative mt-2 w-32 h-32 rounded-xl overflow-hidden border-2 border-secondary shadow-lg"><img src="${re.target.result}" class="w-full h-full object-cover"> <span class="notification-badge">PAGO REPORTADO</span></div>`);
+                        document.getElementById('payment-alert').classList.remove('hidden');
+                        document.getElementById('payment-alert').classList.add('flex');
+                        
+                        // Enable Freelancer Actions
+                        const btnConfirm = document.getElementById('btn-confirm-completed');
+                        if(btnConfirm) {
+                            btnConfirm.classList.remove('opacity-50', 'cursor-not-allowed');
+                            btnConfirm.disabled = false;
+                            btnConfirm.classList.add('hover:scale-105', 'bg-green-600');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+        }
+        
+        // --- FEEDBACK LOOP FLOW ---
+        const btnConfirm = document.getElementById('btn-confirm-completed');
+        const feedbackModal = document.getElementById('feedback-modal');
+        const btnSubmitFeedback = document.getElementById('btn-submit-feedback');
+        const ratingStars = document.querySelectorAll('#rating-stars .material-symbols-outlined');
+        let currentRating = 0;
+
+        ratingStars.forEach(star => {
+            star.onclick = () => {
+                currentRating = parseInt(star.dataset.value);
+                ratingStars.forEach((s, idx) => {
+                    if(idx < currentRating) s.classList.add('active');
+                    else s.classList.remove('active');
+                });
+            };
+        });
+
+        if(btnConfirm) {
+            btnConfirm.onclick = () => {
+                // Trigger 2FA Modal first
+                const modal2fa = document.getElementById('modal-2fa');
+                modal2fa.classList.remove('hidden');
+                modal2fa.classList.add('flex');
+                
+                const btnVerify2fa = document.getElementById('btn-verify-2fa');
+                btnVerify2fa.onclick = () => {
+                    btnVerify2fa.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Verificando...';
+                    setTimeout(() => {
+                        modal2fa.classList.add('hidden');
+                        feedbackModal.classList.remove('hidden');
+                        feedbackModal.classList.add('flex');
+                    }, 1500);
+                };
+            };
+        }
+
+        if(btnSubmitFeedback) {
+            btnSubmitFeedback.onclick = async () => {
+                if(currentRating === 0) { alert('Por favor califica con estrellas.'); return; }
+                const comment = document.getElementById('feedback-text').value;
+                
+                btnSubmitFeedback.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Procesando Pago Liberado...';
+                btnSubmitFeedback.disabled = true;
+
+                // Call reputation engine
+                await ReputationEngine.submitFeedback(contractId, currentRating, comment);
+
+                setTimeout(() => {
+                    feedbackModal.innerHTML = `
+                        <div class="text-center p-8 animate-fadeScale">
+                            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <span class="material-symbols-outlined text-4xl text-green-600">check_circle</span>
+                            </div>
+                            <h2 class="text-2xl font-black font-headline text-primary mb-2">¡Todo Listo!</h2>
+                            <p class="text-sm text-on-surface-variant mb-6">El proyecto se ha movido a tu Historial Inmutable y el pago ha sido liberado.</p>
+                            <button onclick="window.location.href='freelancer-profile.html'" class="w-full bg-primary text-white py-4 rounded-2xl font-black shadow-xl">Volver al Dashboard</button>
+                        </div>
+                    `;
+                }, 1500);
+            };
+        }
+
+        function injectSystemMessage(html) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'flex justify-center';
+            msgDiv.innerHTML = `<div class="system-msg py-3 px-6 rounded-2xl text-[11px] font-bold max-w-md text-center">${html}</div>`;
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTo(0, chatMessages.scrollHeight);
+        }
+    });
+
+    // --- CONFLICT RESOLUTION LOGIC ---
+    function openDisputeModal() {
+        document.getElementById('dispute-modal').classList.remove('hidden');
+        document.getElementById('dispute-modal').classList.add('flex');
+    }
+
+    function closeDisputeModal() {
+        document.getElementById('dispute-modal').classList.add('hidden');
+        document.getElementById('dispute-modal').classList.remove('flex');
+    }
+
+    document.getElementById('dispute-form').onsubmit = (e) => {
+        e.preventDefault();
+        const reason = document.getElementById('dispute-reason').value;
+        alert('Disputa enviada. El equipo de Paqarina Cusco se pondrá en contacto contigo en breve.');
+        closeDisputeModal();
+        
+        // In reality, this would insert into 'disputes' table and notify admin
+    }
+
+    // Send Message Input Logic
+    document.getElementById('btn-send').onclick = () => {
+        const input = document.getElementById('chat-input');
+        if(input.value.trim()) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'flex justify-end';
+            msgDiv.innerHTML = `<div class="bubble-right p-4 rounded-2xl max-w-sm text-xs font-semibold">${input.value}</div>`;
+            document.getElementById('chat-messages').appendChild(msgDiv);
+            input.value = '';
+            document.getElementById('chat-messages').scrollTo(0, document.getElementById('chat-messages').scrollHeight);
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Omni-Admin | CuscoTalent Control Center</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="assets/supabase-client.js"></script>
+    
+    <style>
+      .admin-sidebar { background: #001e40; color: white; }
+      .admin-content { background: #f8fafc; }
+      .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border: 1px solid rgba(0, 30, 64, 0.05); }
+      .sla-indicator { width: 12px; height: 12px; border-radius: 50%; }
+      .sla-urgent { background: #ba1a1a; box-shadow: 0 0 10px rgba(186, 26, 26, 0.4); animation: pulse 2s infinite; }
+      @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+      .split-screen { display: grid; grid-template-columns: 1fr 400px; height: calc(100vh - 200px); }
+    </style>
+</head>
+<body class="font-body text-slate-800 h-screen flex overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 admin-sidebar flex flex-col p-6 h-full shrink-0">
+        <div class="flex items-center gap-3 mb-12">
+            <span class="material-symbols-outlined text-secondary text-3xl">verified_user</span>
+            <div class="font-headline font-black text-xl tracking-tighter">Omni-Admin</div>
+        </div>
+        
+        <nav class="flex-1 space-y-2">
+            <button onclick="showSection('metrics')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 font-bold text-sm hover:bg-white/20 transition-all">
+                <span class="material-symbols-outlined">dashboard</span> Dashboard
+            </button>
+            <button onclick="showSection('validator')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 font-bold text-sm hover:bg-white/10 hover:text-white transition-all">
+                <span class="material-symbols-outlined">fact_check</span> Validador SLA
+            </button>
+            <button onclick="showSection('disputes')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 font-bold text-sm hover:bg-white/10 hover:text-white transition-all">
+                <span class="material-symbols-outlined">gavel</span> Disputas <span class="bg-error text-[8px] px-1.5 py-0.5 rounded ml-auto">1</span>
+            </button>
+            <button onclick="showSection('portfolios')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 font-bold text-sm hover:bg-white/10 hover:text-white transition-all">
+                <span class="material-symbols-outlined">collections</span> Portafolios
+            </button>
+            <button onclick="toggleCMS()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-secondary-container bg-secondary-container font-bold text-sm mt-8">
+                <span class="material-symbols-outlined">edit_square</span> CMS Visual: <span id="cms-status">OFF</span>
+            </button>
+        </nav>
+        
+        <div class="mt-auto pt-6 border-t border-white/10 flex flex-col gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center font-bold text-primary">AD</div>
+                <div>
+                     <p class="text-[10px] font-bold uppercase tracking-widest text-white/40">Power User</p>
+                     <p class="text-xs font-bold">Admin Paqarina</p>
+                </div>
+            </div>
+            <button onclick="window.location.href='code.html'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/40 font-bold text-xs hover:bg-red-500/10 hover:text-red-400 transition-all border border-white/5">
+                <span class="material-symbols-outlined text-sm">logout</span> Salir de Modo Admin
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 admin-content overflow-y-auto p-10">
+        
+        <!-- Metrics Section -->
+        <section id="section-metrics">
+            <div class="flex justify-between items-end mb-10">
+                <div>
+                    <h1 class="text-3xl font-black font-headline text-primary mb-2">Resumen de Plataforma</h1>
+                    <p class="text-slate-500 font-medium">Control en tiempo real de la reputación andina.</p>
+                </div>
+                <div class="flex gap-2">
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase">Live Updates ON</span>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="glass-card p-8 rounded-3xl shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Contratos Firmados</p>
+                    <div class="flex items-center justify-between">
+                         <div class="text-4xl font-black text-primary">128</div>
+                         <span class="material-symbols-outlined text-secondary bg-secondary/10 p-3 rounded-2xl">contract</span>
+                    </div>
+                    <p class="text-[10px] text-green-600 font-bold mt-4 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-xs">trending_up</span> +12% esta semana
+                    </p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Volumen Reportado (S/.)</p>
+                    <div class="flex items-center justify-between">
+                         <div class="text-4xl font-black text-primary">45,200</div>
+                         <span class="material-symbols-outlined text-secondary bg-secondary/10 p-3 rounded-2xl">payments</span>
+                    </div>
+                    <p class="text-[10px] text-slate-500 font-bold mt-4">Soles circulando en la red</p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl shadow-sm">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Facultades UNSAAC</p>
+                    <div class="flex items-center justify-between">
+                         <div class="text-4xl font-black text-primary">18</div>
+                         <span class="material-symbols-outlined text-secondary bg-secondary/10 p-3 rounded-2xl">school</span>
+                    </div>
+                    <p class="text-[10px] text-slate-500 font-bold mt-4 text-secondary">Abarcando 90% del campus</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Validator Section (SLA 12h) -->
+        <section id="section-validator" class="hidden">
+            <h1 class="text-2xl font-black font-headline text-primary mb-8 flex items-center gap-4">
+                Cola de Validación Documentaria
+                <span class="bg-red-100 text-red-700 text-[10px] px-3 py-1 rounded-full">4 Urgentes</span>
+            </h1>
+            
+            <div class="split-screen gap-8">
+                <!-- Queue List -->
+                <div class="glass-card rounded-[2rem] overflow-hidden flex flex-col">
+                    <div class="bg-primary/5 p-4 border-b font-bold text-xs uppercase tracking-widest text-primary">Solicitudes Pendientes</div>
+                    <div class="flex-1 overflow-y-auto">
+                        <!-- Validating Item -->
+                        <div class="p-6 border-b flex items-center justify-between hover:bg-slate-50 cursor-pointer transition-all border-l-4 border-l-red-500 accent-active">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-slate-200"></div>
+                                <div>
+                                    <p class="font-bold text-sm">Juan Pérez Mamani</p>
+                                    <p class="text-[10px] text-slate-500">Ingeniería de Sistemas • DNI</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] font-black text-red-600 uppercase">Faltan 2h</p>
+                                <p class="text-[9px] text-slate-400 italic">Enviado: 10:24 AM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Split View (Details) -->
+                <div class="glass-card rounded-[2rem] p-8 flex flex-col">
+                    <div class="mb-8">
+                        <h4 class="font-black text-sm uppercase tracking-widest text-primary mb-4">Inspección de Documentos</h4>
+                        <div class="aspect-[3/4] bg-slate-100 rounded-2xl border-2 border-dashed border-slate-300 flex items-center justify-center relative overflow-hidden">
+                             <span class="material-symbols-outlined text-4xl text-slate-300">visibility</span>
+                             <div class="absolute inset-0 bg-[url('https://example.com/mock-dni.jpg')] bg-contain bg-no-repeat bg-center opacity-50"></div>
+                             <div class="watermark text-[8px] absolute rotate-[-45deg] opacity-10 font-black pointer-events-none">CONTROL PAQARINA • CONTROL PAQARINA</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 mt-auto">
+                        <textarea id="reject-reason" placeholder="Razón de rechazo (opcional)..." class="w-full bg-slate-50 border-slate-200 rounded-xl text-xs min-h-[80px]"></textarea>
+                        <div class="flex gap-4">
+                            <button class="flex-1 bg-red-600 text-white py-3 rounded-xl font-bold text-xs shadow-lg shadow-red-200 hover:scale-105 transition-all">Rechazar</button>
+                            <button class="flex-1 bg-green-600 text-white py-3 rounded-xl font-bold text-xs shadow-lg shadow-green-200 hover:scale-105 transition-all">Aprobar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disputes Section -->
+        <section id="section-disputes" class="hidden">
+            <h1 class="text-2xl font-black font-headline text-primary mb-8">Resolución de Conflictos (Admin God Mode)</h1>
+            <div class="glass-card rounded-[2rem] overflow-hidden border">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-error/5 text-error">
+                        <tr>
+                            <th class="p-4 font-black">ID Disputa</th>
+                            <th class="p-4 font-black">Reportado por</th>
+                            <th class="p-4 font-black">Motivo</th>
+                            <th class="p-4 font-black">Estado</th>
+                            <th class="p-4 font-black">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="p-4 font-bold text-primary">#DIS-8821</td>
+                            <td class="p-4 font-medium">Empresa "Hawa"</td>
+                            <td class="p-4 text-slate-500">Incumplimiento de términos técnicos en entrega final.</td>
+                            <td class="p-4"><span class="bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">Pndiente</span></td>
+                            <td class="p-4">
+                                <button onclick="showSection('chat-monitor')" class="text-secondary font-bold hover:underline">Revisar Evidencia</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Portfolios Oversight Section -->
+        <section id="section-portfolios" class="hidden">
+            <h1 class="text-2xl font-black font-headline text-primary mb-8">Gestión de Casos de Éxito</h1>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="admin-portfolio-grid">
+                <!-- Portfolio items with moderation buttons -->
+                <div class="glass-card rounded-2xl overflow-hidden border group">
+                    <div class="h-32 bg-slate-100 relative">
+                        <img src="https://via.placeholder.com/200x150" class="w-full h-full object-cover opacity-50">
+                        <div class="absolute inset-0 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+                            <button class="bg-white p-2 rounded-full text-error shadow-sm hover:scale-110 transition-all"><span class="material-symbols-outlined text-sm">delete</span></button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <p class="text-[10px] font-bold text-outline uppercase mb-1">Felix A.</p>
+                        <h4 class="font-bold text-xs truncate">E-commerce Artesanías</h4>
+                        <div class="mt-2 flex items-center gap-1 text-[8px] font-black uppercase text-green-600">
+                             <span class="material-symbols-outlined text-[12px]">verified</span>
+                             Publicado
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById(`section-${id}`).classList.remove('hidden');
+        }
+        
+        function toggleCMS() {
+            const status = document.getElementById('cms-status');
+            const isActive = status.textContent === 'ON';
+            status.textContent = isActive ? 'OFF' : 'ON';
+            status.parentElement.className = isActive ? 
+                'w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-secondary-container bg-secondary-container font-bold text-sm mt-8' :
+                'w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white bg-green-600 font-bold text-sm mt-8';
+            
+            // Simulation: Emit event for other pages
+            sessionStorage.setItem('andesCMSMode', !isActive);
+        }
+    </script>
+</body>
+</html>

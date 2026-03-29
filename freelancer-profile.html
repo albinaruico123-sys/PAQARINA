@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Completar Perfil | Andean Talent</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Tailwind CSS with ORIGINAL Material Design 3 Palette -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="assets/supabase-client.js"></script>
+    <script src="assets/cms-engine.js" defer></script>
+    <script src="assets/platform-components.js" defer></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-variant": "#e2e2e2", "on-tertiary": "#ffffff", "surface-dim": "#dadada", "inverse-surface": "#2f3131",
+              "on-secondary-container": "#745c00", "on-primary": "#ffffff", "on-error-container": "#93000a",
+              "on-primary-fixed-variant": "#1f477b", "secondary": "#735c00", "surface-bright": "#f9f9f9",
+              "secondary-container": "#fed65b", "surface-container-lowest": "#ffffff", "surface-container": "#eeeeee",
+              "on-tertiary-fixed": "#341100", "surface-container-low": "#f3f3f3", "surface": "#f9f9f9",
+              "on-secondary": "#ffffff", "inverse-primary": "#a7c8ff", "tertiary-fixed": "#ffdbca",
+              "outline": "#737780", "on-surface-variant": "#43474f", "on-secondary-fixed": "#241a00",
+              "error-container": "#ffdad6", "error": "#ba1a1a", "primary-fixed-dim": "#a7c8ff",
+              "on-primary-container": "#799dd6", "on-tertiary-container": "#d8885c", "secondary-fixed-dim": "#e9c349",
+              "surface-tint": "#3a5f94", "background": "#f9f9f9", "primary-fixed": "#d5e3ff",
+              "on-secondary-fixed-variant": "#574500", "tertiary-fixed-dim": "#ffb690", "on-primary-fixed": "#001b3c",
+              "surface-container-highest": "#e2e2e2", "outline-variant": "#c3c6d1", "secondary-fixed": "#ffe088",
+              "primary-container": "#003366", "surface-container-high": "#e8e8e8", "tertiary": "#381300",
+              "tertiary-container": "#592300", "on-background": "#1a1c1c", "on-error": "#ffffff",
+              "on-surface": "#1a1c1c", "inverse-on-surface": "#f1f1f1", "primary": "#001e40",
+              "on-tertiary-fixed-variant": "#723610"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"]
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+      .chakana-pattern { background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l10 10h10v10l10 10-10 10v10h-10l-10 10-10-10h-10v-10l-10-10 10-10v-10h10z' fill='%23001e40' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"); }
+      .glass-premium { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px); box-shadow: 0 10px 40px rgba(0, 30, 64, 0.05); }
+      .bg-signature { background: linear-gradient(135deg, #001e40 0%, #003366 100%); }
+      .text-gradient-primary { background: linear-gradient(135deg, #001e40 0%, #735c00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+      .ghost-focus:focus-within { box-shadow: 0 0 0 2px rgba(115, 92, 0, 0.4); border-color: transparent !important; }
+      .hover-gold-glow:hover { box-shadow: 0 16px 32px rgba(115, 92, 0, 0.15); transform: translateY(-2px); transition: all 0.3s ease; }
+      
+      /* Form Element Styling */
+      input:not([type="radio"]):not([type="checkbox"]), select, textarea { 
+          width: 100%; background: transparent; border: none; outline: none; padding: 0.5rem 0.75rem; color: #1a1c1c; font-size: 0.875rem; 
+      }
+      .input-wrapper { display: flex; align-items: center; border-radius: 0.75rem; background-color: rgba(255,255,255,0.9); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); border: 1px solid rgba(195, 198, 209, 0.4); transition: all 0.2s; }
+      .input-wrapper:focus-within { background-color: #ffffff; }
+
+      /* Drag & Drop Zone */
+      .drop-zone { border: 2px dashed rgba(195, 198, 209, 0.6); transition: all 0.3s ease; cursor: pointer; }
+      .drop-zone:hover, .drop-zone.dragover { border-color: #735c00; background-color: rgba(115, 92, 0, 0.03); }
+      .drop-zone.has-file { border-style: solid; border-color: #001e40; background-color: rgba(0, 30, 64, 0.02); }
+
+      /* Custom Scrollbar for Sidebar */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(0, 30, 64, 0.1); border-radius: 10px; }
+      ::-webkit-scrollbar-thumb:hover { background: rgba(0, 30, 64, 0.2); }
+
+      /* Golden Glow for Academic Excellence */
+      .golden-uploader { position: relative; overflow: hidden; }
+      .golden-uploader::before { content: ''; position: absolute; inset: -2px; background: linear-gradient(135deg, #ffe088, #735c00); z-index: -1; opacity: 0.3; filter: blur(10px); transition: opacity 0.3s; }
+      .golden-uploader:hover::before { opacity: 0.5; }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-secondary-container/30 relative flex h-screen overflow-hidden text-sm">
+
+    <!-- Antigravity Depth Overlay -->
+    <div class="fixed top-0 left-0 w-full h-full -z-20 bg-[url('cusco-talent/assets/bg.png')] bg-cover bg-center opacity-[0.03] pointer-events-none mix-blend-multiply parallax-bg"></div>
+    <div class="fixed top-0 left-0 w-full h-full -z-10 chakana-pattern pointer-events-none"></div>
+
+    <!-- Layout: Sidebar -->
+    <aside class="w-[320px] h-full glass-premium border-r border-outline-variant/30 flex flex-col relative z-20 shadow-2xl shadow-primary/5 flex-shrink-0">
+        
+        <!-- Branding & User Summary -->
+        <div class="p-8 pb-6 border-b border-outline-variant/30">
+             <a href="code.html" class="text-2xl font-black text-primary font-headline tracking-tighter flex items-center gap-2 hover:opacity-80 transition-opacity w-max">
+                 <span class="material-symbols-outlined text-secondary text-3xl" data-icon="explore">explore</span>
+                 Andean Talent
+             </a>
+             
+             <div class="mt-8 flex items-center gap-4">
+                 <div class="w-14 h-14 rounded-[1.25rem] bg-primary/5 border border-primary/20 flex flex-shrink-0 items-center justify-center text-primary relative shadow-sm">
+                     <span class="material-symbols-outlined text-3xl" data-icon="person">person</span>
+                     <!-- Status Badge -->
+                     <div class="absolute -bottom-2 -right-2 bg-surface-container-highest px-1.5 py-0.5 rounded-md border border-outline-variant/50 flex items-center gap-1 shadow-sm" id="global-status-badge">
+                         <span class="material-symbols-outlined text-[10px] text-amber-600 font-bold">pending</span>
+                         <span class="text-[9px] font-bold text-amber-800 uppercase tracking-widest leading-none">Pendiente</span>
+                     </div>
+                 </div>
+                 <div>
+                     <h2 class="font-bold text-primary text-base font-headline leading-tight truncate w-40" id="sidebar-name">Prueba UNSAAC</h2>
+                     <p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mt-1">ID: 24901</p>
+                 </div>
+             </div>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            <span class="text-[10px] font-bold text-outline uppercase tracking-widest pl-4 mb-2 block">Secciones</span>
+            
+            <a href="#section-personal" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl bg-primary/5 text-primary font-bold transition-all border-l-4 border-primary">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-[20px]">badge</span>
+                    <span>1. Datos Personales</span>
+                </div>
+                <span class="material-symbols-outlined text-[16px] text-green-600 opacity-0 transition-opacity checkmark">check_circle</span>
+            </a>
+            
+            <a href="#section-docs" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-[20px]">folder_special</span>
+                    <span>2. Bóveda Digital</span>
+                </div>
+                <span class="material-symbols-outlined text-[16px] text-green-600 opacity-0 transition-opacity checkmark">check_circle</span>
+            </a>
+            
+            <a href="#section-payment" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+                    <span>3. Retribución</span>
+                </div>
+                <span class="material-symbols-outlined text-[16px] text-green-600 opacity-0 transition-opacity checkmark">check_circle</span>
+            </a>
+            
+            <a href="#section-history" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-[20px]">military_tech</span>
+                    <span>4. Historial y Reputación</span>
+                </div>
+            </a>
+
+            <a href="#section-security" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-[20px]">security</span>
+                    <span>5. Centro de Seguridad</span>
+                </div>
+            </a>
+
+            <div class="pt-4 mt-4 border-t border-outline-variant/30 px-4">
+                <a href="public-profile.html" class="flex items-center gap-3 text-sm font-bold text-secondary hover:text-primary transition-all group">
+                    <span class="material-symbols-outlined text-[20px] group-hover:scale-110 transition-transform">visibility</span>
+                    Ver mi Perfil Público
+                </a>
+            </div>
+        </nav>
+        
+        <!-- Progress Module -->
+        <div class="p-6 border-t border-outline-variant/30 bg-surface-container-lowest/50 backdrop-blur-md">
+             <div class="flex justify-between items-end mb-3">
+                 <div>
+                     <span class="text-[10px] font-bold uppercase tracking-widest text-primary block">Completitud del Perfil</span>
+                     <span class="text-xs text-on-surface-variant mt-0.5 block">Requerido para postular</span>
+                 </div>
+                 <span id="progress-text" class="font-headline font-black text-secondary text-lg">0%</span>
+             </div>
+             <div class="w-full h-2.5 bg-surface-container-highest rounded-full overflow-hidden shadow-inner">
+                 <div id="progress-bar" class="h-full bg-signature transition-all duration-700 w-[0%] relative">
+                     <div class="absolute inset-0 bg-white/20 w-full h-full skew-x-[-45deg] animate-[shimmer_2s_infinite]"></div>
+                 </div>
+             </div>
+             <style>
+                 @keyframes shimmer { 0% { transform: translateX(-100%) skewX(-45deg); } 100% { transform: translateX(200%) skewX(-45deg); } }
+             </style>
+        </div>
+    </aside>
+
+    <!-- Layout: Main Content Scrollable Area -->
+    <main class="flex-1 h-full overflow-y-auto relative z-10 scroll-smooth bg-surface/50">
+        
+        <div class="max-w-4xl mx-auto px-10 py-16 pb-32">
+            
+            <div class="mb-10">
+                <h1 class="font-headline text-4xl lg:text-5xl font-extrabold text-primary tracking-tight">Completa tu <span class="text-gradient-primary">Perfil Profesional</span></h1>
+                <p class="text-on-surface-variant text-base mt-2 max-w-2xl">La verificación es un proceso riguroso para asegurar la calidad del talento UNSAAC que conectamos con las empresas socias.</p>
+            </div>
+            
+            <form id="verification-form" class="space-y-12">
+                
+                <!-- ================= SECTION 1: PERSONAL INFORMATION ================= -->
+                <section id="section-personal" class="scroll-mt-12 opacity-100 transition-opacity duration-500">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-inner"><span class="material-symbols-outlined">badge</span></div>
+                        <h3 class="font-headline text-2xl font-bold text-primary">Información Personal</h3>
+                    </div>
+                    
+                    <div class="glass-premium p-8 rounded-[2rem] border border-white/40 shadow-xl shadow-primary/5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- Full Name -->
+                            <div class="space-y-1.5 focus-tracker">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Nombres <span class="text-error text-sm">*</span></label>
+                                <div class="input-wrapper ghost-focus">
+                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">person</span>
+                                    <input type="text" id="input-name" required placeholder="Ej. Ana María" class="form-input-trigger">
+                                </div>
+                            </div>
+                            
+                            <!-- Last Name -->
+                            <div class="space-y-1.5 focus-tracker">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Apellidos <span class="text-error text-sm">*</span></label>
+                                <div class="input-wrapper ghost-focus">
+                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">badge</span>
+                                    <input type="text" id="input-lastname" required placeholder="Ej. Quispe Yupanqui" class="form-input-trigger">
+                                </div>
+                            </div>
+                            
+                            <!-- DNI Number -->
+                            <div class="space-y-1.5 focus-tracker">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Número de DNI <span class="text-error text-sm">*</span></label>
+                                <div class="input-wrapper ghost-focus relative">
+                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">pin</span>
+                                    <input type="text" id="input-dni" maxlength="8" required placeholder="8 dígitos" pattern="[0-9]{8}" class="form-input-trigger">
+                                    <div id="dni-spinner" class="absolute right-3 top-1/2 -translate-y-1/2 hidden">
+                                        <div class="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
+                                    </div>
+                                    <span id="dni-success-icon" class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-green-600 hidden">verified</span>
+                                </div>
+                                <!-- Validation Messages -->
+                                <div id="dni-loading-msg" class="hidden items-center gap-1.5 mt-1">
+                                    <span class="text-[10px] text-on-surface-variant italic">Checking RENIEC database...</span>
+                                </div>
+                                <div id="dni-error-msg" class="hidden mt-2 p-3 bg-error-container/30 border border-error/20 rounded-xl relative overflow-hidden">
+                                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+                                    <div class="flex items-start gap-2">
+                                        <span class="material-symbols-outlined text-error text-[16px] mt-0.5">error</span>
+                                        <div>
+                                            <p class="text-xs font-bold text-error-on-container">Este DNI ya cuenta con un perfil.</p>
+                                            <a href="#" class="text-[10px] text-primary font-bold underline hover:text-secondary mt-1 inline-block">¿Deseas recuperar tu contraseña?</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Contact Number -->
+                            <div class="space-y-1.5 focus-tracker">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Celular <span class="text-error text-sm">*</span></label>
+                                <div class="input-wrapper ghost-focus">
+                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">call</span>
+                                    <input type="tel" id="input-phone" required placeholder="+51 999 999 999" class="form-input-trigger">
+                                </div>
+                            </div>
+                            
+                            <!-- RUC (Optional) -->
+                            <div class="space-y-1.5 md:col-span-2 focus-tracker">
+                                <div class="flex items-center gap-2 mb-1.5">
+                                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary m-0">Registro Único de Contribuyente</label>
+                                    <span class="bg-surface-variant text-on-surface-variant text-[9px] font-bold px-2 py-0.5 rounded-md uppercase tracking-widest">Opcional</span>
+                                </div>
+                                <div class="input-wrapper ghost-focus">
+                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">corporate_fare</span>
+                                    <input type="text" id="input-ruc" placeholder="11 dígitos (Recomendado para Empresas grandes)" class="form-input-trigger">
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- ================= SECTION 2: DOCUMENT VAULT ================= -->
+                <section id="section-docs" class="scroll-mt-12 opacity-50 transition-opacity duration-500">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary shadow-inner"><span class="material-symbols-outlined">folder_special</span></div>
+                        <h3 class="font-headline text-2xl font-bold text-primary">Bóveda Digital</h3>
+                    </div>
+                    
+                    <div class="glass-premium p-8 rounded-[2rem] border border-white/40 shadow-xl shadow-primary/5 relative overflow-hidden">
+                        
+                        <!-- Initial Upload State -->
+                        <div id="vault-initial-state" class="space-y-6 transition-all duration-300 block">
+                            <p class="text-on-surface-variant text-sm border-l-2 border-secondary pl-3">Sube tus documentos en formato <span class="font-bold text-primary">PDF, JPG o PNG</span>. Máximo 5MB por archivo.</p>
+                        
+                        <!-- Document Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            
+                            <!-- DNI Front & Back (Combined in one visual box for prototype) -->
+                            <div class="col-span-1 md:col-span-2 space-y-2">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">DNI (Anverso y Reverso) <span class="text-error text-sm">*</span></label>
+                                <div class="drop-zone relative rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-surface-container-lowest/50" data-doc="dni">
+                                    <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer form-file-trigger" accept=".pdf,.jpg,.png" multiple>
+                                    <span class="material-symbols-outlined text-4xl text-outline mb-2 pointer-events-none doc-icon">id_card</span>
+                                    <p class="font-bold text-primary pointer-events-none doc-title">Haz clic o arrastra ambas caras de tu DNI</p>
+                                    <p class="text-xs text-on-surface-variant mt-1 pointer-events-none doc-subtitle">Se requieren 2 archivos (frontal y posterior).</p>
+                                </div>
+                            </div>
+                            
+                            <!-- UNSAAC Form -->
+                            <div class="space-y-2">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Ficha de Seguimiento <span class="text-error text-sm">*</span></label>
+                                <div class="drop-zone relative rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-surface-container-lowest/50 h-36" data-doc="tracking">
+                                    <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer form-file-trigger" accept=".pdf,.jpg,.png">
+                                    <span class="material-symbols-outlined text-3xl text-outline mb-2 pointer-events-none doc-icon">school</span>
+                                    <p class="font-bold text-primary text-sm pointer-events-none doc-title">Ficha UNSAAC</p>
+                                    <p class="text-[10px] text-on-surface-variant mt-1 pointer-events-none doc-subtitle">Documento de centro de cómputo</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Professional CV -->
+                            <div class="space-y-2">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">CV Profesional <span class="text-error text-sm">*</span></label>
+                                <div class="drop-zone relative rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-surface-container-lowest/50 h-36" data-doc="cv">
+                                    <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer form-file-trigger" accept=".pdf">
+                                    <span class="material-symbols-outlined text-3xl text-outline mb-2 pointer-events-none doc-icon">description</span>
+                                    <p class="font-bold text-primary text-sm pointer-events-none doc-title">Curriculum Vitae</p>
+                                    <p class="text-[10px] text-on-surface-variant mt-1 pointer-events-none doc-subtitle">Preferiblemente PDF</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="border-outline-variant/20 my-2">
+                        
+                        <!-- OPTIONAL: Academic Excellence (Golden Uploader) -->
+                        <div class="golden-uploader bg-surface-container-lowest/80 rounded-2xl p-1 shadow-sm border border-secondary-container/30">
+                            <div class="bg-surface-container-lowest rounded-xl p-6 relative">
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-secondary">
+                                        <span class="material-symbols-outlined text-sm">workspace_premium</span>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold uppercase tracking-widest text-secondary m-0">Constancia de Excelencia Académica</label>
+                                        <p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Opcional <span class="lowercase font-normal ml-1">(Destaca tu perfil con una insignia PRO)</span></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="input-wrapper ghost-focus bg-surface-container-low h-12">
+                                        <span class="material-symbols-outlined pl-3 text-secondary text-[18px]">verified</span>
+                                        <select class="w-full bg-transparent border-none focus:ring-0 text-primary px-3 py-2 outline-none font-bold text-sm cursor-pointer" id="select-excellence">
+                                            <option value="" disabled selected>Selecciona tu mérito...</option>
+                                            <option value="tercio">Tercio Superior</option>
+                                            <option value="quinto">Quinto Superior</option>
+                                            <option value="decimo">Décimo Superior</option>
+                                        </select>
+                                    </div>
+                                    <div class="drop-zone relative rounded-xl h-12 flex items-center justify-center text-center bg-surface border-secondary-container/50 border-dashed border-2 hover:border-secondary transition-colors" data-doc="excellence" id="upload-excellence">
+                                        <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer form-file-trigger" accept=".pdf,.jpg,.png" disabled>
+                                        <div class="flex items-center gap-2 pointer-events-none">
+                                            <span class="material-symbols-outlined text-lg text-secondary doc-icon">upload_file</span>
+                                            <span class="font-bold text-secondary text-xs doc-title">Adjuntar Constancia</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div> <!-- End initial-state -->
+                        
+                        <!-- SLA En Revisión State -->
+                        <div id="vault-sla-state" class="hidden flex-col items-center justify-center p-10 text-center relative animate-fadeScale">
+                            <div class="absolute inset-0 bg-yellow-500/5 border-2 border-[#D4AF37]/40 rounded-3xl shadow-[0_0_20px_rgba(212,175,55,0.15)] animate-pulse"></div>
+                            <div class="relative z-10">
+                                <span class="material-symbols-outlined text-6xl text-[#D4AF37] mb-4">hourglass_top</span>
+                                <h4 class="text-2xl font-bold font-headline text-primary mb-2">En Revisión</h4>
+                                <p class="text-on-surface-variant max-w-sm mx-auto mb-4 font-medium">Tus documentos están siendo validados por nuestro equipo administrativo.</p>
+                                <div class="inline-flex items-center gap-2 bg-[#D4AF37]/10 px-4 py-2 rounded-lg border border-[#D4AF37]/30">
+                                    <span class="material-symbols-outlined text-yellow-700 text-sm">schedule</span>
+                                    <span class="text-xs font-bold text-yellow-800 uppercase tracking-widest">Tiempo máximo: 12 horas</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Approved State -->
+                        <div id="vault-approved-state" class="hidden flex-col items-center justify-center p-10 text-center bg-green-500/5 border border-green-500/20 rounded-3xl animate-fadeScale">
+                            <span class="material-symbols-outlined text-6xl text-green-600 mb-4 animate-[bounce_1s]">verified</span>
+                            <h4 class="text-2xl font-bold text-green-800 font-headline mb-2">Perfil Verificado</h4>
+                            <p class="text-green-700 font-bold uppercase tracking-widest text-sm bg-green-100 px-3 py-1 rounded inline-block">Sello UNSAAC Activo</p>
+                            <p class="text-xs text-green-700 font-medium mt-4">Documentación legal y académica aprobada. Tu perfil ahora está visible para las empresas socias.</p>
+                        </div>
+
+                        <!-- Rejected State -->
+                        <div id="vault-rejected-state" class="hidden flex-col items-center justify-center p-10 text-center bg-red-500/5 border border-red-500/30 rounded-3xl animate-fadeScale">
+                            <span class="material-symbols-outlined text-6xl text-red-600 mb-4">error</span>
+                            <h4 class="text-xl font-bold text-red-800 font-headline mb-2">Validación Rechazada</h4>
+                            <p class="text-red-700 bg-red-100 px-4 py-2 rounded-lg text-sm font-bold inline-block border border-red-200">Documento borroso o vencido.</p>
+                            <button type="button" class="mt-6 font-bold text-sm text-primary hover:text-secondary transition-colors underline" onclick="resetVault()">Por favor, vuelve a subir tus archivos.</button>
+                        </div>
+                    </div>
+
+                    <!-- ADMIN/DEMO CONTROLS (Floating below the vault) -->
+                    <div class="mt-4 flex gap-2 justify-end opacity-50 hover:opacity-100 transition-opacity">
+                        <span class="text-[10px] text-outline self-center mr-2 font-bold uppercase tracking-widest">Demo States:</span>
+                        <button type="button" class="text-[10px] font-bold bg-yellow-100/50 hover:bg-yellow-100 border border-yellow-200 text-yellow-800 px-3 py-1 rounded transition-colors" onclick="simulateVaultState('sla')">SLA (En Revisión)</button>
+                        <button type="button" class="text-[10px] font-bold bg-green-100/50 hover:bg-green-100 border border-green-200 text-green-800 px-3 py-1 rounded transition-colors" onclick="simulateVaultState('approved')">Aprobar</button>
+                        <button type="button" class="text-[10px] font-bold bg-red-100/50 hover:bg-red-100 border border-red-200 text-red-800 px-3 py-1 rounded transition-colors" onclick="simulateVaultState('rejected')">Rechazar</button>
+                    </div>
+                </section>
+                
+                <!-- ================= SECTION 3: PAYMENT METHOD (Conditional Logic UI) ================= -->
+                <section id="section-payment" class="scroll-mt-12 opacity-50 transition-opacity duration-500">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-inner"><span class="material-symbols-outlined">account_balance_wallet</span></div>
+                        <h3 class="font-headline text-2xl font-bold text-primary">Método de Retribución</h3>
+                    </div>
+                    
+                    <div class="glass-premium p-8 rounded-[2rem] border border-white/40 shadow-xl shadow-primary/5">
+                        <p class="text-on-surface-variant text-sm mb-6">Selecciona <span class="font-bold text-primary">una opción</span> donde la plataforma o la empresa depositará los pagos por tus servicios.</p>
+                        
+                        <!-- Segmented Control (Radio Tabs) -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8 bg-surface-container-highest/30 p-1.5 rounded-2xl">
+                            
+                            <!-- Option 1: CCI -->
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="payment_method" value="cci" class="peer sr-only payment-radio" required>
+                                <div class="p-3 text-center rounded-xl bg-transparent peer-checked:bg-white peer-checked:shadow-md peer-checked:text-primary text-on-surface-variant font-bold transition-all border border-transparent peer-checked:border-outline-variant/20 flex flex-col items-center gap-1">
+                                    <span class="material-symbols-outlined text-xl">account_balance</span>
+                                    <span class="text-xs uppercase tracking-widest">Transferencia CCI</span>
+                                </div>
+                            </label>
+                            
+                            <!-- Option 2: Bank Deposit -->
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="payment_method" value="bank" class="peer sr-only payment-radio">
+                                <div class="p-3 text-center rounded-xl bg-transparent peer-checked:bg-white peer-checked:shadow-md peer-checked:text-primary text-on-surface-variant font-bold transition-all border border-transparent peer-checked:border-outline-variant/20 flex flex-col items-center gap-1">
+                                    <span class="material-symbols-outlined text-xl">savings</span>
+                                    <span class="text-xs uppercase tracking-widest">Depósito en Cuenta</span>
+                                </div>
+                            </label>
+
+                            <!-- Option 3: Yape/Plin -->
+                            <label class="relative cursor-pointer">
+                                <input type="radio" name="payment_method" value="wallet" class="peer sr-only payment-radio">
+                                <div class="p-3 text-center rounded-xl bg-transparent peer-checked:bg-white peer-checked:shadow-md peer-checked:text-primary text-on-surface-variant font-bold transition-all border border-transparent peer-checked:border-outline-variant/20 flex flex-col items-center gap-1">
+                                    <span class="material-symbols-outlined text-xl">phone_iphone</span>
+                                    <span class="text-xs uppercase tracking-widest">Yape / Plin</span>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- Conditional Forms Container -->
+                        <div class="min-h-[100px] relative">
+                            <!-- Helper initial text -->
+                            <div id="payment-prompt" class="absolute inset-0 flex items-center justify-center text-outline text-sm font-semibold italic transition-opacity duration-300">
+                                Selecciona un método arriba para configurar los detalles.
+                            </div>
+                            
+                            <!-- CCI Form -->
+                            <div id="form-cci" class="hidden grid-cols-1 gap-6 opacity-0 transition-opacity duration-300 transform scale-95 pointer-events-none absolute w-full">
+                                <div class="space-y-1.5 focus-tracker">
+                                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Número de Cuenta Interbancaria (CCI) <span class="text-error text-sm">*</span></label>
+                                    <div class="input-wrapper ghost-focus">
+                                        <span class="material-symbols-outlined pl-3 text-outline text-[18px]">tag</span>
+                                        <input type="text" id="input-cci" placeholder="20 dígitos" class="form-input-trigger" maxlength="20">
+                                    </div>
+                                    <p class="text-[10px] text-on-surface-variant">Asegúrate de que la cuenta esté a nombre del titular del DNI ingresado.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Bank Account Form -->
+                            <div id="form-bank" class="hidden grid-cols-1 md:grid-cols-2 gap-6 opacity-0 transition-opacity duration-300 transform scale-95 pointer-events-none absolute w-full">
+                                <div class="space-y-1.5 focus-tracker">
+                                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Banco <span class="text-error text-sm">*</span></label>
+                                    <div class="input-wrapper ghost-focus bg-surface-container-lowest">
+                                        <span class="material-symbols-outlined pl-3 text-outline text-[18px]">account_balance</span>
+                                        <select id="input-bankname" class="form-input-trigger cursor-pointer text-sm">
+                                            <option value="" disabled selected>Selecciona una entidad...</option>
+                                            <option value="bcp">BCP</option>
+                                            <option value="interbank">Interbank</option>
+                                            <option value="bbva">BBVA</option>
+                                            <option value="scotiabank">Scotiabank</option>
+                                            <option value="bn">Banco de la Nación</option>
+                                            <option value="caja">Caja Cusco / Otras Cajas</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5 focus-tracker flex-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Número de Cuenta <span class="text-error text-sm">*</span></label>
+                                    <div class="input-wrapper ghost-focus">
+                                        <span class="material-symbols-outlined pl-3 text-outline text-[18px]">123</span>
+                                        <input type="text" id="input-account" placeholder="Nro. de cuenta bancaria" class="form-input-trigger">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Digital Wallet Form -->
+                            <div id="form-wallet" class="hidden grid-cols-1 md:grid-cols-2 gap-6 opacity-0 transition-opacity duration-300 transform scale-95 pointer-events-none absolute w-full">
+                                <div class="space-y-1.5 focus-tracker">
+                                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Número afiliado a Yape/Plin <span class="text-error text-sm">*</span></label>
+                                    <div class="input-wrapper ghost-focus">
+                                        <span class="material-symbols-outlined pl-3 text-outline text-[18px]">smartphone</span>
+                                        <input type="tel" id="input-wallet-phone" placeholder="Celular (9 dígitos)" maxlength="9" class="form-input-trigger">
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-xl border border-outline-variant/30 text-xs text-on-surface-variant font-medium">
+                                    <span class="material-symbols-outlined text-primary">info</span>
+                                    <span>Se verificará que el número con Yape/Plin corresponda a la identidad validada.</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </section>
+                
+                </section>
+                
+                <!-- ================= SECTION 5: SECURITY CENTER ================= -->
+                <section id="section-security" class="scroll-mt-12 opacity-50 transition-opacity duration-500">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary shadow-inner"><span class="material-symbols-outlined">shield_lock</span></div>
+                        <div>
+                            <h3 class="font-headline text-2xl font-bold text-primary">Centro de Seguridad</h3>
+                            <p class="text-xs text-on-surface-variant uppercase tracking-widest font-bold mt-0.5">Gestión de identidad y acceso institucional</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- 2FA & Identity -->
+                        <div class="glass-premium p-8 rounded-[2.5rem] border border-white/40 shadow-xl space-y-8">
+                            <div class="flex items-center justify-between p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 bg-signature rounded-full flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                                        <span class="material-symbols-outlined text-sm">verified_user</span>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-primary">Doble Factor (2FA)</p>
+                                        <p class="text-[10px] text-on-surface-variant font-bold">Protección por Correo Institucional</p>
+                                    </div>
+                                </div>
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="2fa-toggle" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+                                </label>
+                            </div>
+
+                            <div class="flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-secondary/30 bg-secondary/5 relative overflow-hidden group">
+                                <div class="absolute inset-0 bg-secondary/5 chakana-pattern opacity-10"></div>
+                                <span class="material-symbols-outlined text-3xl text-secondary">workspace_premium</span>
+                                <div>
+                                    <p class="text-[10px] font-black uppercase tracking-widest text-secondary">Estado de Identidad</p>
+                                    <p class="text-xs font-bold text-primary">Validación UNSAAC Digital</p>
+                                </div>
+                                <div class="ml-auto bg-secondary text-primary text-[9px] font-black px-3 py-1.5 rounded-full shadow-lg shadow-secondary/20"> GOLD VERIFIED </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Log -->
+                        <div class="glass-premium p-8 rounded-[2.5rem] border border-white/40 shadow-xl overflow-hidden">
+                            <h4 class="text-[10px] font-black uppercase tracking-[0.2em] text-outline mb-6">Registro de Actividad (Últimas 5)</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-[10px] text-left">
+                                    <thead>
+                                        <tr class="text-outline uppercase font-bold border-b border-outline-variant/30">
+                                            <th class="pb-3">Ubicación</th>
+                                            <th class="pb-3">Acceso</th>
+                                            <th class="pb-3">Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-outline-variant/10">
+                                        <tr>
+                                            <td class="py-3 font-bold text-primary">Cusco, PER (Sistemas)</td>
+                                            <td class="py-3 text-on-surface-variant">Hace 2 min</td>
+                                            <td class="py-3 text-green-600 font-bold uppercase">Activo</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3 font-bold text-primary">Cusco, PER (Av. Sol)</td>
+                                            <td class="py-3 text-on-surface-variant">Ayer 15:20</td>
+                                            <td class="py-3 text-outline">Cerrado</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-xl bg-secondary-container/20 flex items-center justify-center text-secondary shadow-inner"><span class="material-symbols-outlined">military_tech</span></div>
+                            <h3 class="font-headline text-2xl font-bold text-primary">Historial y Reputación</h3>
+                        </div>
+                        <div class="flex gap-2">
+                            <select class="text-xs bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 text-primary font-bold outline-none cursor-pointer">
+                                <option>2026</option><option>2025</option>
+                            </select>
+                            <select class="text-xs bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 text-primary font-bold outline-none cursor-pointer">
+                                <option>Todas las Categorías</option><option>Tecnología</option>
+                            </select>
+                            <select class="text-xs bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-3 py-2 text-primary font-bold outline-none cursor-pointer">
+                                <option>5 Estrellas</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-premium p-8 rounded-[2rem] border border-white/40 shadow-xl shadow-primary/5">
+                        
+                        <!-- Empty State -->
+                        <div id="freelancer-empty-state" class="hidden flex-col items-center justify-center py-12 text-center">
+                            <svg width="120" height="120" viewBox="0 0 120 120" class="mb-6 opacity-80" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M60 10 L75 25 L75 45 L95 45 L95 75 L75 75 L75 95 L60 110 L45 95 L45 75 L25 75 L25 45 L45 45 L45 25 Z" fill="none" stroke="#D4AF37" stroke-width="2" stroke-dasharray="4 4"/>
+                                <path d="M60 30 L70 40 L70 60 L60 70 L50 60 L50 40 Z" fill="rgba(0,30,64,0.05)" stroke="#001e40" stroke-width="1.5"/>
+                                <circle cx="60" cy="50" r="5" fill="#D4AF37"/>
+                            </svg>
+                            <h4 class="text-lg font-bold text-primary font-headline">Tu historial es un lienzo en blanco</h4>
+                            <p class="text-sm text-on-surface-variant max-w-sm mt-2">Completa tu perfil y postula a tu primer proyecto para empezar a construir tu reputación en CuscoTalent.</p>
+                            <button type="button" class="mt-6 px-6 py-2.5 rounded-xl text-primary font-bold border border-primary/20 hover:bg-primary/5 transition-colors text-xs" onclick="document.getElementById('freelancer-empty-state').classList.add('hidden'); document.getElementById('freelancer-empty-state').classList.remove('flex'); document.getElementById('freelancer-filled-state').classList.remove('hidden');">Ver Demo de Historial</button>
+                        </div>
+
+                        <!-- Filled State -->
+                        <div id="freelancer-filled-state" class="space-y-6">
+                            <!-- Dynamic Applications will be injected here -->
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="pt-6 border-t border-outline-variant/30">
+                    <label class="flex items-start gap-3 cursor-pointer group">
+                        <div class="relative flex items-center justify-center mt-0.5">
+                            <input type="checkbox" id="privacy-checkbox" class="peer sr-only form-input-trigger" required>
+                            <div class="w-5 h-5 rounded border-2 border-outline-variant peer-checked:bg-secondary peer-checked:border-secondary transition-colors"></div>
+                            <span class="material-symbols-outlined absolute text-on-secondary text-[14px] opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none">check</span>
+                        </div>
+                        <div class="text-sm text-on-surface-variant">
+                            Confirmo que he leído y acepto la <a href="#" class="text-primary font-bold hover:underline">Ley de Protección de Datos Personales (Ley 29733)</a> y autorizo el tratamiento de mi información para fines de verificación. <span class="text-error">*</span>
+                        </div>
+                    </label>
+                </div>
+                
+                <!-- ================= ACTION BUTTONS ================= -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-end pt-8 pb-12">
+                    <button type="button" class="px-8 py-4 rounded-xl font-bold text-primary hover:bg-surface-container-low transition-colors border border-outline-variant/30 w-full sm:w-auto text-sm focus:outline-none focus:ring-2 focus:ring-primary/20">
+                        Guardar Borrador
+                    </button>
+                    <!-- Core Submit Button (Gold) -->
+                    <button type="button" id="submit-profile-btn" class="px-10 py-4 rounded-xl font-bold text-on-secondary bg-secondary shadow-xl shadow-secondary/20 hover:-translate-y-1 hover:shadow-secondary/40 transition-all w-full sm:w-auto text-sm flex items-center justify-center gap-2 group pointer-events-none opacity-50 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-white/20 w-full h-full skew-x-[-45deg] animate-[shimmer_2s_infinite] hidden group-hover:block"></div>
+                        <span>Enviar para Verificación</span>
+                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">send</span>
+                    </button>
+                </div>
+            </form>
+            
+        </div>
+    </main>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = { user: { id: 'u-002', email: 'talento@demo.com' } };
+            const profile = { id: 'u-002', full_name: 'María Quispe', role: 'freelancer', onboarding_completed: true };
+            const isLoggedIn = true;
+            if(!session) { alert('Sesión expirada.'); window.location.href='code.html'; return; }
+
+            // Populate form
+            if (profile) {
+                document.getElementById('input-name').value = profile.full_name.split(' ')[0] || '';
+                document.getElementById('input-lastname').value = profile.full_name.split(' ').slice(1).join(' ') || '';
+                document.getElementById('input-dni').value = profile.dni || '';
+                document.getElementById('sidebar-name').textContent = profile.full_name;
+                
+                // SLA Handling
+                if(profile.is_verified) {
+                    simulateVaultState('approved');
+                    document.getElementById('global-status-badge').innerHTML = `
+                         <span class="material-symbols-outlined text-[10px] text-green-600 font-bold">verified</span>
+                         <span class="text-[9px] font-bold text-green-800 uppercase tracking-widest leading-none">Verificado</span>
+                    `;
+                }
+            }
+
+            fetchApplications('u-002');
+
+            async function fetchApplications(freelancerId) {
+                const { data: apps, error } = await supabase
+                    .from('applications')
+                    .select('*, jobs(title, category, profiles(business_name))')
+                    .eq('freelancer_id', freelancerId);
+                
+                const feed = document.getElementById('freelancer-filled-state');
+                const emptyState = document.getElementById('freelancer-empty-state');
+
+                if (error || !apps || apps.length === 0) {
+                    emptyState.classList.remove('hidden');
+                    emptyState.classList.add('flex');
+                    feed.classList.add('hidden');
+                    return;
+                }
+
+                emptyState.classList.add('hidden');
+                feed.classList.remove('hidden');
+                feed.innerHTML = '';
+
+                apps.forEach(app => {
+                    const card = document.createElement('div');
+                    card.className = "relative glass-premium bg-surface-container-lowest/80 p-6 rounded-2xl border border-secondary shadow-lg shadow-secondary/5 transition-all hover:-translate-y-1";
+                    card.innerHTML = `
+                        <div class="absolute -left-[1px] top-6 bottom-6 w-1 bg-secondary rounded-r-md"></div>
+                        <div class="flex flex-col md:flex-row justify-between items-start mb-4 gap-4">
+                            <div>
+                                <h4 class="text-xl font-bold font-headline text-primary truncate">${app.jobs?.title}</h4>
+                                <div class="flex items-center gap-2 mt-1.5">
+                                    <span class="text-xs font-bold text-on-surface-variant">${app.jobs?.profiles?.business_name || 'Empresa local'}</span>
+                                    <span class="text-outline text-[10px]">• Postulado el ${new Date(app.created_at).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <a href="chat.html?contract=demo" class="flex items-center gap-2 bg-signature text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-primary/20 hover:scale-105 transition-all">
+                                    <span class="material-symbols-outlined text-[16px]">chat</span>
+                                    Chat de Contrato
+                                </a>
+                                <div class="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                                    <span class="material-symbols-outlined text-[14px]">history</span>
+                                    <span class="text-[10px] font-bold uppercase tracking-widest">En Proceso</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                             <span class="px-2.5 py-1 rounded-md bg-surface-container text-[10px] font-bold text-primary uppercase tracking-widest border border-outline-variant/30">${app.jobs?.category || 'General'}</span>
+                        </div>
+                    `;
+                    feed.appendChild(card);
+                });
+            }
+
+            // Profile update logic
+            document.getElementById('submit-profile-btn').addEventListener('click', () => {
+                alert('✅ Perfil guardado correctamente. (Modo demo - sin base de datos)');
+            });
+            
+            // 1. Sidebar Navigation Highlights
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mainContainer = document.querySelector('main');
+            
+            // Progressive reveal based on scroll
+            mainContainer.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    // Reveal opacity
+                    if(mainContainer.scrollTop >= sectionTop - window.innerHeight / 1.5) {
+                        section.classList.remove('opacity-50');
+                        section.classList.add('opacity-100');
+                    }
+                    if(mainContainer.scrollTop >= sectionTop - 150) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('bg-primary/5', 'text-primary', 'border-primary');
+                    link.classList.add('text-on-surface-variant', 'border-transparent');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.remove('text-on-surface-variant', 'border-transparent');
+                        link.classList.add('bg-primary/5', 'text-primary', 'border-primary');
+                    }
+                });
+            });
+
+            // 2. Form Progress state tracking
+            let progress = 0;
+            const state = {
+                personal: 0, // max 4 fields
+                docs: 0, // max 3 files
+                payment: 0 // max 1 method chosen + filled
+            };
+            
+            const updateProgressBar = () => {
+                // Calculation: Personal (40%), Docs (40%), Payment (20%)
+                const personalScore = (state.personal / 4) * 40;
+                const docsScore = (state.docs / 3) * 40;
+                const paymentScore = state.payment * 20;
+                
+                progress = Math.min(100, Math.round(personalScore + docsScore + paymentScore));
+                
+                document.getElementById('progress-bar').style.width = `${progress}%`;
+                document.getElementById('progress-text').textContent = `${progress}%`;
+                
+                // Update nav checkmarks
+                if(state.personal >= 4) document.querySelectorAll('.checkmark')[0].classList.remove('opacity-0');
+                else document.querySelectorAll('.checkmark')[0].classList.add('opacity-0');
+                
+                if(state.docs >= 3) document.querySelectorAll('.checkmark')[1].classList.remove('opacity-0');
+                else document.querySelectorAll('.checkmark')[1].classList.add('opacity-0');
+                
+                if(state.payment >= 1) document.querySelectorAll('.checkmark')[2].classList.remove('opacity-0');
+                else document.querySelectorAll('.checkmark')[2].classList.add('opacity-0');
+                
+                // Enable submit button
+                const submitBtn = document.getElementById('submit-profile-btn');
+                if(progress >= 100) {
+                    submitBtn.classList.remove('pointer-events-none', 'opacity-50');
+                } else {
+                    submitBtn.classList.add('pointer-events-none', 'opacity-50');
+                }
+            };
+
+            // 3. Personal Info Tracking
+            const personalInputs = ['input-name', 'input-lastname', 'input-dni', 'input-phone'];
+            personalInputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', () => {
+                    let filled = 0;
+                    personalInputs.forEach(pid => {
+                        if(document.getElementById(pid).value.trim() !== '') filled++;
+                    });
+                    state.personal = filled;
+                    updateProgressBar();
+                });
+            });
+
+            // 4. File Drag & Drop Simulation
+            const dropZones = document.querySelectorAll('.drop-zone');
+            dropZones.forEach(zone => {
+                const input = zone.querySelector('input[type="file"]');
+                const title = zone.querySelector('.doc-title');
+                const subtitle = zone.querySelector('.doc-subtitle');
+                const icon = zone.querySelector('.doc-icon');
+                const type = zone.getAttribute('data-doc');
+                
+                if(!input) return; // For the disabled golden one
+
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    zone.addEventListener(eventName, preventDefaults, false);
+                });
+
+                function preventDefaults (e) {
+                    e.preventDefault(); e.stopPropagation();
+                }
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    zone.addEventListener(eventName, () => zone.classList.add('dragover'), false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    zone.addEventListener(eventName, () => zone.classList.remove('dragover'), false);
+                });
+
+                // Handle file attachment simulation
+                const handleFile = (filename) => {
+                    if(!zone.classList.contains('has-file')) {
+                        if(type !== 'excellence') state.docs = Math.min(3, state.docs + 1);
+                    }
+                    zone.classList.add('has-file');
+                    icon.textContent = 'task';
+                    icon.className = 'material-symbols-outlined text-4xl text-green-600 mb-2 doc-icon pointer-events-none';
+                    title.textContent = filename;
+                    title.className = 'font-bold text-green-700 text-sm pointer-events-none truncate w-full px-2 doc-title';
+                    subtitle.textContent = 'Subido exitosamente';
+                    
+                    if(type === 'excellence') {
+                        icon.className = 'material-symbols-outlined text-lg text-secondary doc-icon pointer-events-none';
+                        title.className = 'font-bold text-secondary text-xs pointer-events-none truncate doc-title';
+                    }
+                    
+                    updateProgressBar();
+                };
+
+                zone.addEventListener('drop', (e) => {
+                    let dt = e.dataTransfer;
+                    let files = dt.files;
+                    if(files.length > 0) handleFile(files[0].name);
+                });
+
+                input.addEventListener('change', (e) => {
+                    if(e.target.files.length > 0) handleFile(e.target.files[0].name);
+                });
+            });
+
+            // 5. Golden Uploader Logic
+            const selectExcellence = document.getElementById('select-excellence');
+            const uploadExcellenceInput = document.querySelector('#upload-excellence input');
+            const excellenceZone = document.getElementById('upload-excellence');
+            
+            selectExcellence.addEventListener('change', (e) => {
+                if(e.target.value !== "") {
+                    uploadExcellenceInput.disabled = false;
+                    excellenceZone.classList.remove('opacity-50');
+                    excellenceZone.querySelector('.material-symbols-outlined').classList.add('animate-pulse');
+                }
+            });
+
+            // 6. Payment Method Conditional Logic
+            const paymentRadios = document.querySelectorAll('.payment-radio');
+            const prompt = document.getElementById('payment-prompt');
+            const forms = {
+                'cci': document.getElementById('form-cci'),
+                'bank': document.getElementById('form-bank'),
+                'wallet': document.getElementById('form-wallet')
+            };
+            
+            // Payment specific inputs
+            const paymentInputs = {
+                'cci': ['input-cci'],
+                'bank': ['input-bankname', 'input-account'],
+                'wallet': ['input-wallet-phone']
+            };
+
+            let currentPaymentMethod = null;
+
+            const checkPaymentForm = () => {
+                if(!currentPaymentMethod) return;
+                let isFilled = true;
+                paymentInputs[currentPaymentMethod].forEach(id => {
+                    if(document.getElementById(id).value.trim() === '') isFilled = false;
+                });
+                state.payment = isFilled ? 1 : 0;
+                updateProgressBar();
+            };
+
+            // Attach input trackers to active form
+            Object.values(paymentInputs).flat().forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.addEventListener('input', checkPaymentForm);
+                if(el) el.addEventListener('change', checkPaymentForm);
+            });
+
+            // Handle radio toggle
+            paymentRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const method = e.target.value;
+                    currentPaymentMethod = method;
+                    
+                    // Hide helpers and all forms
+                    prompt.classList.add('opacity-0', 'pointer-events-none');
+                    Object.values(forms).forEach(form => {
+                        form.classList.remove('grid', 'relative');
+                        form.classList.add('hidden', 'absolute', 'opacity-0', 'pointer-events-none', 'scale-95');
+                    });
+                    
+                    // Show target form smoothly
+                    const targetForm = forms[method];
+                    targetForm.classList.remove('hidden', 'absolute');
+                    targetForm.classList.add('grid', 'relative');
+                    // Timeout to trigger transition after display block
+                    setTimeout(() => {
+                        targetForm.classList.remove('opacity-0', 'pointer-events-none', 'scale-95');
+                        targetForm.classList.add('opacity-100', 'scale-100');
+                    }, 50);
+
+                    // Re-calculate state based on new form
+                    state.payment = 0;
+                    checkPaymentForm();
+                });
+            });
+
+            // Submit Simulation
+            document.getElementById('submit-profile-btn').addEventListener('click', () => {
+                if(progress >= 100) {
+                    const badge = document.getElementById('global-status-badge');
+                    badge.outerHTML = `
+                         <div class="absolute -bottom-2 -right-2 bg-green-50 px-1.5 py-0.5 rounded-md border border-green-200 flex items-center gap-1 shadow-sm">
+                             <span class="material-symbols-outlined text-[10px] text-green-600 font-bold">verified</span>
+                             <span class="text-[9px] font-bold text-green-800 uppercase tracking-widest leading-none">Verificado</span>
+                         </div>
+                    `;
+                    alert("¡Perfil enviado con éxito! Tu información pasará a revisión por el equipo de Paqarina/UNSAAC.");
+                }
+            });
+            
+            window.simulateVaultState = (state) => {
+                const initial = document.getElementById('vault-initial-state');
+                const sla = document.getElementById('vault-sla-state');
+                const approved = document.getElementById('vault-approved-state');
+                const rejected = document.getElementById('vault-rejected-state');
+
+                [initial, sla, approved, rejected].forEach(el => {
+                    if(el) { el.classList.add('hidden'); el.classList.remove('block'); el.classList.remove('flex'); }
+                });
+
+                if(state === 'sla') { sla.classList.remove('hidden'); sla.classList.add('flex'); }
+                else if(state === 'approved') { approved.classList.remove('hidden'); approved.classList.add('flex'); }
+                else if(state === 'rejected') { rejected.classList.remove('hidden'); rejected.classList.add('flex'); }
+            };
+
+            window.resetVault = () => {
+                simulateVaultState(''); 
+                document.getElementById('vault-initial-state').classList.remove('hidden');
+                document.getElementById('vault-initial-state').classList.add('block');
+            };
+            
+            // Submitting profile triggers SLA for the Demo
+            const submitBtnFinal = document.getElementById('submit-profile-btn');
+            submitBtnFinal.addEventListener('click', () => {
+                simulateVaultState('sla');
+                window.scrollTo({ top: document.getElementById('section-docs').offsetTop - 50, behavior: 'smooth' });
+                submitBtnFinal.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Procesando Perfil...';
+                
+                setTimeout(() => {
+                    submitBtnFinal.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> Perfil Enviado';
+                    submitBtnFinal.classList.replace('bg-secondary', 'bg-green-600');
+                    submitBtnFinal.classList.replace('text-on-secondary', 'text-white');
+                    submitBtnFinal.classList.remove('hover:-translate-y-1');
+                }, 1500);
+            });
+        });
+    </script>
+
+<!-- High-Fidelity Universal Footer -->
+<footer class="w-full bg-[#001e40] text-white py-16 px-8 mt-24">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div class="col-span-1 md:col-span-1">
+            <div class="text-2xl font-black text-white font-headline tracking-tighter flex items-center gap-2 mb-6">
+                <span class="material-symbols-outlined text-secondary">explore</span>
+                Andean Talent
+            </div>
+            <p class="text-xs text-white/70 leading-relaxed mb-6">
+                El ecosistema digital de reclutamiento más exclusivo de Cusco. Conectando talento de la UNSAAC con el mundo empresarial.
+            </p>
+            <div class="flex gap-4">
+                <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-secondary cursor-pointer transition-all">
+                    <span class="material-symbols-outlined text-sm">facebook</span>
+                </div>
+                <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-secondary cursor-pointer transition-all">
+                    <span class="material-symbols-outlined text-sm">alternate_email</span>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <h4 class="font-bold text-sm mb-6 uppercase tracking-widest text-secondary">Soporte 24/7</h4>
+            <ul class="text-xs space-y-4 text-white/80">
+                <li class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-sm text-secondary">phone_iphone</span>
+                    WhatsApp: +51 984 000 001
+                </li>
+                <li class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-sm text-secondary">phone_iphone</span>
+                    WhatsApp: +51 984 000 002
+                </li>
+                <li class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-sm text-secondary">mail</span>
+                    ayuda@andeantalent.pe
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h4 class="font-bold text-sm mb-6 uppercase tracking-widest text-secondary">Legal & Transparencia</h4>
+            <ul class="text-xs space-y-4 text-white/80">
+                <li><a href="#" class="hover:text-secondary transition-colors underline decoration-white/20">Términos y Condiciones</a></li>
+                <li><a href="#" class="hover:text-secondary transition-colors underline decoration-white/20">Privacidad (Ley 29733)</a></li>
+                <li>
+                    <a href="#" class="flex items-center gap-2 group mt-2">
+                        <img src="https://www.indecopi.gob.pe/documents/20182/428399/libro-de-reclamaciones-footer.png/577051d9-5a58-45ac-9b4b-91880470d03b" alt="Libro" class="h-10 transition-transform group-hover:scale-105 bg-white p-1 rounded-sm"/>
+                        <span class="text-[9px] font-bold text-white/90">Libro de Reclamaciones <br/>Virtual</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h4 class="font-bold text-sm mb-6 uppercase tracking-widest text-secondary">Confianza</h4>
+            <div class="flex flex-wrap gap-4">
+                <div class="flex items-center gap-2 bg-white/5 py-2 px-3 rounded-lg border border-white/10">
+                    <span class="material-symbols-outlined text-xs text-secondary">shield_lock</span>
+                    <span class="text-[9px] font-bold">Datos Protegidos</span>
+                </div>
+                <div class="flex items-center gap-2 bg-white/5 py-2 px-3 rounded-lg border border-white/10">
+                    <span class="material-symbols-outlined text-xs text-secondary">school</span>
+                    <span class="text-[9px] font-bold">Comunidad UNSAAC</span>
+                </div>
+            </div>
+            <p class="text-[9px] mt-8 text-white/40 font-bold uppercase tracking-widest">© 2024 Andean Talent. <br/>Orgullosamente Cusqueño.</p>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
