@@ -9,7 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     
-    <script src="assets/supabase-client.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/supabase-client.js"></script>
     <script src="assets/cms-engine.js" defer></script>
     <!-- Tailwind CSS with ORIGINAL Material Design 3 Palette -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -876,46 +877,6 @@ function setAuthMode(mode) {
 
 // ── Login / Register Submit ──────────────────────────────────
 async function doAuth() {
-    var email    = (document.getElementById('login-email')?.value || '').trim();
-    var password = document.getElementById('login-pass')?.value || '';
-    var desc     = document.getElementById('auth-desc');
-    var icon     = document.getElementById('auth-icon');
-    var btn      = document.getElementById('btn-submit-auth');
-
-    if (!email || !password) {
-        if (desc) { desc.textContent = 'Completa todos los campos.'; desc.className = 'text-red-500 font-bold text-sm mt-2'; }
-        return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = 'Validando...';
-
-    try {
-        if (authMode === 'login') {
-            var res = await supabase.auth.signInWithPassword({ email, password });
-            if (res.error) throw res.error;
-            var user = (typeof MOCK_USERS !== 'undefined') ? MOCK_USERS.find(u => u.id === res.data.user.id) : null;
-            document.getElementById('auth-title').textContent = '¡Bienvenido, ' + (user ? user.full_name : '') + '!';
-            if (desc) { desc.textContent = 'Redirigiendo...'; desc.className = 'text-green-600 font-bold text-sm mt-2'; }
-            if (icon) icon.textContent = 'verified_user';
-            setTimeout(function() { location.reload(); }, 900);
-        } else {
-            var name = (document.getElementById('login-name')?.value || '').trim();
-            var role = document.querySelector('input[name="reg-role"]:checked')?.value || 'freelancer';
-            if (!name) throw { message: 'Ingresa tu nombre completo.' };
-            var res = await supabase.auth.signUp({ email, password, fullName: name, role: role });
-            if (res.error) throw res.error;
-            document.getElementById('auth-title').textContent = '¡Cuenta Creada!';
-            if (desc) { desc.textContent = '¡Listo! Ahora inicia sesión.'; desc.className = 'text-green-600 font-bold text-sm mt-2'; }
-            if (icon) icon.textContent = 'mark_email_read';
-            btn.disabled = false; btn.textContent = 'Crear Cuenta';
-        }
-    } catch(e) {
-        if (desc) { desc.textContent = 'Error: ' + (e.message || 'Inténtalo de nuevo.'); desc.className = 'text-red-500 font-bold text-sm mt-2'; }
-        btn.disabled = false; btn.textContent = authMode === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta';
-    }
-}
-
 // ── Open Job Detail Modal ────────────────────────────────────
 function openProjectModal(title, company, budget, icon, desc) {
     document.getElementById('pj-modal-title').textContent   = title;
