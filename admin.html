@@ -42,25 +42,30 @@
             <button onclick="showSection('disputes')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 font-bold text-sm hover:bg-white/10 hover:text-white transition-all">
                 <span class="material-symbols-outlined">gavel</span> Disputas <span class="bg-error text-[8px] px-1.5 py-0.5 rounded ml-auto">1</span>
             </button>
+            <button onclick="showSection('users')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 font-bold text-sm hover:bg-white/10 hover:text-white transition-all">
+                <span class="material-symbols-outlined">group</span> Gestor Usuarios
+            </button>
             <button onclick="showSection('portfolios')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/60 font-bold text-sm hover:bg-white/10 hover:text-white transition-all">
                 <span class="material-symbols-outlined">collections</span> Portafolios
             </button>
-            <button onclick="toggleCMS()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-secondary-container bg-secondary-container font-bold text-sm mt-8">
-                <span class="material-symbols-outlined">edit_square</span> CMS Visual: <span id="cms-status">OFF</span>
+            <button onclick="showSection('cms')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-secondary-container bg-secondary-container font-bold text-sm mt-8">
+                <span class="material-symbols-outlined">edit_square</span> Visual CMS Editor
             </button>
         </nav>
         
         <div class="mt-auto pt-6 border-t border-white/10 flex flex-col gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center font-bold text-primary">AD</div>
+                <div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center font-bold text-primary" id="admin-initials">AD</div>
                 <div>
                      <p class="text-[10px] font-bold uppercase tracking-widest text-white/40">Power User</p>
-                     <p class="text-xs font-bold">Admin Paqarina</p>
+                     <p class="text-xs font-bold" id="admin-name">Admin Paqarina</p>
                 </div>
             </div>
-            <button onclick="window.location.href='code.html'" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/40 font-bold text-xs hover:bg-red-500/10 hover:text-red-400 transition-all border border-white/5">
-                <span class="material-symbols-outlined text-sm">logout</span> Salir de Modo Admin
+
+            <button onclick="getSB().auth.signOut().then(() => { localStorage.clear(); window.location.href='code.html'; });" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white/40 font-bold text-xs hover:bg-red-500/10 hover:text-red-400 transition-all border border-white/5">
+                <span class="material-symbols-outlined text-sm">logout</span> Cerrar Sesión Total
             </button>
+
         </div>
     </aside>
 
@@ -213,13 +218,400 @@
                 </div>
             </div>
         </section>
+
+        <!-- Dynamic User Management Section -->
+        <section id="section-users" class="hidden">
+            <div class="flex justify-between items-center mb-8">
+                <h1 class="text-2xl font-black font-headline text-primary">Gestión Total de Usuarios</h1>
+                <div class="glass-input flex items-center p-2 rounded-xl border border-slate-200 bg-white">
+                    <span class="material-symbols-outlined px-2 text-slate-400 text-sm">search</span>
+                    <input type="text" id="user-search-input" placeholder="Buscar por DNI o Nombre..." class="bg-transparent border-none focus:ring-0 text-sm outline-none w-64" onkeyup="filterAdminUsers()">
+                </div>
+            </div>
+            
+            <div class="glass-card rounded-[2rem] overflow-hidden border">
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead class="bg-slate-50 border-b border-slate-200">
+                        <tr>
+                            <th class="p-4 font-black text-slate-500 uppercase tracking-widest text-[10px]">Usuario</th>
+                            <th class="p-4 font-black text-slate-500 uppercase tracking-widest text-[10px]">Rol / Carrera</th>
+                            <th class="p-4 font-black text-slate-500 uppercase tracking-widest text-[10px]">Ingreso</th>
+                            <th class="p-4 font-black text-slate-500 uppercase tracking-widest text-[10px] text-center">Validación</th>
+                            <th class="p-4 font-black text-slate-500 uppercase tracking-widest text-[10px] text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100" id="admin-users-table">
+                        <!-- Dynamic users injected here -->
+                        <tr><td colspan="5" class="p-8 text-center text-slate-400">Cargando base de datos global...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CMS Content Editor Section -->
+        <section id="section-cms" class="hidden">
+            <h1 class="text-2xl font-black font-headline text-primary mb-2">Visor y Editor CMS Global</h1>
+            <p class="text-sm font-medium text-slate-500 mb-8">Sobrescribe los bloques de texto públicos como "Sobre Nosotros" o "Servicios".</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Sobre Nosotros block -->
+                <div class="glass-card p-6 rounded-[2rem] shadow-sm">
+                    <h3 class="font-bold text-primary mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-secondary">feed</span> Bloque: Sobre Nosotros / Footer</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Título Principal</label>
+                            <input type="text" id="cms-about-title" class="w-full mt-1 p-3 rounded-xl border border-slate-200 text-sm bg-slate-50" value="¿Qué impacto quieres generar hoy?">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Párrafo Descriptivo</label>
+                            <textarea id="cms-about-desc" class="w-full mt-1 p-3 rounded-xl border border-slate-200 text-sm bg-slate-50 h-32">El ecosistema digital de reclutamiento más exclusivo de Cusco. Conectando talento de la UNSAAC con el mundo empresarial.</textarea>
+                        </div>
+                        <button onclick="saveCMS('about')" class="bg-primary text-white px-6 py-2 rounded-xl font-bold text-sm hover:-translate-y-1 transition-transform shadow-md">Guardar Sobre Nosotros</button>
+                    </div>
+                </div>
+
+                <!-- Servicios block -->
+                <div class="glass-card p-6 rounded-[2rem] shadow-sm">
+                    <h3 class="font-bold text-primary mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-secondary">design_services</span> Bloque: Nuestros Servicios</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Servicio 1: Título</label>
+                            <input type="text" id="cms-serv-1-title" class="w-full mt-1 p-3 rounded-xl border border-slate-200 text-sm bg-slate-50" value="Conexión Directa B2B">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Servicio 1: Descripción</label>
+                            <textarea id="cms-serv-1-desc" class="w-full mt-1 p-3 rounded-xl border border-slate-200 text-sm bg-slate-50 h-24">Facilitamos que empresas conecten sin intermediarios con egresados UNSAAC.</textarea>
+                        </div>
+                        <button onclick="saveCMS('services')" class="bg-primary text-white px-6 py-2 rounded-xl font-bold text-sm hover:-translate-y-1 transition-transform shadow-md">Guardar Servicios</button>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
+    <!-- Global Edit Profile Modal -->
+    <div id="admin-edit-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden z-50 flex items-center justify-center">
+        <div class="bg-white rounded-[2rem] shadow-2xl p-8 max-w-lg w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-black text-primary font-headline" id="admin-edit-title">Editar Perfil</h2>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-red-500"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            
+            <input type="hidden" id="edit-user-id">
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] font-black uppercase text-slate-500 tracking-widest">Nombre Completo / Razón Social</label>
+                    <input type="text" id="edit-full-name" class="w-full p-3 rounded-xl border border-slate-200 mt-1 text-sm bg-slate-50">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-slate-500 tracking-widest">Especialidad / Industria</label>
+                    <input type="text" id="edit-specialty" class="w-full p-3 rounded-xl border border-slate-200 mt-1 text-sm bg-slate-50">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-slate-500 tracking-widest">Biografía / Acerca de</label>
+                    <textarea id="edit-bio" class="w-full p-3 rounded-xl border border-slate-200 mt-1 text-sm h-24 bg-slate-50"></textarea>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-slate-500 tracking-widest">Ubicación</label>
+                    <input type="text" id="edit-location" class="w-full p-3 rounded-xl border border-slate-200 mt-1 text-sm bg-slate-50">
+                </div>
+                <div class="pt-4 border-t border-slate-100 flex justify-end gap-3">
+                    <button onclick="closeEditModal()" class="px-6 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 transition-colors">Cancelar</button>
+                    <button onclick="saveAdminProfileEdit()" class="px-6 py-2 rounded-xl bg-primary text-white font-bold hover:-translate-y-1 shadow-lg shadow-primary/30 transition-all">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        function showSection(id) {
-            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-            document.getElementById(`section-${id}`).classList.remove('hidden');
+        // ── Auth Check ──────────────────────────────────────────
+        async function checkAdminAccess() {
+            var client = getSB();
+            if (!client || typeof client.from !== 'function') {
+                setTimeout(checkAdminAccess, 100);
+                return;
+            }
+            
+            var result = await syncAndeanSession();
+            if (!result.session || result.role !== 'admin') {
+                alert('Acceso restringido. Solo administradores.');
+                window.location.href = 'code.html';
+                return;
+            }
+            
+            // Update Sidebar UI
+            document.querySelector('#admin-name').textContent = result.profile.full_name;
+            document.querySelector('#admin-initials').textContent = result.profile.full_name.substring(0,2).toUpperCase();
         }
+        
+        window.addEventListener('load', checkAdminAccess);
+
+        async function loadPendingProfiles() {
+            var client = getSB();
+            if (!client) return;
+
+            const { data, error } = await client
+                .from('profiles')
+                .select('*')
+                .eq('verification_status', 'pending')
+                .order('created_at', { ascending: true });
+
+            var container = document.querySelector('#section-validator .flex-1.overflow-y-auto');
+            var countBadge = document.querySelector('#section-validator .bg-red-100');
+            if (!container) return;
+
+            if (data && data.length > 0) {
+                if (countBadge) countBadge.textContent = `${data.length} Pendientes`;
+                container.innerHTML = '';
+                data.forEach(p => {
+                    var div = document.createElement('div');
+                    div.className = 'p-6 border-b flex items-center justify-between hover:bg-slate-50 cursor-pointer transition-all border-l-4 border-l-secondary';
+                    div.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                ${p.full_name.substring(0,1)}
+                            </div>
+                            <div>
+                                <p class="font-bold text-sm">${p.full_name}</p>
+                                <p class="text-[10px] text-slate-500">${p.role.toUpperCase()} • Pendiente</p>
+                            </div>
+                        </div>
+                        <div class="text-right flex flex-col items-end gap-2">
+                            <p class="text-[10px] font-black text-secondary uppercase">Nuevo</p>
+                            <div class="flex gap-1">
+                                <button onclick="toggleVerifyUser('${p.id}', false)" class="text-[9px] bg-green-600 text-white px-2 py-1 rounded font-bold hover:bg-green-700">Aprobar Instante</button>
+                            </div>
+                        </div>
+                    `;
+                    div.onclick = () => alert('Cargando documentos de: ' + p.full_name);
+                    container.appendChild(div);
+                });
+            } else {
+                if (countBadge) countBadge.textContent = '0 Pendientes';
+                container.innerHTML = '<div class="p-20 text-center text-slate-400 text-xs">No hay solicitudes pendientes.</div>';
+            }
+        }
+
+        function showSection(id) {
+            document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+            var target = document.getElementById(`section-${id}`);
+            if (target) {
+                target.classList.remove('hidden');
+                if (id === 'validator') loadPendingProfiles();
+                if (id === 'users') loadAllUsers();
+            }
+        }
+
+        let allUsersCache = [];
+
+        async function loadAllUsers() {
+            var client = getSB();
+            if (!client) return;
+
+            const table = document.getElementById('admin-users-table');
+            table.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">Consultando base de datos...</td></tr>';
+
+            const { data, error } = await client
+                .from('profiles')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error || !data.length) {
+                table.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">No se encontraron usuarios.</td></tr>';
+                return;
+            }
+
+            allUsersCache = data;
+            renderUsersTable(data);
+        }
+
+        function renderUsersTable(users) {
+            const table = document.getElementById('admin-users-table');
+            table.innerHTML = '';
+            
+            users.forEach(p => {
+                const isVerified = p.verified === true || p.verification_status === 'approved' || p.has_docs === true;
+                const roleColor = p.role === 'empresa' ? 'bg-[#002147]/10 text-[#002147]' : 'bg-primary/5 text-primary';
+                const roleName = p.role === 'empresa' ? 'Empresa' : 'Freelancer';
+                
+                table.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition-colors group">
+                        <td class="p-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full ${roleColor} flex items-center justify-center font-bold overflow-hidden shadow-inner">
+                                    ${p.avatar_url ? `<img src="${p.avatar_url}" class="w-full h-full object-cover">` : p.full_name?.substring(0,1) || p.business_name?.substring(0,1) || '?'}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 break-all max-w-[200px] truncate" title="${p.full_name || p.business_name}">${p.full_name || p.business_name || 'Desconocido'}</p>
+                                    <p class="text-[10px] text-slate-400">${p.id.split('-')[0]}...</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div class="flex flex-col gap-1">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest w-fit ${roleColor}">${roleName}</span>
+                                <span class="text-xs text-slate-500 truncate max-w-[150px]">${p.specialty || p.industry || 'N/A'}</span>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <p class="text-xs font-bold text-slate-600">${new Date(p.created_at).toLocaleDateString()}</p>
+                        </td>
+                        <td class="p-4 text-center">
+                            ${isVerified 
+                                ? '<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-black uppercase flex items-center justify-center gap-1 w-fit mx-auto"><span class="material-symbols-outlined text-[12px]">verified</span> Validado</span>'
+                                : '<span class="bg-slate-100 text-slate-500 px-2 py-1 rounded text-[10px] font-black uppercase flex items-center justify-center gap-1 w-fit mx-auto"><span class="material-symbols-outlined text-[12px]">pending</span> No Docs</span>'
+                            }
+                        </td>
+                        <td class="p-4 text-right space-x-2">
+                            <button onclick="toggleVerifyUser('${p.id}', ${isVerified})" class="p-2 rounded-xl border border-slate-200 text-slate-500 hover:text-green-600 hover:border-green-200 hover:bg-green-50 transition-colors" title="${isVerified ? 'Quitar Verificación' : 'Verificar Perfil'}">
+                                <span class="material-symbols-outlined text-[18px]">verified_user</span>
+                            </button>
+                            <button onclick="editModalUser('${p.id}')" class="p-2 rounded-xl border border-slate-200 text-slate-500 hover:text-primary hover:border-primary/30 hover:bg-primary/5 transition-colors" title="Editar">
+                                <span class="material-symbols-outlined text-[18px]">edit</span>
+                            </button>
+                            <button onclick="deleteUser('${p.id}')" class="p-2 rounded-xl border border-slate-200 text-slate-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 transition-colors" title="Eliminar Permanente">
+                                <span class="material-symbols-outlined text-[18px]">delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function filterAdminUsers() {
+            const query = document.getElementById('user-search-input').value.toLowerCase();
+            if (!query) return renderUsersTable(allUsersCache);
+            const filtered = allUsersCache.filter(p => 
+                (p.full_name || '').toLowerCase().includes(query) || 
+                (p.business_name || '').toLowerCase().includes(query) || 
+                (p.id || '').toLowerCase().includes(query)
+            );
+            renderUsersTable(filtered);
+        }
+
+        async function toggleVerifyUser(id, currentlyVerified) {
+            if(!confirm(`¿Seguro que deseas ${currentlyVerified ? 'REVOCAR la verificación de' : 'VERIFICAR oficialmente'} este perfil?`)) return;
+            
+            const client = getSB();
+            const { error } = await client.from('profiles').update({
+                verified: !currentlyVerified,
+                has_docs: !currentlyVerified,
+                verification_status: !currentlyVerified ? 'approved' : 'rejected'
+            }).eq('id', id);
+
+            if (error) {
+                alert('Error al actualizar verificación.');
+                return;
+            }
+            loadAllUsers(); // Reload table
+        }
+
+        async function deleteUser(id) {
+            const passcode = prompt('Esta acción es IRREVERSIBLE. Escribe "ELIMINAR" para destruir este usuario de Supabase:');
+            if (passcode !== 'ELIMINAR') return;
+
+            const client = getSB();
+            // Since this is a restricted table, we use the Admin API or directly delete if RLS permits admin
+            const { error } = await client.from('profiles').delete().eq('id', id);
+            
+            if (error) {
+                alert('Fallo al eliminar perfil. Verifica políticas RLS.');
+            } else {
+                alert('Perfil destruido de la base de datos.');
+                loadAllUsers();
+            }
+        }
+
+        // --- Editing Profile Logic (Admin) ---
+        function editModalUser(id) {
+            const user = allUsersCache.find(u => u.id === id);
+            if (!user) return;
+            
+            document.getElementById('edit-user-id').value = id;
+            document.getElementById('edit-full-name').value = user.full_name || user.business_name || '';
+            document.getElementById('edit-specialty').value = user.specialty || user.industry || '';
+            document.getElementById('edit-bio').value = user.bio || '';
+            document.getElementById('edit-location').value = user.location || '';
+            
+            document.getElementById('admin-edit-title').textContent = `Editar a ${user.full_name?.split(' ')[0] || 'Empresa'}`;
+            document.getElementById('admin-edit-modal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('admin-edit-modal').classList.add('hidden');
+        }
+
+        async function saveAdminProfileEdit() {
+            const id = document.getElementById('edit-user-id').value;
+            const full_name = document.getElementById('edit-full-name').value;
+            const specialty = document.getElementById('edit-specialty').value;
+            const bio = document.getElementById('edit-bio').value;
+            const location = document.getElementById('edit-location').value;
+            
+            const btn = event.target;
+            const og = btn.textContent;
+            btn.textContent = 'Guardando...';
+            btn.disabled = true;
+
+            const client = getSB();
+            const { error } = await client.from('profiles').update({
+                full_name: full_name,
+                business_name: full_name, // Map it to both to be safe
+                specialty: specialty,
+                industry: specialty,
+                bio: bio,
+                location: location
+            }).eq('id', id);
+
+            btn.textContent = og;
+            btn.disabled = false;
+
+            if (error) {
+                console.error(error);
+                alert('Hubo un error editando el perfil');
+            } else {
+                alert('Perfil actualizado con éxito');
+                closeEditModal();
+                loadAllUsers();
+            }
+        }
+
+        // --- CMS Logic ---
+        function saveCMS(section) {
+            let data = {};
+            if (section === 'about') {
+                data.title = document.getElementById('cms-about-title').value;
+                data.desc = document.getElementById('cms-about-desc').value;
+                localStorage.setItem('andesCmsAbout', JSON.stringify(data));
+                alert('✅ Textos de "Sobre Nosotros" actualizados. Serán visibles en la Landing interactiva.');
+            } else if (section === 'services') {
+                data.title = document.getElementById('cms-serv-1-title').value;
+                data.desc = document.getElementById('cms-serv-1-desc').value;
+                localStorage.setItem('andesCmsServices', JSON.stringify(data));
+                alert('✅ Textos de "Servicios" actualizados.');
+            }
+        }
+        
+        function loadCMS() {
+            try {
+                const aboutStr = localStorage.getItem('andesCmsAbout');
+                if (aboutStr) {
+                    const ab = JSON.parse(aboutStr);
+                    document.getElementById('cms-about-title').value = ab.title || '';
+                    document.getElementById('cms-about-desc').value = ab.desc || '';
+                }
+                const servStr = localStorage.getItem('andesCmsServices');
+                if (servStr) {
+                    const se = JSON.parse(servStr);
+                    document.getElementById('cms-serv-1-title').value = se.title || '';
+                    document.getElementById('cms-serv-1-desc').value = se.desc || '';
+                }
+            } catch (e) {}
+        }
+        window.addEventListener('load', loadCMS);
+
+
         
         function toggleCMS() {
             const status = document.getElementById('cms-status');
@@ -230,7 +622,7 @@
                 'w-full flex items-center gap-3 px-4 py-3 rounded-xl text-white bg-green-600 font-bold text-sm mt-8';
             
             // Simulation: Emit event for other pages
-            sessionStorage.setItem('andesCMSMode', !isActive);
+            localStorage.setItem('andesCMSMode', !isActive);
         }
     </script>
 </body>

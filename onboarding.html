@@ -119,12 +119,8 @@
 
         // Auto-redirect if already completed
         document.addEventListener('DOMContentLoaded', async () => {
-            const session = { user: { id: 'u-002', email: 'talento@demo.com' } };
-            const profile = { id: 'u-002', full_name: 'María Quispe', role: 'freelancer', onboarding_completed: true };
-            const isLoggedIn = true;
-            if (session && profile && profile.onboarding_completed) {
-                window.location.href = profile.role === 'company' ? 'company-profile.html' : 'freelancer-profile.html';
-            }
+            console.log('[Onboarding] Initialized.');
+            // Removed hardcoded redirect loop to ensure stability
         });
 
         async function nextStep(step) {
@@ -160,7 +156,7 @@
                     // Update profile in Supabase
                     const { session } = await syncAndeanSession(); // Assuming shared utility
                     if(session) {
-                        await supabase.from('profiles').update({ 
+                        await getSB().from('profiles').update({ 
                             institutional_email: document.getElementById('email-input').value,
                             onboarding_completed: true 
                         }).eq('id', 'u-002');

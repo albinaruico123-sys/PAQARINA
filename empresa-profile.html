@@ -99,8 +99,8 @@
              </a>
              
              <div class="mt-8 flex items-center gap-4">
-                 <div class="w-14 h-14 rounded-[1.25rem] bg-primary/5 border border-primary/20 flex flex-shrink-0 items-center justify-center text-primary relative shadow-sm">
-                     <span class="material-symbols-outlined text-3xl" data-icon="person">person</span>
+                 <div class="w-14 h-14 rounded-[1.25rem] bg-primary flex flex-shrink-0 items-center justify-center text-white relative shadow-lg">
+                     <span class="material-symbols-outlined text-3xl" data-icon="domain">domain</span>
                      <!-- Status Badge -->
                      <div class="absolute -bottom-2 -right-2 bg-surface-container-highest px-1.5 py-0.5 rounded-md border border-outline-variant/50 flex items-center gap-1 shadow-sm" id="global-status-badge">
                          <span class="material-symbols-outlined text-[10px] text-amber-600 font-bold">pending</span>
@@ -108,51 +108,44 @@
                      </div>
                  </div>
                   <div>
-                      <h2 class="font-bold text-primary text-base font-headline leading-tight truncate w-40" id="sidebar-name">Prueba UNSAAC</h2>
-                      <p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mt-1" id="sidebar-id-label">DNI: Pendiente</p>
+                      <h2 class="font-bold text-primary text-base font-headline leading-tight truncate w-40" id="sidebar-name">Perfil Corporativo</h2>
+                      <p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mt-1" id="sidebar-id-label">RUC: Cargando...</p>
                   </div>
               </div>
          </div>
         
         <!-- Navigation Menu -->
         <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-            <span class="text-[10px] font-bold text-outline uppercase tracking-widest pl-4 mb-2 block">Secciones</span>
+            <span class="text-[10px] font-bold text-outline uppercase tracking-widest pl-4 mb-2 block">Administración</span>
             
-            <a href="javascript:void(0)" onclick="scrollToSection('section-personal')" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl bg-primary/5 text-primary font-bold transition-all border-l-4 border-primary" id="nav-personal">
+            <a href="javascript:void(0)" onclick="scrollToSection('section-personal')" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl bg-primary/5 text-primary font-bold transition-all border-l-4 border-primary">
                 <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-[20px]">badge</span>
-                    <span>1. Datos Personales</span>
+                    <span class="material-symbols-outlined text-[20px]" id="step-1-icon">corporate_fare</span>
+                    <span id="step-1-label">1. Perfil de Empresa</span>
                 </div>
                 <span class="material-symbols-outlined text-[16px] text-green-600 opacity-0 transition-opacity checkmark">check_circle</span>
             </a>
             
-            <a href="javascript:void(0)" onclick="scrollToSection('section-docs')" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent" id="nav-docs">
+            <a href="javascript:void(0)" onclick="scrollToSection('section-docs')" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent">
                 <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-[20px]">folder_special</span>
-                    <span>2. Bóveda Digital</span>
+                    <span class="material-symbols-outlined text-[20px]">gavel</span>
+                    <span>2. Verificación Legal (RUC)</span>
                 </div>
                 <span class="material-symbols-outlined text-[16px] text-green-600 opacity-0 transition-opacity checkmark">check_circle</span>
             </a>
-            
-            <a href="javascript:void(0)" onclick="scrollToSection('section-payment')" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent" id="nav-payment">
+
+            <a href="explorar.html" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent mt-4">
                 <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
-                    <span>3. Retribución</span>
+                    <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                    <span>Gestor de Vacantes</span>
                 </div>
-                <span class="material-symbols-outlined text-[16px] text-green-600 opacity-0 transition-opacity checkmark">check_circle</span>
-            </a>
-            
-            <a href="javascript:void(0)" onclick="scrollToSection('section-history')" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent" id="nav-history">
-                <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-[20px]">military_tech</span>
-                    <span>4. Historial y Reputación</span>
-                </div>
+                <span class="material-symbols-outlined text-[16px] text-outline">open_in_new</span>
             </a>
 
             <a href="javascript:void(0)" onclick="scrollToSection('section-security')" class="nav-link flex items-center justify-between px-4 py-3.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low hover:text-primary font-semibold transition-all border-l-4 border-transparent" id="nav-security">
                 <div class="flex items-center gap-3">
                     <span class="material-symbols-outlined text-[20px]">security</span>
-                    <span>5. Centro de Seguridad</span>
+                    <span>Centro de Seguridad</span>
                 </div>
             </a>
 
@@ -194,17 +187,19 @@
         <div class="max-w-4xl mx-auto px-10 py-16 pb-32">
             
             <div class="mb-10">
-                <h1 class="font-headline text-4xl lg:text-5xl font-extrabold text-primary tracking-tight">Completa tu <span class="text-gradient-primary">Perfil Profesional</span></h1>
-                <p class="text-on-surface-variant text-base mt-2 max-w-2xl">La verificación es un proceso riguroso para asegurar la calidad del talento UNSAAC que conectamos con las empresas socias.</p>
+                <h1 class="font-headline text-4xl lg:text-5xl font-extrabold text-primary tracking-tight">Configuración <span class="text-gradient-primary">Corporativa</span></h1>
+                <p class="text-on-surface-variant text-base mt-2 max-w-2xl">La verificación legal nos permite asegurar un ecosistema B2B de alta confianza para el talento y otras empresas.</p>
             </div>
             
             <form id="verification-form" class="space-y-12">
                 
-                <!-- ================= SECTION 1: PERSONAL INFORMATION ================= -->
+                <!-- ================= SECTION 1: IDENTITY ================= -->
                 <section id="section-personal" class="scroll-mt-12 opacity-100 transition-opacity duration-500">
                     <div class="flex items-center gap-3 mb-6">
-                        <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-inner"><span class="material-symbols-outlined">badge</span></div>
-                        <h3 class="font-headline text-2xl font-bold text-primary">Información Personal</h3>
+                        <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary shadow-inner">
+                            <span class="material-symbols-outlined" id="section-1-icon">corporate_fare</span>
+                        </div>
+                        <h3 class="font-headline text-2xl font-bold text-primary" id="section-1-title">Perfil de la Empresa</h3>
                     </div>
                     
                     <div class="glass-premium p-8 rounded-[2rem] border border-white/40 shadow-xl shadow-primary/5">
@@ -221,48 +216,30 @@
                                     <p class="text-[10px] text-on-surface-variant">Recomendado: 400x400px (PNG o JPG)</p>
                                 </div>
                             </div>
-                            <!-- Full Name -->
-                            <div class="space-y-1.5 focus-tracker">
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Nombres <span class="text-error text-sm">*</span></label>
+                            <!-- [EMPRESA] Razón Social -->
+                            <div class="space-y-1.5 focus-tracker md:col-span-2">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Razón Social <span class="text-error text-sm">*</span></label>
                                 <div class="input-wrapper ghost-focus">
-                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">person</span>
-                                    <input type="text" id="input-name" required placeholder="Ej. Ana María" class="form-input-trigger">
+                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">domain</span>
+                                    <input type="text" id="input-company-name" required placeholder="Ej. Paqarina Hub S.A.C." class="form-input-trigger empresa-input">
                                 </div>
                             </div>
                             
-                            <!-- Last Name -->
+                            <!-- [EMPRESA] Representante Legal -->
                             <div class="space-y-1.5 focus-tracker">
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Apellidos <span class="text-error text-sm">*</span></label>
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Representante Legal <span class="text-error text-sm">*</span></label>
                                 <div class="input-wrapper ghost-focus">
-                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">badge</span>
-                                    <input type="text" id="input-lastname" required placeholder="Ej. Quispe Yupanqui" class="form-input-trigger">
+                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">person_check</span>
+                                    <input type="text" id="input-legal-rep" required placeholder="Nombre completo" class="form-input-trigger empresa-input">
                                 </div>
                             </div>
-                            
-                            <!-- DNI Number -->
+
+                            <!-- [EMPRESA] RUC Number -->
                             <div class="space-y-1.5 focus-tracker">
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Número de DNI <span class="text-error text-sm">*</span></label>
-                                <div class="input-wrapper ghost-focus relative">
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Número de RUC <span class="text-error text-sm">*</span></label>
+                                <div class="input-wrapper ghost-focus">
                                     <span class="material-symbols-outlined pl-3 text-outline text-[18px]">pin</span>
-                                    <input type="text" id="input-dni" maxlength="8" required placeholder="8 dígitos" pattern="[0-9]{8}" class="form-input-trigger">
-                                    <div id="dni-spinner" class="absolute right-3 top-1/2 -translate-y-1/2 hidden">
-                                        <div class="w-4 h-4 border-2 border-secondary border-t-transparent rounded-full animate-spin"></div>
-                                    </div>
-                                    <span id="dni-success-icon" class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-green-600 hidden">verified</span>
-                                </div>
-                                <!-- Validation Messages -->
-                                <div id="dni-loading-msg" class="hidden items-center gap-1.5 mt-1">
-                                    <span class="text-[10px] text-on-surface-variant italic">Checking RENIEC database...</span>
-                                </div>
-                                <div id="dni-error-msg" class="hidden mt-2 p-3 bg-error-container/30 border border-error/20 rounded-xl relative overflow-hidden">
-                                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
-                                    <div class="flex items-start gap-2">
-                                        <span class="material-symbols-outlined text-error text-[16px] mt-0.5">error</span>
-                                        <div>
-                                            <p class="text-xs font-bold text-error-on-container">Este DNI ya cuenta con un perfil.</p>
-                                            <a href="#" class="text-[10px] text-primary font-bold underline hover:text-secondary mt-1 inline-block">¿Deseas recuperar tu contraseña?</a>
-                                        </div>
-                                    </div>
+                                    <input type="text" id="input-ruc" required maxlength="11" placeholder="Ej. 20XXXXXXXXX" class="form-input-trigger empresa-input">
                                 </div>
                             </div>
                             

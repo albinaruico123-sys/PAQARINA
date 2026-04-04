@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Redirigiendo... | Andean Talent</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const role = localStorage.getItem('andesTalentRole') || new URLSearchParams(window.location.search).get('role') || 'freelancer';
+            if (role === 'empresa' || role === 'company') {
+                window.location.replace('empresa-profile.html');
+            } else {
+                window.location.replace('freelancer-profile.html');
+            }
+        });
+    </script>
+</head>
+<body style="background-color: #001e40; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; color: white; font-family: sans-serif;">
+    <h2>Cargando tu panel...</h2>
+</body>
+</html>

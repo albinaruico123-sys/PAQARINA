@@ -79,7 +79,7 @@ const PlatformComponents = {
 
                 <div class="p-8 bg-slate-50 border-t flex gap-4">
                     <button onclick="document.getElementById('smart-contract-modal').remove()" class="flex-1 py-4 font-bold text-slate-500 hover:text-primary transition-all">Cancelar</button>
-                    <button onclick="window.location.href='chat.html?contract=demo'" class="flex-1 bg-primary text-white py-4 rounded-2xl font-black shadow-xl shadow-primary/20 hover:-translate-y-1 transition-all">Aceptar y Abrir Chat de Pago</button>
+                    <button onclick="alert('El chat con la empresa estará disponible próximamente.')" class="flex-1 bg-primary text-white py-4 rounded-2xl font-black shadow-xl shadow-primary/20 hover:-translate-y-1 transition-all">Aceptar y Abrir Chat de Pago</button>
                 </div>
             </div>
         `;
@@ -88,13 +88,27 @@ const PlatformComponents = {
 
     // 3. Security/Onboarding Redirect
     async checkOnboarding() {
-        const { session } = await syncAndeanSession();
-        if (!session) return;
+        const isLocalMode = localStorage.getItem('andesTalentLoggedIn') === 'true';
+        if (isLocalMode) {
+            console.log('[Onboarding Guard] Local bypass active. Skipping check.');
+            return;
+        }
 
-        const { data: profile } = await supabase.from('profiles').select('onboarding_completed').eq('id', session.user.id).single();
-        
-        if (profile && !profile.onboarding_completed && !window.location.pathname.includes('onboarding.html') && !window.location.pathname.includes('code.html')) {
-            window.location.href = 'onboarding.html';
+        const client = window.sb || (typeof getSB === 'function' ? getSB() : null);
+        if (!client) return;
+
+        try {
+            const { data: { user } } = await client.auth.getUser();
+            if (!user) return;
+
+            const { data: profile } = await client.from('profiles').select('onboarding_completed').eq('id', user.id).maybeSingle();
+            
+            if (profile && !profile.onboarding_completed && !window.location.pathname.includes('onboarding.html') && !window.location.pathname.includes('code.html')) {
+                console.warn('[Onboarding Guard] Redirecting to onboarding.');
+                window.location.href = 'onboarding.html';
+            }
+        } catch (e) {
+            console.warn('[Onboarding Guard] Check failed', e);
         }
     }
 };

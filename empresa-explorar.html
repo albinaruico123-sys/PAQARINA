@@ -132,108 +132,8 @@
 <!-- RBAC Render Views Container -->
 <main class="pt-28 pb-20 min-h-screen px-6 lg:px-12 max-w-[1400px] mx-auto">
 
-    <!-- ==================== FREELANCER VIEW ==================== -->
-    <div id="freelancer-view" class="hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 relative items-start">
-            
-            <!-- Left Sidebar Filters -->
-            <aside class="lg:col-span-1 lg:sticky lg:top-28 space-y-6">
-                <div class="glass-panel p-6 rounded-3xl space-y-8">
-                    <div class="flex items-center justify-between">
-                        <h3 class="font-headline font-bold text-[#002147] text-xl">Filtros Avanzados</h3>
-                        <span class="text-sm font-bold text-[#D4AF37] cursor-pointer hover:underline">Limpiar</span>
-                    </div>
-
-                    <!-- Filter Checkboxes -->
-                    <div class="space-y-4">
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-[#002147]/60">Facultad UNSAAC</h4>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="custom-check" checked>
-                            <span class="text-sm font-medium group-hover:text-[#D4AF37] transition-colors">Ingeniería de Sistemas</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="custom-check">
-                            <span class="text-sm font-medium group-hover:text-[#D4AF37] transition-colors">Turismo y Hotelería</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="custom-check">
-                            <span class="text-sm font-medium group-hover:text-[#D4AF37] transition-colors">Economía y Finanzas</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="custom-check">
-                            <span class="text-sm font-medium group-hover:text-[#D4AF37] transition-colors">Arte y Diseño</span>
-                        </label>
-                    </div>
-
-                    <!-- Range Slider -->
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <h4 class="text-xs font-bold uppercase tracking-widest text-[#002147]/60">Rango de Pago (Soles)</h4>
-                            <span class="text-xs font-bold text-[#D4AF37]">S/ 500+</span>
-                        </div>
-                        <input type="range" min="100" max="5000" value="500">
-                    </div>
-
-                    <!-- Radios Experience -->
-                    <div class="space-y-4">
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-[#002147]/60">Nivel de Experiencia</h4>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="radio" name="exp" class="custom-radio">
-                            <span class="text-sm font-medium group-hover:text-[#002147] transition-colors">Estudiante (Junior)</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="radio" name="exp" class="custom-radio" checked>
-                            <span class="text-sm font-medium group-hover:text-[#002147] transition-colors">Egresado/Bachiller (Mid)</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="radio" name="exp" class="custom-radio">
-                            <span class="text-sm font-medium group-hover:text-[#002147] transition-colors">Titulado con Exp. (Senior)</span>
-                        </label>
-                    </div>
-
-                    <!-- Toggle Location -->
-                    <div class="space-y-4">
-                        <h4 class="text-xs font-bold uppercase tracking-widest text-[#002147]/60">Modalidad</h4>
-                        <div class="flex items-center gap-4 bg-[#002147]/5 p-1 rounded-xl">
-                            <button class="flex-1 py-1.5 rounded-lg bg-white shadow-sm font-bold text-sm text-[#002147]">Remoto</button>
-                            <button class="flex-1 py-1.5 rounded-lg text-sm text-[#002147]/60 hover:text-[#002147] font-medium transition-colors">Presencial (Cusco)</button>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Main Feed -->
-            <div class="lg:col-span-3 space-y-6">
-                
-                <!-- Search & Sort Top Bar -->
-                <div class="glass-panel p-4 rounded-2xl flex flex-col md:flex-row items-center gap-4 justify-between">
-                    <div class="glass-input flex items-center w-full md:w-2/3 p-2 rounded-xl">
-                        <span class="material-symbols-outlined pl-3 text-slate-400">search</span>
-                        <input type="text" placeholder="¿Qué impacto quieres generar hoy?" class="w-full bg-transparent border-none focus:ring-0 text-[#002147] px-3 py-2 text-sm outline-none">
-                    </div>
-                    <div class="w-full md:w-auto flex items-center gap-3 pl-2">
-                        <span class="text-xs font-bold uppercase tracking-widest text-[#002147]/60">Ordenar por</span>
-                        <select class="glass-input text-sm font-medium p-3 rounded-xl cursor-pointer outline-none">
-                            <option>Más recientes</option>
-                            <option>Mayor presupuesto</option>
-                            <option>Mejor match</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Feed List -->
-                <div id="jobs-feed" class="space-y-4">
-                    <!-- Dynamic Jobs will be injected here -->
-                    <div class="flex flex-col items-center justify-center p-12 text-outline opacity-50">
-                        <span class="material-symbols-outlined text-4xl animate-spin mb-4">sync</span>
-                        <p class="font-bold">Sincronizando con la red de Cusco...</p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <div id="company-view" class="hidden">
+    <!-- ==================== BUSINESS VIEW ==================== -->
+    <div id="company-view" class="block">
         <!-- Hero Section -->
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-10 border-b border-[#002147]/10 pb-8">
             <div class="flex items-center gap-4">
@@ -377,56 +277,89 @@
         
         let currentJobModalId = null;
 
-        // Force Freelancer View Always (since we are in the freelancer-explorar file)
+        // Force Empresa View
         btnDashboard.href = 'profile.html';
-        freelancerView.classList.remove('hidden');
-        freelancerView.classList.add('block');
-        fetchJobs();
+        document.title = "Gestor de Vacantes - Andean Talent";
+        companyView.classList.remove('hidden');
+        companyView.classList.add('block');
+        fetchEmpresaJobs();
 
-        async function fetchJobs() {
-            const feed = document.getElementById('jobs-feed');
-            const { data: jobs, error } = await supabase
-                .from('jobs')
-                .select('*, profiles(full_name, avatar_url, business_name)')
-                .eq('status', 'open')
-                .order('created_at', { ascending: false });
-
-            if (error || !jobs || !jobs.length) {
-                feed.innerHTML = `<div class="p-12 text-center text-outline">No se encontraron convocatorias activas en la red de Cusco.</div>`;
+        async function fetchEmpresaJobs() {
+            const feed = document.getElementById('empresa-jobs-feed');
+            const empId = localStorage.getItem('andesTalentUserId');
+            
+            // Si por alguna razon empId no existe, evitamos crash
+            if(!empId) {
+                feed.innerHTML = `<div class="p-12 text-center text-[#002147]/40 font-bold">Inicia sesión como empresa para ver tus publicaciones.</div>`;
                 return;
             }
 
-            feed.innerHTML = '';
-            jobs.forEach(job => {
-                const card = document.createElement('div');
-                card.className = "glass-panel p-6 rounded-3xl border border-transparent hover-gold-glow transition-all duration-300 job-card-trigger cursor-pointer group flex flex-col sm:flex-row gap-6";
-                card.innerHTML = `
-                    <div class="w-16 h-16 rounded-2xl bg-[#002147]/5 shrink-0 flex items-center justify-center self-start">
-                        <span class="material-symbols-outlined text-2xl text-[#002147]">rocket_launch</span>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex items-start justify-between mb-2">
-                            <div>
-                                <p class="text-xs font-bold text-[#002147]/60 uppercase tracking-widest mb-1">${job.profiles?.business_name || 'Empresa Aliada'}</p>
-                                <h2 class="font-headline text-2xl font-bold text-[#002147] group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#002147] group-hover:to-[#3B82F6] transition-all">${job.title}</h2>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-2xl font-black text-[#002147]">S/ ${job.salary || '---'}</span>
-                            </div>
+            // Seleccionamos trabajos creados por esta empresa y cruzamos con applications para ver el contador
+            const { data: jobs, error } = await supabase
+                .from('jobs')
+                .select('*, applications(id)')
+                .eq('company_id', empId)
+                .order('created_at', { ascending: false });
+
+            let activeCount = 0;
+            let pendingCount = 0;
+
+            if (error || !jobs || !jobs.length) {
+                document.getElementById('metric-active-jobs').textContent = '0';
+                document.getElementById('metric-pending-applicants').textContent = '0';
+                feed.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-16 text-[#002147]/40">
+                        <div class="w-20 h-20 bg-[#002147]/5 rounded-full flex items-center justify-center mb-4 text-[#002147]">
+                            <span class="material-symbols-outlined text-4xl">work_history</span>
                         </div>
-                        <p class="text-[#002147]/80 text-sm leading-relaxed mb-4 max-w-3xl line-clamp-2">${job.description}</p>
-                        <div class="flex items-center justify-between">
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-[#002147] text-white text-[11px] font-bold uppercase tracking-widest rounded-lg">${job.category || 'General'}</span>
-                                <span class="px-3 py-1 border border-[#D4AF37] text-[#D4AF37] bg-[#D4AF37]/5 text-[11px] font-bold uppercase tracking-widest rounded-lg">${job.experience_level || 'Junior'}</span>
-                            </div>
-                            <button class="text-sm font-bold text-[#D4AF37] group-hover:underline flex items-center gap-1">Ver Detalles <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
-                        </div>
+                        <p class="font-bold text-xl text-[#002147]">Aún no has publicado anuncios.</p>
+                        <p class="text-sm mt-2 max-w-md text-center">Inicia publicando tu primera vacante y recibe perfiles verificados de talento joven.</p>
                     </div>
                 `;
-                card.addEventListener('click', () => openJobModal(job));
-                feed.appendChild(card);
+                return;
+            }
+
+            feed.innerHTML = '<div class="space-y-4" id="empresa-jobs-list"></div>';
+            const listContainer = document.getElementById('empresa-jobs-list');
+
+            jobs.forEach(job => {
+                const isActive = (!job.status || job.status === 'open' || job.status === 'activo');
+                if(isActive) activeCount++;
+                
+                const appsCount = job.applications ? job.applications.length : 0;
+                pendingCount += appsCount;
+
+                const card = document.createElement('div');
+                card.className = "bg-white border border-[#002147]/10 p-5 pl-6 rounded-2xl hover:border-[#D4AF37]/50 transition-colors shadow-sm flex flex-col md:flex-row items-center justify-between gap-4 group cursor-default relative overflow-hidden";
+                card.innerHTML = `
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 ${isActive ? 'bg-green-500' : 'bg-[#002147]/20'}"></div>
+                    <div class="flex-1 w-full relative z-10">
+                        <div class="flex items-center gap-3 mb-1.5">
+                            <h3 class="font-bold text-lg text-[#002147]">${job.title}</h3>
+                            <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-widest ${isActive ? 'bg-green-100 text-green-700' : 'bg-surface-variant text-outline'}">${isActive ? 'Activo' : 'Cerrado'}</span>
+                        </div>
+                        <p class="text-xs text-[#002147]/50 font-bold mb-3 uppercase tracking-wider">Publicado el: ${new Date(job.created_at).toLocaleDateString()}</p>
+                        <div class="flex gap-6 items-center">
+                            <span class="flex items-center gap-1 text-sm font-black text-[#002147]/80 group-hover:text-[#002147] transition-colors">
+                                <span class="material-symbols-outlined text-[16px] text-[#002147]/40">payments</span> S/ ${job.salary || '---'}
+                            </span>
+                            <span class="flex items-center gap-1.5 text-sm font-black text-[#D4AF37]">
+                                <span class="material-symbols-outlined text-[18px]">group</span> ${appsCount} Postulantes
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 w-full md:w-auto relative z-10">
+                        <button class="flex-1 md:flex-none border border-[#002147]/20 text-[#002147] px-4 py-2.5 rounded-xl font-bold hover:bg-[#002147]/5 transition-colors text-sm">Editar</button>
+                        <button class="flex-1 md:flex-none bg-[#002147] text-white px-5 py-2.5 rounded-xl font-bold hover:bg-[#1A3A63] shadow-md shadow-[#002147]/20 transition-all text-sm flex items-center justify-center gap-2" ${appsCount===0 ? 'style="opacity:0.7;" disabled' : ''}>
+                            Revisar CVs <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(card);
             });
+
+            document.getElementById('metric-active-jobs').textContent = activeCount;
+            document.getElementById('metric-pending-applicants').textContent = pendingCount;
         }
 
         const pjModal = document.getElementById('project-detail-modal');

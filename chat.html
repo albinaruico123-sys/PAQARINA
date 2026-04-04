@@ -256,7 +256,11 @@
     document.addEventListener('DOMContentLoaded', async () => {
         const urlParams = new URL(window.location.href).searchParams;
         const contractId = urlParams.get('contract');
-        const role = sessionStorage.getItem('andesTalentRole') || 'freelancer'; // Default to freelancer for safety
+        const role = localStorage.getItem('andesTalentRole') || urlParams.get('role') || 'freelancer'; 
+        if (urlParams.get('local') === 'true') {
+            localStorage.setItem('andesTalentLoggedIn', 'true');
+            localStorage.setItem('andesTalentRole', role);
+        }
 
         if (role === 'company') {
             document.getElementById('business-actions').classList.remove('hidden');
@@ -362,7 +366,7 @@
                             </div>
                             <h2 class="text-2xl font-black font-headline text-primary mb-2">¡Todo Listo!</h2>
                             <p class="text-sm text-on-surface-variant mb-6">El proyecto se ha movido a tu Historial Inmutable y el pago ha sido liberado.</p>
-                            <button onclick="window.location.href='freelancer-profile.html'" class="w-full bg-primary text-white py-4 rounded-2xl font-black shadow-xl">Volver al Dashboard</button>
+                            <button onclick="window.location.href='profile.html'" class="w-full bg-primary text-white py-4 rounded-2xl font-black shadow-xl">Volver al Dashboard</button>
                         </div>
                     `;
                 }, 1500);

@@ -9,30 +9,41 @@ const CMSEngine = {
 
     async init() {
         // 1. Check if user is admin
-        const { data: { user } } = await supabase.auth.getUser();
+        const client = window.sb || (typeof getSB === 'function' ? getSB() : null);
+        if (!client) {
+            console.warn('[CMSEngine] Supabase client not ready, delaying init.');
+            setTimeout(() => this.init(), 100);
+            return;
+        }
+
+        const { data: { user } } = await client.auth.getUser();
         if (user) {
-            const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+            const { data: profile } = await client.from('profiles').select('role').eq('id', user.id).single();
             this.isAdmin = profile?.role === 'admin';
         }
 
         // 2. Load all CMS content
         await this.loadAllContent();
 
+
         // 3. Listen for Edit Mode toggle from admin panel (via storage for cross-tab sync)
         window.addEventListener('storage', () => {
-            const mode = sessionStorage.getItem('andesCMSMode') === 'true';
+            const mode = localStorage.getItem('andesCMSMode') === 'true';
             if (mode !== this.editMode) {
                 this.toggleEditMode(mode);
             }
         });
 
         // Initial check
-        const initialMode = sessionStorage.getItem('andesCMSMode') === 'true';
+        const initialMode = localStorage.getItem('andesCMSMode') === 'true';
         if (initialMode) this.toggleEditMode(true);
     },
 
     async loadAllContent() {
-        const { data, error } = await supabase.from('cms_content').select('*');
+        const client = window.sb || (typeof getSB === 'function' ? getSB() : null);
+        if (!client) return;
+
+        const { data, error } = await client.from('cms_content').select('*');
         if (data) {
             data.forEach(item => {
                 const elements = document.querySelectorAll(`[data-cms-key="${item.key}"]`);
@@ -83,12 +94,15 @@ const CMSEngine = {
             element.childNodes[0].textContent = newText; // Update main text, keep button
             
             // Update Supabase
-            const { error } = await supabase
-                .from('cms_content')
-                .upsert({ key: key, content: newText, updated_at: new Date() });
-            
-            if (error) {
-                alert('Error al guardar en CMS: ' + error.message);
+            const client = window.sb || (typeof getSB === 'function' ? getSB() : null);
+            if (client) {
+                const { error } = await client
+                    .from('cms_content')
+                    .upsert({ key: key, content: newText, updated_at: new Date() });
+                
+                if (error) {
+                    alert('Error al guardar en CMS: ' + error.message);
+                }
             }
         }
     }

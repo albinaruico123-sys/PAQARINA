@@ -47,7 +47,7 @@
             </div>
             
             <div class="w-32 h-32 mx-auto bg-signature rounded-full border-4 border-secondary/20 p-1 mb-4">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" class="w-full h-full rounded-full object-cover shadow-inner"/>
+                <img id="profile-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Avatar" class="w-full h-full rounded-full object-cover shadow-inner"/>
             </div>
             
             <h1 class="text-2xl font-black text-primary font-headline" id="profile-name">Cargando...</h1>
@@ -64,31 +64,31 @@
             
             <div class="grid grid-cols-2 gap-4 text-left pt-6 border-t border-outline-variant/30">
                 <div>
-                    <p class="text-[10px] uppercase tracking-wider text-outline font-bold">Facultad</p>
+                    <p class="text-[10px] uppercase tracking-wider text-outline font-bold" id="label-faculty">Facultad</p>
                     <p class="text-xs font-bold text-primary" id="profile-faculty">Ing. Sistemas</p>
                 </div>
                 <div>
                     <p class="text-[10px] uppercase tracking-wider text-outline font-bold">Ubicación</p>
-                    <p class="text-xs font-bold text-primary">Cusco, PE</p>
+                    <p class="text-xs font-bold text-primary" id="profile-location">Cusco, PE</p>
                 </div>
             </div>
         </div>
         
         <!-- Document Preview Section -->
-        <div class="glass-premium rounded-3xl p-8">
+        <div class="glass-premium rounded-3xl p-8" id="verified-docs-section">
             <h3 class="text-sm font-black text-primary mb-6 flex items-center gap-2">
                 <span class="material-symbols-outlined text-sm">folder_shared</span>
                 Documentos Verificados
             </h3>
             <div class="grid grid-cols-2 gap-4">
-                <div class="aspect-[3/4] bg-surface-container rounded-xl relative overflow-hidden border border-outline-variant/30 group cursor-not-allowed">
+                <div id="doc-badge-main" class="hidden aspect-[3/4] bg-surface-container rounded-xl relative overflow-hidden border border-outline-variant/30 group cursor-not-allowed">
                     <div class="w-full h-full flex flex-col items-center justify-center p-4">
-                        <span class="material-symbols-outlined text-3xl text-outline-variant mb-2">badge</span>
-                        <p class="text-[9px] font-bold text-outline uppercase text-center">DNI Validado</p>
+                        <span class="material-symbols-outlined text-3xl text-outline-variant mb-2" id="doc-badge-main-icon">badge</span>
+                        <p class="text-[9px] font-bold text-outline uppercase text-center" id="doc-badge-main-text">DNI Validado</p>
                     </div>
                     <div class="watermark text-primary">PAQARINA PROTECTED</div>
                 </div>
-                <div class="aspect-[3/4] bg-surface-container rounded-xl relative overflow-hidden border border-outline-variant/30 group cursor-not-allowed">
+                <div id="doc-badge-cv" class="hidden aspect-[3/4] bg-surface-container rounded-xl relative overflow-hidden border border-outline-variant/30 group cursor-not-allowed">
                     <div class="w-full h-full flex flex-col items-center justify-center p-4">
                         <span class="material-symbols-outlined text-3xl text-outline-variant mb-2">description</span>
                         <p class="text-[9px] font-bold text-outline uppercase text-center">CV Premium</p>
@@ -131,7 +131,7 @@
         </section>
         
         <!-- Reviews Section -->
-        <section>
+        <section id="reviews-section">
             <div class="flex justify-between items-end mb-8">
                 <h2 class="text-xl font-black text-primary font-headline">Reseñas y Recomendaciones</h2>
                 <div class="px-3 py-1 bg-primary text-[10px] font-bold text-on-primary rounded-lg flex items-center gap-2">
@@ -141,46 +141,9 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="reviews-container">
-                <!-- Review Card 1 -->
-                <div class="glass-premium rounded-2xl p-6 border-l-4 border-secondary">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 bg-surface-container rounded-full flex items-center justify-center text-primary font-bold text-xs">H</div>
-                        <div>
-                            <p class="text-xs font-bold text-primary">Inca Rail S.A.</p>
-                            <p class="text-[9px] text-outline">Gisela M. - Marzo 2024</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-1 mb-3">
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                    </div>
-                    <p class="text-xs text-on-surface-variant leading-relaxed">
-                        "Excepcional entrega y comunicación. Entendió perfectamente las necesidades técnicas de nuestra operación."
-                    </p>
-                </div>
-                
-                <!-- Review Card 2 -->
-                <div class="glass-premium rounded-2xl p-6 border-l-4 border-secondary">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-8 h-8 bg-surface-container rounded-full flex items-center justify-center text-primary font-bold text-xs">C</div>
-                        <div>
-                            <p class="text-xs font-bold text-primary">Casa Andina Premium</p>
-                            <p class="text-[9px] text-outline">Roberto T. - Febrero 2024</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-1 mb-3">
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                        <span class="material-symbols-outlined text-secondary text-[12px]">star</span>
-                    </div>
-                    <p class="text-xs text-on-surface-variant leading-relaxed">
-                        "Muy buen perfil analítico. Definitivamente volveremos a trabajar con él en futuros proyectos de datos."
-                    </p>
+                <!-- Reviews injected here -->
+                <div class="col-span-full p-8 text-center border border-dashed border-outline-variant/30 rounded-2xl bg-surface-container-low/30">
+                    <p class="text-xs font-bold text-outline uppercase tracking-widest">Sin reseñas registradas aún.</p>
                 </div>
             </div>
         </section>
@@ -260,10 +223,14 @@
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
         const urlParams = new URL(window.location.href).searchParams;
-        const profileId = urlParams.get('id');
+        let profileId = urlParams.get('id');
         
+        if (!profileId) {
+            profileId = localStorage.getItem('andesTalentUserId');
+        }
+
         if (profileId) {
-            const { data: profile, error } = await supabase
+            const { data: profile, error } = await getSB()
                 .from('profiles')
                 .select('*')
                 .eq('id', profileId)
@@ -273,27 +240,80 @@
                 renderProfile(profile);
                 fetchPortfolio(profileId, profile.role);
                 fetchHistory(profileId);
+            } else {
+                renderDemoProfile(profileId);
             }
         } else {
-            // Default demo data
-            renderDemoProfile();
+            renderDemoProfile('guest');
         }
 
         function renderProfile(profile) {
-            document.getElementById('profile-name').textContent = profile.full_name || profile.business_name;
-            document.getElementById('profile-role').textContent = profile.role === 'company' ? 'Empresa Aliada Cusco' : 'Talento UNSAAC';
-            document.getElementById('profile-faculty').textContent = profile.role === 'company' ? profile.industry || 'Corporativo' : profile.university_id || 'UNSAAC';
-            document.getElementById('profile-bio').textContent = profile.bio || 'Sin descripción disponible por el momento.';
+            const isCompany = profile.role === 'company' || profile.role === 'empresa';
             
-            if (profile.role === 'company') {
+            // Name
+            const defaultName = isCompany ? 'Empresa Local' : 'Usuario';
+            document.getElementById('profile-name').textContent = isCompany ? (profile.business_name || defaultName) : (profile.first_name ? profile.first_name + ' ' + (profile.last_name || '') : profile.full_name || defaultName);
+            
+            // Subtitle / Badge
+            document.getElementById('profile-role').textContent = isCompany ? 'Socio Estratégico' : 'Talento Junior';
+            
+            // Specialty / Rubro
+            document.getElementById('label-faculty').textContent = isCompany ? 'Rubro' : 'Carrera';
+            document.getElementById('profile-faculty').textContent = profile.specialty || (isCompany ? 'Corporativo' : 'UNSAAC');
+            
+            // Location
+            document.getElementById('profile-location').textContent = profile.location || 'Pendiente';
+
+            // Bio
+            document.getElementById('profile-bio').textContent = profile.about_me || profile.bio || 'Sin descripción disponible por el momento.';
+            
+            // Avatar
+            const avatarLocal = localStorage.getItem('andesTalentAvatar_' + profile.id);
+            if (avatarLocal) {
+                document.getElementById('profile-avatar').src = avatarLocal;
+            } else if (profile.avatar_url) {
+                document.getElementById('profile-avatar').src = profile.avatar_url;
+            } else {
+                document.getElementById('profile-avatar').src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.id}`;
+            }
+            
+            // Documents Flags
+            if (profile.verified || profile.has_docs || localStorage.getItem('andesTalentVerified') === 'true') {
+                const docMain = document.getElementById('doc-badge-main');
+                if (docMain) {
+                    docMain.classList.remove('hidden');
+                    docMain.classList.add('flex');
+                    document.getElementById('doc-badge-main-text').textContent = isCompany ? 'RUC Validado' : 'DNI Validado';
+                    document.getElementById('doc-badge-main-icon').textContent = isCompany ? 'domain_verification' : 'badge';
+                }
+                if (!isCompany) {
+                    const docCV = document.getElementById('doc-badge-cv');
+                    if (docCV) {
+                        docCV.classList.remove('hidden');
+                        docCV.classList.add('flex');
+                    }
+                }
+            }
+            
+            // Layout differences based on role
+            const workHistory = document.getElementById('work-history-section');
+            const reviewsSec = document.getElementById('reviews-section');
+            
+            if (isCompany) {
                 document.getElementById('portfolio-title').textContent = 'Nuestra Trayectoria en UNSAAC';
+                if(workHistory) workHistory.classList.add('hidden');
+                if(reviewsSec) reviewsSec.classList.add('hidden');
+            } else {
+                document.getElementById('portfolio-title').textContent = 'Portafolio de Proyectos';
+                if(workHistory) workHistory.classList.remove('hidden');
+                if(reviewsSec) reviewsSec.classList.remove('hidden');
             }
             document.getElementById('portfolio-section').classList.remove('hidden');
         }
 
         async function fetchPortfolio(userId, role) {
             const grid = document.getElementById('portfolio-grid');
-            const { data: items } = await supabase.from('portfolio_items').select('*').eq('user_id', userId);
+            const { data: items } = await getSB().from('portfolio_items').select('*').eq('user_id', userId);
             
             if (items && items.length > 0) {
                 grid.innerHTML = '';
@@ -326,13 +346,23 @@
         async function fetchHistory(userId) {
             const timeline = document.getElementById('history-timeline');
             // Logic to fetch completed contracts and reviews
-            // For now, keeping the static demo or fetching from contracts
         }
 
-        function renderDemoProfile() {
-            document.getElementById('profile-name').textContent = "Felix Antaurco";
-            document.getElementById('profile-faculty').textContent = "Ing. Sistemas";
-            document.getElementById('portfolio-section').classList.remove('hidden');
+        function renderDemoProfile(id) {
+            // Build a synthetic profile object from LocalStorage hints or defaults
+            const localRole = localStorage.getItem('andesTalentRole') === 'empresa' ? 'empresa' : 'freelancer';
+            const fakeProfile = {
+                id: id,
+                role: localRole,
+                first_name: localStorage.getItem('andesTalentUserName') || (localRole === 'empresa' ? '' : 'Usuario Prueba'),
+                business_name: localRole === 'empresa' ? (localStorage.getItem('andesTalentUserName') || 'Empresa Prueba S.A.C.') : null,
+                specialty: localRole === 'empresa' ? 'Tecnología' : 'Ing. Sistemas',
+                location: 'Cusco, PE',
+                bio: 'Perfil público en modo de vista previa de diseño.',
+                verified: false,
+                has_docs: false
+            };
+            renderProfile(fakeProfile);
         }
     });
 </script>

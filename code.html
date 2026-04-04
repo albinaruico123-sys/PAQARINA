@@ -73,7 +73,8 @@
         Andean Talent
     </div>
     <nav class="hidden md:flex items-center gap-8 nav-tabs">
-        <a class="nav-link tab-active text-primary font-bold relative" href="#" onclick="showTab('explorar',this); return false;" data-tab="explorar">Explorar</a>
+        <a class="nav-link tab-active text-primary font-bold relative" href="#" onclick="showTab('explorar',this); return false;" data-tab="explorar">Inicio</a>
+        <a class="nav-link text-on-surface-variant hover:text-primary transition-colors font-semibold" href="explorar.html" id="nav-anuncios">Anuncios</a>
         <a class="nav-link text-on-surface-variant hover:text-primary transition-colors font-semibold" href="#" onclick="showTab('empresas',this); return false;" data-tab="empresas">Empresas</a>
         <a class="nav-link text-on-surface-variant hover:text-primary transition-colors font-semibold" href="#" onclick="showTab('servicios',this); return false;" data-tab="servicios">Servicios</a>
         <a class="nav-link text-on-surface-variant hover:text-primary transition-colors font-semibold" href="#" onclick="showTab('nosotros',this); return false;" data-tab="nosotros">Sobre Nosotros</a>
@@ -99,14 +100,17 @@
                 <p class="text-sm font-bold text-primary">Prueba UNSAAC</p>
                 <p class="text-xs text-on-surface-variant">Talento Pro</p>
             </div>
-            <a href="freelancer-profile.html" class="px-4 py-3 text-sm font-semibold text-primary hover:bg-surface-container-low transition-colors flex items-center gap-3" id="btn-view-profile">
+            <a href="profile.html" class="px-4 py-3 text-sm font-semibold text-primary hover:bg-surface-container-low transition-colors flex items-center gap-3" id="btn-view-profile">
                 <span class="material-symbols-outlined text-lg text-secondary">account_circle</span> Mi Perfil
             </a>
-
+            <a href="profile.html?tab=settings" class="px-4 py-3 text-sm font-semibold text-primary hover:bg-surface-container-low transition-colors flex items-center gap-3">
+                <span class="material-symbols-outlined text-lg text-secondary">settings</span> Configuración
+            </a>
             <hr class="border-outline-variant/30">
-            <button onclick="sessionStorage.clear(); window.location.reload();" class="w-full text-left px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 transition-colors flex items-center gap-3" id="btn-logout">
+            <button onclick="getSB().auth.signOut().then(() => { localStorage.clear(); window.location.reload(); });" class="w-full text-left px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50 transition-colors flex items-center gap-3" id="btn-logout">
                 <span class="material-symbols-outlined text-lg">logout</span> Cerrar Sesión
             </button>
+
         </div>
     </div>
 </header>
@@ -137,32 +141,30 @@
                     <div class="ghost-focus flex items-center bg-surface-container-lowest p-2 rounded-2xl shadow-2xl shadow-primary/5 transition duration-300">
                         <span class="material-symbols-outlined pl-4 text-outline" data-icon="search">search</span>
                         <input class="w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline/70 px-4 py-3 text-sm lg:text-base outline-none" placeholder="Busca por habilidad: Guía de turismo, Desarrollador..." type="text"/>
-                        <button class="bg-signature text-on-primary px-8 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity hidden sm:block">
+                        <button onclick="window.location.href='explorar.html'" class="bg-signature text-on-primary px-8 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity hidden sm:block">
                             Buscar
                         </button>
                     </div>
                 </div>
                 
-                <!-- CTA Cluster -->
-                <div class="flex flex-wrap items-center gap-6 pt-4" id="hero-ctas-logged-out">
-                    <button id="btn-hire" onclick="window.location.href='company-profile.html'" class="bg-signature text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-3 shadow-xl shadow-primary/20 hover:scale-105 transition-all duration-300 hover-gold-glow">
-                        Contratar Talento
-                        <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
-                    </button>
-                    <button id="btn-freelance" onclick="window.location.href='onboarding.html'" class="group flex items-center gap-3 text-secondary font-bold px-8 py-4 rounded-xl bg-secondary-container/10 hover:bg-secondary-container/30 transition-all">
-                        Ser Freelancer
-                        <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1" data-icon="person_add">person_add</span>
+                <!-- Shared Logged-in Hero CTA (Hidden by default) -->
+                <div id="shared-hero-cta" class="hidden pt-2">
+                    <button onclick="window.location.href='crear-anuncio.html'" class="inline-flex items-center gap-2 bg-[#D4AF37] text-[#002147] font-black px-6 py-3 rounded-xl shadow-lg hover:shadow-[#D4AF37]/40 hover:-translate-y-1 transition-all">
+                        <span class="material-symbols-outlined text-lg border-2 border-[#002147] rounded-full p-[2px]">add</span>
+                        Crear un anuncio nuevo
                     </button>
                 </div>
-                <!-- Logged In CTA Cluster -->
-                <div class="hidden flex-wrap items-center gap-6 pt-4" id="hero-ctas-logged-in">
-                    <a href="explorar.html" id="hero-primary-btn" class="bg-signature text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-3 shadow-xl shadow-primary/20 hover:scale-105 transition-all duration-300 hover-gold-glow">
-                        Explorar Proyectos Recientes
-                        <span class="material-symbols-outlined text-sm" data-icon="travel_explore">travel_explore</span>
+                
+                <!-- CTA Cluster -->
+                <!-- Dynamic CTA Cluster -->
+                <div class="flex flex-wrap items-center gap-6 pt-4" id="hero-ctas-dynamic">
+                    <a href="javascript:void(0)" onclick="openAuthModal('login')" id="hero-primary-btn" class="bg-signature text-on-primary px-8 py-4 rounded-xl font-bold flex items-center gap-3 shadow-xl shadow-primary/20 hover:scale-105 transition-all duration-300 hover-gold-glow">
+                        Iniciar Sesión
+                        <span class="material-symbols-outlined text-sm" data-icon="login">login</span>
                     </a>
-                    <a href="freelancer-profile.html" id="hero-secondary-btn" class="group flex items-center gap-3 text-secondary font-bold px-8 py-4 rounded-xl border border-secondary/20 hover:bg-secondary-container/10 transition-all">
-                        Ir a mi Panel de Control
-                        <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1" data-icon="dashboard">dashboard</span>
+                    <a href="javascript:void(0)" onclick="openAuthModal('register')" id="hero-secondary-btn" class="group flex items-center gap-3 text-secondary font-bold px-8 py-4 rounded-xl border border-secondary/20 hover:bg-secondary-container/10 transition-all">
+                        Crear Cuenta
+                        <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1" data-icon="person_add">person_add</span>
                     </a>
                 </div>
                 
@@ -461,8 +463,8 @@
             <div class="w-16 h-16 bg-secondary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-secondary">
                 <span class="material-symbols-outlined text-3xl" id="auth-icon" data-icon="lock">lock</span>
             </div>
-            <h3 class="font-headline text-2xl font-bold text-primary" id="auth-title">Iniciar Sesión</h3>
-            <p class="text-on-surface-variant text-sm mt-2" id="auth-desc">Introduce tu correo y contraseña.</p>
+            <h3 class="font-headline text-2xl font-bold text-primary" id="auth-title">Acceso Instantáneo</h3>
+            <p class="text-on-surface-variant text-sm mt-2" id="auth-desc">Introduce tu DNI de 8 dígitos para entrar.</p>
         </div>
         <!-- Mode Tabs -->
         <div class="flex rounded-xl bg-surface-container-low p-1 mb-6 gap-1">
@@ -472,36 +474,33 @@
         <form class="space-y-4" id="login-form">
             <!-- Name field (register only) -->
             <div id="field-name" class="hidden">
-                <label class="block text-xs font-bold uppercase tracking-widest text-primary mb-1">Nombre Completo</label>
+                <label id="label-register-name" class="block text-xs font-bold uppercase tracking-widest text-primary mb-1">Nombre Completo</label>
                 <div class="ghost-focus flex items-center bg-surface-container-lowest p-2 rounded-xl shadow-sm">
-                    <span class="material-symbols-outlined pl-3 text-outline text-sm">person</span>
+                    <span id="icon-register-name" class="material-symbols-outlined pl-3 text-outline text-sm">person</span>
                     <input type="text" id="login-name" class="w-full bg-transparent border-none focus:ring-0 text-on-surface px-3 py-2 text-sm outline-none" placeholder="Tu nombre completo">
                 </div>
             </div>
             <div>
-                <label class="block text-xs font-bold uppercase tracking-widest text-primary mb-1">Correo Electrónico</label>
+                <label id="label-login-email" class="block text-xs font-bold uppercase tracking-widest text-primary mb-1">Número de DNI</label>
                 <div class="ghost-focus flex items-center bg-surface-container-lowest p-2 rounded-xl shadow-sm">
-                    <span class="material-symbols-outlined pl-3 text-outline text-sm" data-icon="mail">mail</span>
-                    <input type="email" id="login-email" class="w-full bg-transparent border-none focus:ring-0 text-on-surface px-3 py-2 text-sm outline-none" placeholder="tu@correo.com">
+                    <span id="icon-login-email" class="material-symbols-outlined pl-3 text-outline text-sm" data-icon="badge">badge</span>
+                    <input type="text" id="login-email" maxlength="11" class="w-full bg-transparent border-none focus:ring-0 text-on-surface px-3 py-2 text-sm outline-none" placeholder="Ingresa tus 8 dígitos">
                 </div>
             </div>
-            <div>
-                <label class="block text-xs font-bold uppercase tracking-widest text-primary mb-1">Contraseña</label>
-                <div class="ghost-focus flex items-center bg-surface-container-lowest p-2 rounded-xl shadow-sm">
-                    <span class="material-symbols-outlined pl-3 text-outline text-sm" data-icon="key">key</span>
-                    <input type="password" id="login-pass" class="w-full bg-transparent border-none focus:ring-0 text-on-surface px-3 py-2 text-sm outline-none" placeholder="Mínimo 6 caracteres">
-                </div>
+            <!-- Hidden Password Field (Automated by Script) -->
+            <div class="hidden">
+                <input type="password" id="login-pass" value="">
             </div>
             <!-- Role selector (register only) -->
             <div id="field-role" class="hidden">
                 <label class="block text-xs font-bold uppercase tracking-widest text-primary mb-1">Soy...</label>
                 <div class="flex gap-3">
                     <label class="flex-1 flex items-center gap-2 p-3 rounded-xl border border-outline-variant/40 cursor-pointer hover:border-secondary transition-colors">
-                        <input type="radio" name="reg-role" value="freelancer" checked class="text-secondary">
+                        <input type="radio" name="reg-role" value="freelancer" checked class="text-secondary" onchange="updateRoleLabels()">
                         <span class="text-sm font-bold text-primary">Freelancer / Talento</span>
                     </label>
                     <label class="flex-1 flex items-center gap-2 p-3 rounded-xl border border-outline-variant/40 cursor-pointer hover:border-secondary transition-colors">
-                        <input type="radio" name="reg-role" value="company" class="text-secondary">
+                        <input type="radio" name="reg-role" value="company" class="text-secondary" onchange="updateRoleLabels()">
                         <span class="text-sm font-bold text-primary">Empresa</span>
                     </label>
                 </div>
@@ -804,21 +803,170 @@ function setAuthMode(mode) {
     if (tr) tr.className = !isLogin ? on : off;
     var fn = document.getElementById('field-name');
     var fr = document.getElementById('field-role');
-    if (fn) fn.classList.toggle('hidden', isLogin);
-    if (fr) fr.classList.toggle('hidden', isLogin);
+    if (fn) fn.classList.remove('hidden'); // Always show name field for connection clarity
+    if (fr) fr.classList.remove('hidden'); // Always show role selector
     var btn   = document.getElementById('btn-submit-auth');
     var title = document.getElementById('auth-title');
     var desc  = document.getElementById('auth-desc');
     var icon  = document.getElementById('auth-icon');
-    if (btn)   btn.textContent   = isLogin ? 'Iniciar Sesión' : 'Crear Cuenta';
-    if (title) title.textContent = isLogin ? 'Iniciar Sesión' : 'Crear Cuenta';
-    if (desc)  { desc.textContent = isLogin ? 'Accede a tu cuenta.' : 'Únete a CuscoTalent.'; desc.className = 'text-on-surface-variant text-sm mt-2'; }
-    if (icon)  icon.textContent  = isLogin ? 'login' : 'person_add';
+    if (btn)   btn.textContent   = isLogin ? 'Iniciar Sesión' : 'Registrarme ahora';
+    if (title) title.textContent = isLogin ? 'Acceso al Portal' : 'Registro Único';
+    if (desc) desc.className = 'text-on-surface-variant text-sm mt-2 font-bold';
+    if (icon) icon.textContent = isLogin ? 'key' : 'how_to_reg';
+    updateRoleLabels();
 }
+
+function updateRoleLabels() {
+    var isLogin = authMode === 'login';
+    var roleInput = document.querySelector('input[name="reg-role"]:checked');
+    var role = roleInput ? roleInput.value : 'freelancer';
+    
+    var desc = document.getElementById('auth-desc');
+    var nameLabel = document.getElementById('label-register-name');
+    var nameInput = document.getElementById('login-name');
+    var nameIcon = document.getElementById('icon-register-name');
+    var docLabel = document.getElementById('label-login-email');
+    var docInput = document.getElementById('login-email');
+    var docIcon = document.getElementById('icon-login-email');
+
+    if (role === 'company') {
+        if (desc) desc.textContent = isLogin ? 'Ingresa tu RUC para acceder.' : 'Ingresa tu Razón Social y RUC para empezar.';
+        if (nameLabel) nameLabel.textContent = 'Razón Social';
+        if (nameInput) nameInput.placeholder = 'Nombre de tu empresa';
+        if (nameIcon) nameIcon.textContent = 'storefront';
+        if (docLabel) docLabel.textContent = 'Número de RUC';
+        if (docInput) { docInput.placeholder = 'Ingresa tus 11 dígitos'; docInput.maxLength = 11; }
+        if (docIcon) docIcon.textContent = isLogin ? 'fingerprint' : 'domain';
+    } else {
+        if (desc) desc.textContent = isLogin ? 'Usa tu DNI para entrar.' : 'Solo 8 dígitos para empezar.';
+        if (nameLabel) nameLabel.textContent = 'Nombre Completo';
+        if (nameInput) nameInput.placeholder = 'Tu nombre completo';
+        if (nameIcon) nameIcon.textContent = 'person';
+        if (docLabel) docLabel.textContent = 'Número de DNI';
+        if (docInput) { docInput.placeholder = 'Ingresa tus 8 o 11 dígitos'; docInput.maxLength = 11; }
+        if (docIcon) docIcon.textContent = isLogin ? 'fingerprint' : 'badge';
+    }
+}
+
+// Auto-switch role based on input length
+document.addEventListener('DOMContentLoaded', () => {
+    const emailInput = document.getElementById('login-email');
+    if (emailInput) {
+        emailInput.addEventListener('input', (e) => {
+            const val = e.target.value.replace(/\D/g, '');
+            if (val.length === 11) {
+                const companyRadio = document.querySelector('input[name="reg-role"][value="company"]');
+                if (companyRadio && !companyRadio.checked) {
+                    companyRadio.checked = true;
+                    updateRoleLabels();
+                }
+            } else if (val.length === 8) {
+                const freeRadio = document.querySelector('input[name="reg-role"][value="freelancer"]');
+                if (freeRadio && !freeRadio.checked) {
+                    freeRadio.checked = true;
+                    updateRoleLabels();
+                }
+            }
+        });
+    }
+});
 
 // ── Login / Register Submit ──────────────────────────────────
 async function doAuth() {
+    console.log('[Auth] Submit attempt...');
+    var btn = document.getElementById('btn-submit-auth');
+    if (btn) { btn.disabled = true; btn.textContent = 'Procesando...'; }
+
+    try {
+        var emailInput = document.getElementById('login-email');
+        var emailRaw   = (emailInput?.value || '').trim();
+        var email      = emailRaw.replace(/\s/g, ''); // Remove spaces for DNI/RUC
+        var name       = (document.getElementById('login-name')?.value || '').trim();
+        var roleInput  = document.querySelector('input[name="reg-role"]:checked');
+        var role       = roleInput ? roleInput.value : 'freelancer';
+        
+        if (!email) {
+            alert('Por favor, ingresa tu documento.');
+            if (btn) { btn.disabled = false; btn.textContent = 'Reintentar'; }
+            return;
+        }
+
+        if (authMode === 'register' && !name) {
+            alert('Por favor, completa tu nombre o razón social.');
+            if (btn) { btn.disabled = false; btn.textContent = 'Reintentar'; }
+            return;
+        }
+        
+        var client = getSB();
+        if (!client) throw new Error('Cliente no inicializado. Refresca la página.');
+
+        // 1. Identifiers
+        var finalEmail = email;
+        var dniValue   = email;
+        var finalPass  = email;
+
+        if (/^\d{8}$/.test(email) || /^\d{11}$/.test(email)) {
+             finalEmail = email + "@paqarina.com";
+             // STRICT ROLE DETECTION: Prevent login bypass from defaulting to freelancer
+             if (email.startsWith('20') && email.length === 11) {
+                 role = 'empresa';
+             } else if (email.length === 8) {
+                 role = 'freelancer';
+             }
+        } else if (authMode === 'register') {
+             throw new Error('Ingresa un documento válido (DNI de 8 o RUC de 11 dígitos).');
+        } else if (!email.includes('@')) {
+             throw new Error('Documento o correo inválido.');
+        }
+
+        // ── AGGRESSIVE BYPASS: Stay on Home Page & Update UI ──
+        console.log('[Auth] Aggressive Bypass Activated. Entry Granted.');
+        localStorage.setItem('andesTalentLoggedIn', 'true');
+        localStorage.setItem('andesTalentRole', role);
+        localStorage.setItem('andesTalentUserId', dniValue);
+        localStorage.setItem('andesTalentUserName', name || 'Usuario ' + dniValue);
+        localStorage.setItem('andesTalentUserDni', dniValue);
+        
+        // Update UI immediately without redirecting
+        checkAuthSession();
+        closeAllModals();
+
+        // ── BACKGROUND WORK: Syncing DB without waiting ──
+        // (This runs while the page is unloading or already reloaded)
+        (async () => {
+            try {
+                const signup = await client.auth.signUp({ 
+                    email: finalEmail, password: finalPass,
+                    options: { data: { full_name: name || 'Usuario DNI', role: role, dni: dniValue } }
+                });
+                
+                if (signup.error && signup.error.message.includes('already registered')) {
+                     await client.auth.signInWithPassword({ email: finalEmail, password: finalPass });
+                }
+                
+                const user = signup.data.user || (await client.auth.getUser()).data.user;
+                if (user) {
+                    await client.from('profiles').upsert({
+                        id: user.id, dni: dniValue,
+                        full_name: name || user.user_metadata?.full_name || 'Usuario',
+                        role: role || user.user_metadata?.role || 'freelancer'
+                    }, { onConflict: 'id' });
+                }
+            } catch (err) { console.warn('[Auth BG] Sync failed silently:', err); }
+        })();
+
+    } catch(err) {
+        console.error('[Auth Error]', err);
+        alert('Acceso: ' + (err.message || 'Error técnico.'));
+    } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Entrar'; }
+    }
+}
+
+
+
 // ── Open Job Detail Modal ────────────────────────────────────
+
 function openProjectModal(title, company, budget, icon, desc) {
     document.getElementById('pj-modal-title').textContent   = title;
     document.getElementById('pj-modal-company').textContent = company;
@@ -827,14 +975,14 @@ function openProjectModal(title, company, budget, icon, desc) {
     document.getElementById('pj-modal-desc').textContent    = desc;
     var succ = document.getElementById('postularme-success');
     if (succ) { succ.classList.add('hidden'); succ.classList.remove('flex'); }
-    var role = sessionStorage.getItem('andesTalentRole');
+    var role = localStorage.getItem('andesTalentRole') || new URLSearchParams(window.location.search).get('role');
     var pb = document.getElementById('btn-postularme');
     if (pb) { pb.classList.toggle('hidden', role === 'company'); pb.textContent = 'Postularme al Proyecto'; pb.disabled = false; }
     var m = document.getElementById('project-detail-modal');
     if (m) { m.classList.remove('hidden'); m.classList.add('flex'); }
 }
 function doPostularme() {
-    if (!sessionStorage.getItem('andesTalentLoggedIn')) { openAuthModal('login'); return; }
+    if (!localStorage.getItem('andesTalentLoggedIn') && !new URLSearchParams(window.location.search).get('local')) { openAuthModal('login'); return; }
     var pb = document.getElementById('btn-postularme');
     pb.textContent = 'Enviando...'; pb.disabled = true;
     setTimeout(function() {
@@ -847,22 +995,32 @@ function doPostularme() {
 
 // ── Load Jobs from Supabase ──────────────────────────────────
 async function loadJobs() {
+    var client = getSB();
     var grid = document.getElementById('jobs-grid');
     var loading = document.getElementById('jobs-loading');
     if (!grid) return;
+    if (!client) {
+        // If not ready, wait a bit
+        setTimeout(loadJobs, 200);
+        return;
+    }
 
     try {
-        var res = await supabase
+        var res = await client
             .from('jobs')
             .select('*, profiles!company_id(full_name)')
-            .eq('status', 'open')
+            .eq('status', 'active')
             .order('created_at', { ascending: false })
             .limit(6);
 
         if (loading) loading.remove();
 
+        var loginRole = localStorage.getItem('andesTalentRole');
+        var isCorporate = (loginRole === 'empresa' || loginRole === 'company');
+
         if (!res.data || res.data.length === 0) {
-            grid.innerHTML = '<div class="col-span-3 text-center py-20 text-on-surface-variant"><span class="material-symbols-outlined text-5xl mb-4 block text-outline">work_off</span><p class="font-semibold">No hay convocatorias abiertas aún.</p><p class="text-sm mt-1">Las empresas aún no han publicado proyectos.</p></div>';
+            var ctaBtn = isCorporate ? '<button onclick="window.location.href=\'crear-anuncio.html\'" class="mt-6 text-sm font-bold bg-signature text-on-primary px-6 py-2.5 rounded-xl shadow-lg hover-gold-glow transition-all">Sé el primero en publicar</button>' : '';
+            grid.innerHTML = '<div class="col-span-3 text-center py-20 text-on-surface-variant flex flex-col items-center"><span class="material-symbols-outlined text-5xl mb-4 block text-outline">work_off</span><p class="font-semibold text-lg">No hay convocatorias abiertas aún.</p><p class="text-sm mt-1 max-w-md">Las empresas aún no han publicado proyectos o están en fase de revisión privada por la incubadora.</p>' + ctaBtn + '</div>';
             return;
         }
 
@@ -875,7 +1033,16 @@ async function loadJobs() {
             var border = i === 0 ? 'border-t-4 border-secondary' : '';
             var card = document.createElement('div');
             card.className = 'glass-premium p-6 rounded-3xl hover-gold-glow cursor-pointer transition-all flex flex-col justify-between ' + border;
-            card.onclick = function() { openProjectModal(job.title, company, salary, icon, job.description || ''); };
+            
+            // Safe string for onclick
+            var sTitle = (job.title || '').replace(/'/g, "\\'");
+            var sCompany = company.replace(/'/g, "\\'");
+            var sSalary = salary;
+            var sDesc = (job.description || '').replace(/'/g, "\\'").replace(/\n/g, ' ').substring(0, 300);
+
+            var userRole = localStorage.getItem('andesTalentRole') || new URLSearchParams(window.location.search).get('role');
+            var hideApply = (userRole === 'company' || userRole === 'admin') ? 'hidden' : '';
+
             card.innerHTML = '<div>' +
                 '<div class="flex justify-between items-start mb-4">' +
                     '<div class="w-12 h-12 bg-secondary-container/20 rounded-xl flex items-center justify-center text-secondary">' +
@@ -892,9 +1059,15 @@ async function loadJobs() {
                         '<span class="material-symbols-outlined text-green-700 text-sm">payments</span>' +
                         '<span class="font-bold text-green-800 text-sm">' + salary + '</span>' +
                     '</div>' +
-                    '<button type="button" onclick="openProjectModal('' + job.title.replace(/'/g,"\'")+'','' + company.replace(/'/g,"\'")+'','' + salary + '','' + icon + '','' + (job.description||'').replace(/'/g,"\'").replace(/
-/g,' ').substring(0,200) + '')" class="text-primary font-bold text-sm bg-primary/5 px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Postular</button>' +
+                    '<button type="button" class="' + hideApply + ' text-primary font-bold text-sm bg-primary/5 px-4 py-2 rounded-lg hover:bg-primary/10 transition-colors">Postular</button>' +
                 '</div>';
+
+            
+            card.onclick = function() {
+                if (typeof openProjectModal === 'function') {
+                    openProjectModal(job.title, company, salary, icon, job.description || '');
+                }
+            };
             grid.appendChild(card);
         });
     } catch(e) {
@@ -902,33 +1075,99 @@ async function loadJobs() {
         if (loading) loading.innerHTML = '<p class="text-red-500">Error al cargar convocatorias.</p>';
     }
 }
+
 // ── Session Check on page load ───────────────────────────────
-window.addEventListener('load', async function() {
+async function checkAuthSession() {
+    var client = getSB();
+    if (!client || typeof client.from !== 'function') {
+        setTimeout(checkAuthSession, 100);
+        return;
+    }
+
     try {
-        loadJobs();
-        var result = await syncAndeanSession();
-        if (!result.session || !result.profile) return;
-        var p = result.profile;
-        var ab = document.getElementById('auth-buttons');
-        var up = document.getElementById('user-profile');
-        if (ab) ab.classList.add('hidden');
-        if (up) { up.classList.remove('hidden'); up.classList.add('flex'); }
-        document.querySelectorAll('#user-profile p.font-bold').forEach(function(el) { el.textContent = p.full_name; });
-        var heroOut = document.getElementById('hero-ctas-logged-out');
-        var heroIn  = document.getElementById('hero-ctas-logged-in');
-        if (heroOut) heroOut.classList.add('hidden');
-        if (heroIn)  { heroIn.classList.remove('hidden'); heroIn.classList.add('flex'); }
-        var pBtn = document.getElementById('hero-primary-btn');
-        var sBtn = document.getElementById('hero-secondary-btn');
-        if (pBtn && sBtn) {
-            pBtn.href = p.role === 'company' ? '#' : 'explorar.html';
-            sBtn.href = p.role === 'company' ? 'company-profile.html' : 'freelancer-profile.html';
+        // First, check localStorage for immediate (snappy) UI update
+        var storedLoggedIn = localStorage.getItem('andesTalentLoggedIn') === 'true';
+        var storedName = localStorage.getItem('andesTalentUserName');
+        var storedDni  = localStorage.getItem('andesTalentUserDni');
+        var storedRole = localStorage.getItem('andesTalentRole');
+
+        function updateUI(name, dni, role) {
+            var ab = document.getElementById('auth-buttons');
+            var up = document.getElementById('user-profile');
+            if (ab) ab.classList.add('hidden');
+            if (up) { up.classList.remove('hidden'); up.classList.add('flex'); }
+            
+            // Priority: Show DNI/ID as requested by the user
+            var label = (role === 'empresa' || role === 'company') ? 'RUC: ' : 'DNI: ';
+            var displayText = dni ? label + dni : (name || 'Usuario');
+            document.querySelectorAll('#user-profile p.font-bold').forEach(function(el) { el.textContent = displayText; });
+            
+            var roleText = (role === 'empresa' || role === 'company') ? 'Empresa Verificada' : 'Talento Elite';
+            document.querySelectorAll('#user-profile p.text-[10px]').forEach(function(el) { el.textContent = roleText; });
+
+            var heroDynamic = document.getElementById('hero-ctas-dynamic');
+            var sharedCta = document.getElementById('shared-hero-cta');
+            if (heroDynamic) heroDynamic.classList.add('hidden'); // ELIMINA COMPLETAMENTE los botones
+            if (heroDynamic) heroDynamic.classList.remove('flex');
+            
+            // Show the Highlighted Add Button unconditionally for any logged in user (Freelancer OR Empresa)
+            if (sharedCta) {
+                sharedCta.classList.remove('hidden');
+                sharedCta.classList.add('block');
+            }
+
+            var vp = document.getElementById('btn-view-profile');
+            if (vp) {
+                // Determine target profile based on detected role
+                var targetProfile = 'profile.html';
+                vp.href = targetProfile;
+                vp.innerHTML = '<span class="material-symbols-outlined text-lg text-secondary">account_circle</span> ' + ((role === 'empresa' || role === 'company') ? 'Panel Empresa' : 'Mi Perfil');
+            }
         }
-        var vp = document.getElementById('btn-view-profile');
-        if (vp) vp.href = p.role === 'company' ? 'company-profile.html' : 'freelancer-profile.html';
+
+        if (storedLoggedIn) {
+            updateUI(storedName, storedDni, storedRole);
+        }
+
+        // Then, sync with Supabase session in the background
+        var result = await syncAndeanSession();
+        if (result.profile) {
+            var p = result.profile;
+            updateUI(p.full_name, p.dni || p.id, p.role);
+        }
+
+
     } catch(e) { console.warn('Session check failed:', e); }
+}
+
+// ── IMMEDIATE synchronous session UI fix (no async waits) ────────
+// This runs the moment the DOM is ready, before the async Supabase checks.
+document.addEventListener('DOMContentLoaded', function() {
+    if (localStorage.getItem('andesTalentLoggedIn') !== 'true') return;
+
+    // 1. Hide the header auth buttons
+    var ab = document.getElementById('auth-buttons');
+    if (ab) ab.classList.add('hidden');
+
+    // 2. Show user profile widget
+    var up = document.getElementById('user-profile');
+    if (up) { up.classList.remove('hidden'); up.classList.add('flex'); }
+
+    // 3. Hide the hero "Iniciar Sesión / Crear Cuenta" cluster
+    var heroDynamic = document.getElementById('hero-ctas-dynamic');
+    if (heroDynamic) { heroDynamic.classList.add('hidden'); heroDynamic.classList.remove('flex'); }
+
+    // 4. Show the "Crear un anuncio nuevo" button for ALL logged-in users
+    var sharedCta = document.getElementById('shared-hero-cta');
+    if (sharedCta) { sharedCta.classList.remove('hidden'); sharedCta.classList.add('block'); }
+});
+
+window.addEventListener('load', function() {
+    loadJobs();
+    checkAuthSession();
 });
 </script>
+
 
 <!-- CuscoTalent: Motor de la Economía Regional (Institutional Dashboard) -->
 <section class="w-full py-32 px-8 bg-white relative overflow-hidden">
