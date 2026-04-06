@@ -497,7 +497,7 @@
             <div>
                 <div class="flex justify-between items-center mb-1">
                     <label id="label-login-email" class="block text-xs font-bold uppercase tracking-widest text-primary">Número de DNI</label>
-                    <a id="ruc-helper-link" href="recursos.html" class="hidden text-[10px] font-bold text-secondary hover:underline flex items-center gap-1">
+                    <a id="ruc-helper-link" href="javascript:void(0)" onclick="openRucGuideFromAuth()" class="hidden text-[10px] font-bold text-secondary hover:underline flex items-center gap-1">
                         ¿Sin RUC? Te ayudamos <span class="material-symbols-outlined text-[12px]">help</span>
                     </a>
                 </div>
@@ -807,6 +807,19 @@ function openAuthModal(mode) {
     m.classList.remove('hidden');
     m.classList.add('flex');
     setAuthMode(mode || 'login');
+}
+
+// ── NEW: RUC Helper Redirection ──
+function openRucGuideFromAuth() {
+    closeAllModals();
+    // Locate the nav link for Servicios to update UI state correctly
+    var navServicios = document.querySelector('.nav-link[data-tab="servicios"]');
+    showTab('servicios', navServicios);
+    
+    // Open the SUNAT modal with a slight delay for visual smoothness
+    setTimeout(function() {
+        openModal('sunat-modal');
+    }, 500);
 }
 
 // ── Auth Mode ─────────────────────────────────────────────
