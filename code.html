@@ -482,7 +482,12 @@
                 </div>
             </div>
             <div>
-                <label id="label-login-email" class="block text-xs font-bold uppercase tracking-widest text-primary mb-1">Número de DNI</label>
+                <div class="flex justify-between items-center mb-1">
+                    <label id="label-login-email" class="block text-xs font-bold uppercase tracking-widest text-primary">Número de DNI</label>
+                    <a id="ruc-helper-link" href="recursos.html" class="hidden text-[10px] font-bold text-secondary hover:underline flex items-center gap-1">
+                        ¿Sin RUC? Te ayudamos <span class="material-symbols-outlined text-[12px]">help</span>
+                    </a>
+                </div>
                 <div class="ghost-focus flex items-center bg-surface-container-lowest p-2 rounded-xl shadow-sm">
                     <span id="icon-login-email" class="material-symbols-outlined pl-3 text-outline text-sm" data-icon="badge">badge</span>
                     <input type="text" id="login-email" maxlength="11" class="w-full bg-transparent border-none focus:ring-0 text-on-surface px-3 py-2 text-sm outline-none" placeholder="Ingresa tus 8 dígitos">
@@ -846,6 +851,11 @@ function updateRoleLabels() {
         if (docLabel) docLabel.textContent = 'Número de DNI';
         if (docInput) { docInput.placeholder = 'Ingresa tus 8 o 11 dígitos'; docInput.maxLength = 11; }
         if (docIcon) docIcon.textContent = isLogin ? 'fingerprint' : 'badge';
+    }
+    var rucHelper = document.getElementById('ruc-helper-link');
+    if (rucHelper) {
+        // Only show if registering and is a freelancer
+        rucHelper.classList.toggle('hidden', isLogin || role !== 'freelancer');
     }
 }
 
