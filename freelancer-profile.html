@@ -999,6 +999,54 @@
                     <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept=".pdf,.jpg,.png" onchange="handleVaultUpload(event)">
                 `;
             }
+            window.updateVaultUI = updateVaultUI;
+
+            // ── NEW: Payout method selection ──
+            const paymentRadios = document.querySelectorAll('.payment-radio');
+            const paymentPrompt = document.getElementById('payment-prompt');
+            const payoutForms = {
+                cci: document.getElementById('form-cci'),
+                bank: document.getElementById('form-bank'),
+                wallet: document.getElementById('form-wallet')
+            };
+
+            paymentRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const selected = e.target.value;
+                    if(paymentPrompt) paymentPrompt.classList.add('opacity-0');
+                    
+                    Object.keys(payoutForms).forEach(key => {
+                        const form = payoutForms[key];
+                        if(!form) return;
+                        
+                        if(key === selected) {
+                            form.classList.remove('hidden');
+                            form.classList.add('grid');
+                            setTimeout(() => {
+                                form.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
+                                form.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+                            }, 50);
+                        } else {
+                            form.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
+                            form.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+                            setTimeout(() => {
+                                form.classList.add('hidden');
+                                form.classList.remove('grid');
+                            }, 300);
+                        }
+                    });
+                });
+            });
+            
+            // Trigger initial state if one is checked
+            const checkedPayment = document.querySelector('.payment-radio:checked');
+            if(checkedPayment) {
+                // Small delay to ensure DOM is ready for transitions
+                setTimeout(() => {
+                    checkedPayment.dispatchEvent(new Event('change'));
+                }, 100);
+            }
+
             window.handleVaultUpload = handleVaultUpload;
 
             // Attach listeners to all drop-zones
