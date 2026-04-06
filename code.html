@@ -1197,6 +1197,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // 4. Show the "Crear un anuncio nuevo" button for ALL logged-in users
     var sharedCta = document.getElementById('shared-hero-cta');
     if (sharedCta) { sharedCta.classList.remove('hidden'); sharedCta.classList.add('block'); }
+
+    // ── NEW: Deep Linking (Tab & Modal) ──
+    var urlParams = new URLSearchParams(window.location.search);
+    var targetTab = urlParams.get('tab');
+    var targetModal = urlParams.get('open');
+    
+    if (targetTab) {
+        var navLink = document.querySelector('.nav-link[data-tab="' + targetTab + '"]');
+        showTab(targetTab, navLink);
+    }
+    if (targetModal) {
+        setTimeout(function() {
+            openModal(targetModal);
+        }, 600);
+    }
 });
 
 window.addEventListener('load', function() {
