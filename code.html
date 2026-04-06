@@ -77,7 +77,7 @@
         <a class="nav-link tab-active text-primary font-bold relative" href="#" onclick="showTab('explorar',this); return false;" data-tab="explorar">Inicio</a>
         <a class="nav-link text-on-surface-variant hover:text-primary transition-colors font-semibold" href="explorar.html" id="nav-anuncios">Anuncios</a>
         <a class="nav-link text-on-surface-variant hover:text-primary transition-colors font-semibold" href="#" onclick="showTab('empresas',this); return false;" data-tab="empresas">Empresas</a>
-        <a class="nav-link text-on-surface-variant hover:text-primary transition-colors font-semibold" href="servicios.html">Servicios</a>
+        <a class="nav-link text-on-surface-variant hover:text-primary transition-colors font-semibold" href="#" onclick="showTab('servicios',this); return false;" data-tab="servicios">Servicios</a>
         <a class="nav-link text-on-surface-variant hover:text-primary transition-colors font-semibold" href="#" onclick="showTab('nosotros',this); return false;" data-tab="nosotros">Sobre Nosotros</a>
     </nav>
     <div class="flex items-center gap-4" id="auth-buttons">
@@ -394,6 +394,26 @@
                 <span class="material-symbols-outlined text-3xl text-secondary mb-4 block">support_agent</span>
                 <h4 class="font-bold text-primary mb-2">Soporte Bilingüe</h4>
                 <p class="text-on-surface-variant text-sm">Atención en español e inglés, con agentes en Cusco y Lima.</p>
+            </div>
+        <!-- NEW: SUNAT RUC Helper Card -->
+        <div class="mt-12 pt-12 border-t border-outline-variant/30">
+            <div class="text-center mb-10">
+                <span class="bg-secondary/10 text-secondary text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full inline-block border border-secondary/20 mb-4 text-center">Trámites y Formalización</span>
+                <h3 class="font-headline text-3xl font-bold text-primary">Cumplimiento Tributario</h3>
+            </div>
+            
+            <div onclick="openModal('sunat-modal')" class="glass-premium p-10 rounded-[2.5rem] hover-gold-glow cursor-pointer transition-all group border border-outline-variant/30 relative overflow-hidden flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -translate-y-12 translate-x-12 group-hover:bg-secondary/10 transition-colors"></div>
+                <div class="w-20 h-20 bg-white border-2 border-outline-variant/30 rounded-2xl flex items-center justify-center text-primary shadow-sm group-hover:border-primary/40 relative z-10 transition-colors shrink-0">
+                    <span class="material-symbols-outlined text-4xl font-light">account_balance</span>
+                </div>
+                <div class="text-center md:text-left relative z-10">
+                    <h3 class="font-headline text-2xl font-bold text-primary mb-2">Guía Interactiva: Cómo crear tu RUC</h3>
+                    <p class="text-on-surface-variant text-base mb-4">¿Aún no tienes RUC para emitir tus recibos por honorarios? Te guiamos paso a paso en el proceso de SUNAT.</p>
+                    <div class="flex items-center justify-center md:justify-start text-secondary font-bold text-sm group-hover:underline">
+                        Abrir Guía de Pasos <span class="material-symbols-outlined text-base ml-1">arrow_forward</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1379,6 +1399,91 @@ window.addEventListener('load', function() {
     </div>
 </footer>
 
+
+<!-- MODAL (SUNAT GUIDE) -->
+<div id="sunat-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div onclick="closeModal('sunat-modal')" class="absolute inset-0 bg-primary/40 backdrop-blur-sm cursor-pointer"></div>
+    <div class="glass-premium w-full max-w-2xl p-8 lg:p-10 rounded-[2rem] relative z-10 animate-fadeScale border border-white/40 shadow-2xl flex flex-col max-h-[90vh]">
+        
+        <button onclick="closeModal('sunat-modal')" class="absolute top-6 right-6 w-10 h-10 flex items-center justify-center bg-surface-container-low rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-colors border border-outline-variant/30">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        
+        <div class="flex items-center gap-4 mb-6 pr-12 text-left">
+            <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary shrink-0 border border-primary/20">
+                <span class="material-symbols-outlined">account_balance</span>
+            </div>
+            <div>
+                <h2 class="font-headline text-2xl font-bold text-primary">Pasos para obtener tu RUC</h2>
+                <p class="text-sm text-on-surface-variant font-medium">(Persona Natural con Negocio o Jurídica)</p>
+            </div>
+        </div>
+
+        <div class="overflow-y-auto pr-2 custom-scrollbar flex-1 mb-6 text-left">
+            <div class="space-y-4">
+                <div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center font-bold font-headline shrink-0">1</div>
+                    <div>
+                        <h4 class="font-bold text-primary mb-1">Validar DNI</h4>
+                        <p class="text-sm text-on-surface-variant">Asegúrate de contar con tu Documento Nacional de Identidad vigente.</p>
+                    </div>
+                </div>
+                <div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center font-bold font-headline shrink-0">2</div>
+                    <div>
+                        <h4 class="font-bold text-primary mb-1">Definir Actividad Económica</h4>
+                        <p class="text-sm text-on-surface-variant">Elige tu régimen tributario y código CIIU.</p>
+                    </div>
+                </div>
+                <div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center font-bold font-headline shrink-0">3</div>
+                    <div>
+                        <h4 class="font-bold text-primary mb-1">Trámite vía App Personas SUNAT</h4>
+                        <p class="text-sm text-on-surface-variant">Registra tus datos completando el formulario digital.</p>
+                    </div>
+                </div>
+                <div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex gap-4">
+                    <div class="w-8 h-8 rounded-full bg-secondary/20 text-secondary flex items-center justify-center font-bold font-headline shrink-0">4</div>
+                    <div>
+                        <h4 class="font-bold text-primary mb-1">Obtención de Clave SOL</h4>
+                        <p class="text-sm text-on-surface-variant">Genera tu usuario y contraseña para facturar.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-surface-container-low/50 p-6 rounded-2xl border-2 border-dashed border-outline-variant/50 text-center relative overflow-hidden group">
+                <div class="absolute top-2 right-2 bg-primary text-white text-[9px] uppercase tracking-widest font-bold px-2 py-0.5 rounded shadow-sm">Solo Admin</div>
+                <span class="material-symbols-outlined text-4xl text-outline mb-2 group-hover:text-secondary transition-colors">video_library</span>
+                <h4 class="font-bold text-primary mb-1">Video Tutorial</h4>
+                <p class="text-xs text-on-surface-variant mb-4">Carga un video con la grabación de pantalla.</p>
+                <div class="relative w-fit mx-auto">
+                    <input type="file" id="video-upload" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="video/*">
+                    <div class="bg-secondary text-primary font-black px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest shadow-md">Subir Video</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-t border-outline-variant/30 pt-6 flex justify-between items-center shrink-0">
+            <a href="https://www.sunat.gob.pe/" target="_blank" class="text-sm font-bold text-primary hover:text-secondary flex items-center gap-1 transition-colors underline">
+                Portal SUNAT <span class="material-symbols-outlined text-sm">open_in_new</span>
+            </a>
+            <button onclick="closeModal('sunat-modal')" class="bg-primary text-white px-6 py-2.5 rounded-xl font-bold">Entendido</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
+        document.getElementById(id).classList.add('flex');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+        document.getElementById(id).classList.remove('flex');
+        document.body.style.overflow = '';
+    }
+</script>
 
 </body>
 </html>
