@@ -1114,7 +1114,7 @@ async function checkAuthSession() {
             document.querySelectorAll('#user-profile p.font-bold').forEach(function(el) { el.textContent = displayText; });
             
             var roleText = (role === 'empresa' || role === 'company') ? 'Empresa Verificada' : 'Talento Elite';
-            document.querySelectorAll('#user-profile p.text-[10px]').forEach(function(el) { el.textContent = roleText; });
+            document.querySelectorAll('#user-profile p.text-\\[10px\\]').forEach(function(el) { el.textContent = roleText; });
 
             var heroDynamic = document.getElementById('hero-ctas-dynamic');
             var sharedCta = document.getElementById('shared-hero-cta');

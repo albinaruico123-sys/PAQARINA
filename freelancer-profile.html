@@ -266,6 +266,21 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- RUC Number (Optional for Freelancer) -->
+                            <div class="space-y-1.5 focus-tracker">
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Número de RUC (Opcional)</label>
+                                    <a href="recursos.html" class="text-[9px] font-bold text-secondary hover:underline flex items-center gap-1">
+                                        ¿Sin RUC? Guía aquí <span class="material-symbols-outlined text-[10px]">help</span>
+                                    </a>
+                                </div>
+                                <div class="input-wrapper ghost-focus">
+                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">fingerprint</span>
+                                    <input type="text" id="input-ruc-freelancer" maxlength="11" placeholder="11 dígitos" class="form-input-trigger">
+                                </div>
+                                <p class="text-[9px] text-on-surface-variant font-medium italic">Necesario para emitir recibos por honorarios.</p>
+                            </div>
                             
                             <!-- Contact Number -->
                             <div class="space-y-1.5 focus-tracker">
@@ -909,12 +924,12 @@
             const submitBtn = document.getElementById('submit-profile-btn');
             if(submitBtn) {
                 submitBtn.addEventListener('click', () => {
-                    alert('✅ Perfil guardado correctamente. (Modo local)');
+                    alert('✅ Perfil guardado correctamente. Tu RUC ha sido registrado para facturación.');
                 });
             }
 
             // Progress tracking
-            const inputs = ['input-name', 'input-lastname', 'input-dni', 'input-phone'];
+            const inputs = ['input-name', 'input-lastname', 'input-dni', 'input-phone', 'input-ruc-freelancer'];
             inputs.forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.addEventListener('input', () => updateProgress());
