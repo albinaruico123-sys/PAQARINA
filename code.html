@@ -348,71 +348,25 @@
     <!-- CONTENIDO PESTAÑA 3: SERVICIOS -->
     <div id="servicios" class="tab-content hidden max-w-7xl mx-auto px-6 lg:px-12 py-12 lg:py-24">
         <div class="text-center mb-16">
-            <span class="bg-primary/10 text-primary text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full inline-block border border-primary/20 mb-6">Lo que Ofrecemos</span>
-            <h2 class="font-headline text-5xl lg:text-6xl font-extrabold text-primary mb-4">Nuestros <span class="text-secondary">Servicios</span></h2>
-            <p class="text-on-surface-variant text-lg max-w-2xl mx-auto">Soluciones completas para conectar talento y empresa con garantías reales de calidad.</p>
+            <span class="bg-secondary/10 text-secondary text-xs font-black uppercase tracking-widest px-4 py-2 rounded-full inline-block border border-secondary/20 mb-6">Trámites y Formalización</span>
+            <h2 class="font-headline text-5xl lg:text-6xl font-extrabold text-primary mb-4">Guía <span class="text-secondary">SUNAT</span></h2>
+            <p class="text-on-surface-variant text-lg max-w-2xl mx-auto">Todo lo que necesitas saber para obtener tu RUC y empezar a trabajar legalmente.</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            <div class="glass-premium p-10 rounded-3xl relative overflow-hidden hover-gold-glow border border-white/40">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -translate-y-12 translate-x-12"></div>
-                <div class="w-14 h-14 bg-secondary/10 rounded-2xl flex items-center justify-center mb-6 text-secondary">
-                    <span class="material-symbols-outlined text-2xl">person_search</span>
-                </div>
-                <h3 class="font-headline text-2xl font-bold text-primary mb-3">Reclutamiento Especializado</h3>
-                <p class="text-on-surface-variant text-base mb-6">Encontramos y filtramos el talento exacto que tu empresa necesita. Perfil verificado por la UNSAAC con historial de proyectos reales.</p>
-                <ul class="space-y-2">
-                    <li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>Verificación de identidad y habilidades</li>
-                    <li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>Matching inteligente por especialidad</li>
-                    <li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>Reemplazo garantizado en 72h</li>
-                </ul>
-            </div>
-            <div class="glass-premium p-10 rounded-3xl border-l-4 border-primary relative overflow-hidden hover-gold-glow border border-white/40">
-                <div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 text-primary">
-                    <span class="material-symbols-outlined text-2xl">task_alt</span>
-                </div>
-                <h3 class="font-headline text-2xl font-bold text-primary mb-3">Gestión de Proyectos</h3>
-                <p class="text-on-surface-variant text-base mb-6">Te acompañamos integralmente desde la concepción hasta el despliegue. Un Project Manager asignado en cada etapa.</p>
-                <ul class="space-y-2">
-                    <li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>Contratos inteligentes con hitos</li>
-                    <li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>Panel de avance en tiempo real</li>
-                    <li class="flex items-center gap-2 text-sm text-on-surface-variant"><span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>Mediación en conflictos 24/7</li>
-                </ul>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="glass-premium p-8 rounded-2xl text-center hover-gold-glow border border-white/40">
-                <span class="material-symbols-outlined text-3xl text-secondary mb-4 block">verified_user</span>
-                <h4 class="font-bold text-primary mb-2">Contratos Seguros</h4>
-                <p class="text-on-surface-variant text-sm">Fondos retenidos en escrow hasta la entrega aprobada.</p>
-            </div>
-            <div class="glass-premium p-8 rounded-2xl text-center hover-gold-glow border border-white/40">
-                <span class="material-symbols-outlined text-3xl text-secondary mb-4 block">analytics</span>
-                <h4 class="font-bold text-primary mb-2">Métricas de Talento</h4>
-                <p class="text-on-surface-variant text-sm">Dashboard con KPIs de rendimiento por freelancer y proyecto.</p>
-            </div>
-            <div class="glass-premium p-8 rounded-2xl text-center hover-gold-glow border border-white/40">
-                <span class="material-symbols-outlined text-3xl text-secondary mb-4 block">support_agent</span>
-                <h4 class="font-bold text-primary mb-2">Soporte Bilingüe</h4>
-                <p class="text-on-surface-variant text-sm">Atención en español e inglés, con agentes en Cusco y Lima.</p>
-            </div>
-        <!-- NEW: SUNAT RUC Helper Card -->
-        <div class="mt-12 pt-12 border-t border-outline-variant/30">
-            <div class="text-center mb-10">
-                <span class="bg-secondary/10 text-secondary text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded-full inline-block border border-secondary/20 mb-4 text-center">Trámites y Formalización</span>
-                <h3 class="font-headline text-3xl font-bold text-primary">Cumplimiento Tributario</h3>
+
+        <div onclick="openModal('sunat-modal')" class="glass-premium p-10 lg:p-16 rounded-[3rem] hover-gold-glow cursor-pointer transition-all group border border-outline-variant/30 relative overflow-hidden flex flex-col md:flex-row items-center gap-10 max-w-5xl mx-auto shadow-2xl shadow-primary/5">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-secondary/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:bg-secondary/10 transition-colors blur-3xl"></div>
+            
+            <div class="w-24 h-24 bg-white border-2 border-outline-variant/30 rounded-3xl flex items-center justify-center text-primary shadow-sm group-hover:border-primary/40 relative z-10 transition-colors shrink-0">
+                <span class="material-symbols-outlined text-5xl font-light">account_balance</span>
             </div>
             
-            <div onclick="openModal('sunat-modal')" class="glass-premium p-10 rounded-[2.5rem] hover-gold-glow cursor-pointer transition-all group border border-outline-variant/30 relative overflow-hidden flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rounded-full -translate-y-12 translate-x-12 group-hover:bg-secondary/10 transition-colors"></div>
-                <div class="w-20 h-20 bg-white border-2 border-outline-variant/30 rounded-2xl flex items-center justify-center text-primary shadow-sm group-hover:border-primary/40 relative z-10 transition-colors shrink-0">
-                    <span class="material-symbols-outlined text-4xl font-light">account_balance</span>
-                </div>
-                <div class="text-center md:text-left relative z-10">
-                    <h3 class="font-headline text-2xl font-bold text-primary mb-2">Guía Interactiva: Cómo crear tu RUC</h3>
-                    <p class="text-on-surface-variant text-base mb-4">¿Aún no tienes RUC para emitir tus recibos por honorarios? Te guiamos paso a paso en el proceso de SUNAT.</p>
-                    <div class="flex items-center justify-center md:justify-start text-secondary font-bold text-sm group-hover:underline">
-                        Abrir Guía de Pasos <span class="material-symbols-outlined text-base ml-1">arrow_forward</span>
-                    </div>
+            <div class="text-center md:text-left relative z-10 text-left">
+                <span class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] mb-2 block">Recurso Interactivo</span>
+                <h3 class="font-headline text-3xl lg:text-4xl font-bold text-primary mb-4">Cómo crear tu RUC</h3>
+                <p class="text-on-surface-variant text-lg mb-8 max-w-xl leading-relaxed">Paso a paso detallado para obtener tu RUC (Persona Natural con Negocio o Jurídica) y habilitar tu Clave SOL para facturación electrónica.</p>
+                
+                <div class="inline-flex items-center gap-3 bg-secondary text-primary font-black px-8 py-4 rounded-2xl text-xs uppercase tracking-widest shadow-xl shadow-secondary/20 group-hover:scale-105 transition-all">
+                    Abrir Guía Completa <span class="material-symbols-outlined text-lg">arrow_forward</span>
                 </div>
             </div>
         </div>
