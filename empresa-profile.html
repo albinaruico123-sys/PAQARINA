@@ -244,12 +244,21 @@
                                 </div>
                             </div>
                             
-                            <!-- Contact Number -->
-                            <div class="space-y-1.5 focus-tracker">
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Celular <span class="text-error text-sm">*</span></label>
-                                <div class="input-wrapper ghost-focus">
-                                    <span class="material-symbols-outlined pl-3 text-outline text-[18px]">call</span>
-                                    <input type="tel" id="input-phone" required placeholder="+51 999 999 999" class="form-input-trigger">
+                             <!-- Contact Number -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="space-y-1.5 focus-tracker">
+                                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Celular <span class="text-error text-sm">*</span></label>
+                                    <div class="input-wrapper ghost-focus">
+                                        <span class="material-symbols-outlined pl-3 text-outline text-[18px]">call</span>
+                                        <input type="tel" id="input-phone" required placeholder="+51 999 999 999" class="form-input-trigger">
+                                    </div>
+                                </div>
+                                <div class="space-y-1.5 focus-tracker">
+                                    <label class="block text-[10px] font-bold uppercase tracking-widest text-primary">Celular Secundario (Opcional)</label>
+                                    <div class="input-wrapper ghost-focus border-dashed border-outline-variant/30">
+                                        <span class="material-symbols-outlined pl-3 text-outline text-[18px]">phone_iphone</span>
+                                        <input type="tel" id="input-phone-2" placeholder="+51 000 000 000" class="form-input-trigger">
+                                    </div>
                                 </div>
                             </div>
 
@@ -861,10 +870,66 @@
             // Profile saving simulation
             const submitBtn = document.getElementById('submit-profile-btn');
             if(submitBtn) {
-                submitBtn.addEventListener('click', () => {
-                    alert('✅ Perfil guardado correctamente. (Modo local)');
+                submitBtn.addEventListener('click', async () => {
+                    const btn = submitBtn;
+                    const ogText = btn.innerHTML;
+                    btn.disabled = true;
+                    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Guardando...';
+
+                    try {
+                        const userId = localStorage.getItem('andesTalentUserId');
+                        const { data: currentProfile } = await getSB().from('profiles').select('vault_docs').eq('id', userId).single();
+                        
+                        const extraContact = {
+                            phone_2: document.getElementById('input-phone-2').value
+                        };
+
+                        const updatedVault = { ...(currentProfile?.vault_docs || {}), _extra_contact: extraContact };
+
+                        const { error } = await getSB().from('profiles').update({
+                            business_name: document.getElementById('input-name').value,
+                            dni: document.getElementById('input-ruc').value, // For companies DNI field often stores RUC
+                            phone: document.getElementById('input-phone').value,
+                            location: document.getElementById('input-location').value,
+                            bio: document.getElementById('input-about').value,
+                            vault_docs: updatedVault
+                        }).eq('id', userId);
+
+                        if (error) throw error;
+
+                        alert('✅ Perfil corporativo actualizado.');
+                    } catch (err) {
+                        console.error(err);
+                        alert('❌ Error al actualizar perfil.');
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = ogText;
+                    }
                 });
             }
+
+            async function loadProfileData() {
+                const userId = localStorage.getItem('andesTalentUserId');
+                if (!userId) return;
+
+                const { data: p } = await getSB().from('profiles').select('*').eq('id', userId).single();
+                if (p) {
+                    if (document.getElementById('input-name')) document.getElementById('input-name').value = p.business_name || '';
+                    if (document.getElementById('input-ruc')) document.getElementById('input-ruc').value = p.dni || '';
+                    if (document.getElementById('input-phone')) document.getElementById('input-phone').value = p.phone || '';
+                    if (document.getElementById('input-email-profile')) document.getElementById('input-email-profile').value = p.email || '';
+                    if (document.getElementById('input-location')) document.getElementById('input-location').value = p.location || '';
+                    if (document.getElementById('input-about')) document.getElementById('input-about').value = p.bio || '';
+
+                    // Load Extra Contact Info
+                    const extra = p.vault_docs?._extra_contact;
+                    if (extra) {
+                        if (document.getElementById('input-phone-2')) document.getElementById('input-phone-2').value = extra.phone_2 || '';
+                    }
+                    updateProgress();
+                }
+            }
+            loadProfileData();
 
             // Progress tracking
             const inputs = ['input-name', 'input-lastname', 'input-dni', 'input-phone'];

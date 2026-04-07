@@ -103,6 +103,59 @@
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* Premium Chips */
+        .filter-chip {
+            padding: 0.6rem 1rem;
+            border-radius: 1rem;
+            border: 1.5px solid rgba(0, 33, 71, 0.1);
+            background: white;
+            color: #002147;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            width: 100%;
+        }
+        .filter-chip:hover {
+            border-color: #D4AF37;
+            background: rgba(212, 175, 55, 0.05);
+            transform: translateY(-2px);
+        }
+        .filter-chip.active {
+            background: #002147;
+            color: white;
+            border-color: #002147;
+            box-shadow: 0 4px 15px rgba(0, 33, 71, 0.2);
+        }
+
+        /* Segmented Control */
+        .segmented-control {
+            display: flex;
+            background: #f1f5f9;
+            padding: 0.25rem;
+            border-radius: 0.875rem;
+            gap: 0.25rem;
+        }
+        .segment-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border-radius: 0.625rem;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            transition: all 0.25s ease;
+        }
+        .segment-btn.active {
+            background: white;
+            color: #002147;
+            box-shadow: 0 2px 8px rgba(0, 33, 71, 0.08);
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-[#D4AF37] selection:text-[#002147]">
@@ -144,59 +197,81 @@
                         <span class="text-sm font-bold text-[#D4AF37] cursor-pointer hover:underline">Limpiar</span>
                     </div>
 
-                    <!-- Filter Checkboxes -->
+                    <!-- Filter Checkboxes transformed to Chips -->
                     <div class="space-y-4">
                         <h4 class="text-xs font-bold uppercase tracking-widest text-[#002147]/60">Facultad UNSAAC</h4>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="custom-check" checked>
-                            <span class="text-sm font-medium group-hover:text-[#D4AF37] transition-colors">Ingeniería de Sistemas</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="custom-check">
-                            <span class="text-sm font-medium group-hover:text-[#D4AF37] transition-colors">Turismo y Hotelería</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="custom-check">
-                            <span class="text-sm font-medium group-hover:text-[#D4AF37] transition-colors">Economía y Finanzas</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="custom-check">
-                            <span class="text-sm font-medium group-hover:text-[#D4AF37] transition-colors">Arte y Diseño</span>
-                        </label>
+                        <div class="grid grid-cols-1 gap-2">
+                            <button class="filter-chip active" data-category="Ingeniería de Sistemas">
+                                <span class="material-symbols-outlined text-[18px]">code</span>
+                                Ingeniería de Sistemas
+                            </button>
+                            <button class="filter-chip" data-category="Turismo y Hotelería">
+                                <span class="material-symbols-outlined text-[18px]">travel_explore</span>
+                                Turismo y Hotelería
+                            </button>
+                            <button class="filter-chip" data-category="Economía y Finanzas">
+                                <span class="material-symbols-outlined text-[18px]">account_balance</span>
+                                Economía y Finanzas
+                            </button>
+                            <button class="filter-chip" data-category="Arte y Diseño">
+                                <span class="material-symbols-outlined text-[18px]">brush</span>
+                                Arte y Diseño
+                            </button>
+                            <button class="filter-chip" data-category="Derecho y CP">
+                                <span class="material-symbols-outlined text-[18px]">gavel</span>
+                                Derecho y CP
+                            </button>
+                            <button class="filter-chip" data-category="Contabilidad">
+                                <span class="material-symbols-outlined text-[18px]">calculate</span>
+                                Contabilidad
+                            </button>
+                            <button class="filter-chip" data-category="Comunicaciones">
+                                <span class="material-symbols-outlined text-[18px]">campaign</span>
+                                Comunicaciones
+                            </button>
+                            <button class="filter-chip" data-category="Arq. e Ing. Civil">
+                                <span class="material-symbols-outlined text-[18px]">architecture</span>
+                                Arq. e Ing. Civil
+                            </button>
+                            <button class="filter-chip" data-category="Psicología">
+                                <span class="material-symbols-outlined text-[18px]">psychology</span>
+                                Psicología
+                            </button>
+                            <button class="filter-chip" data-category="Educación">
+                                <span class="material-symbols-outlined text-[18px]">school</span>
+                                Educación
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Range Slider -->
                     <div class="space-y-4">
                         <div class="flex justify-between items-center">
                             <h4 class="text-xs font-bold uppercase tracking-widest text-[#002147]/60">Rango de Pago (Soles)</h4>
-                            <span class="text-xs font-bold text-[#D4AF37]">S/ 500+</span>
+                            <span id="price-value" class="text-xs font-bold text-[#D4AF37]">S/ 500+</span>
                         </div>
-                        <input type="range" min="100" max="5000" value="500">
+                        <input type="range" id="price-range" min="100" max="5000" value="500" class="w-full">
                     </div>
 
-                    <!-- Radios Experience -->
+                    <!-- Radios transformed to Segmented Control -->
                     <div class="space-y-4">
                         <h4 class="text-xs font-bold uppercase tracking-widest text-[#002147]/60">Nivel de Experiencia</h4>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="radio" name="exp" class="custom-radio">
-                            <span class="text-sm font-medium group-hover:text-[#002147] transition-colors">Estudiante (Junior)</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="radio" name="exp" class="custom-radio" checked>
-                            <span class="text-sm font-medium group-hover:text-[#002147] transition-colors">Egresado/Bachiller (Mid)</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="radio" name="exp" class="custom-radio">
-                            <span class="text-sm font-medium group-hover:text-[#002147] transition-colors">Titulado con Exp. (Senior)</span>
-                        </label>
+                        <div class="segmented-control">
+                            <button class="segment-btn" data-exp="Junior">Junior</button>
+                            <button class="segment-btn active" data-exp="Mid">Mid</button>
+                            <button class="segment-btn" data-exp="Senior">Senior</button>
+                        </div>
                     </div>
 
-                    <!-- Toggle Location -->
+                    <!-- Modalidad Indicator -->
                     <div class="space-y-4">
                         <h4 class="text-xs font-bold uppercase tracking-widest text-[#002147]/60">Modalidad</h4>
-                        <div class="flex items-center gap-4 bg-[#002147]/5 p-1 rounded-xl">
-                            <button class="flex-1 py-1.5 rounded-lg bg-white shadow-sm font-bold text-sm text-[#002147]">Remoto</button>
-                            <button class="flex-1 py-1.5 rounded-lg text-sm text-[#002147]/60 hover:text-[#002147] font-medium transition-colors">Presencial (Cusco)</button>
+                        <div class="flex items-center gap-3 bg-secondary/10 p-3 rounded-2xl border border-secondary/20">
+                            <span class="material-symbols-outlined text-secondary text-xl">language</span>
+                            <div class="flex-1">
+                                <p class="text-xs font-bold text-[#002147] mb-0.5">Solo Remoto</p>
+                                <p class="text-[9px] text-[#002147]/60 font-medium">Todas nuestras vacantes actuales son 100% virtuales.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -381,18 +456,126 @@
         btnDashboard.href = 'profile.html';
         freelancerView.classList.remove('hidden');
         freelancerView.classList.add('block');
+        
+        // --- Filter UI Logic ---
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const segmentBtns = document.querySelectorAll('.segment-btn');
+        const priceRange = document.getElementById('price-range');
+        const priceValue = document.getElementById('price-value');
+        const searchInput = document.querySelector('.glass-input input');
+        const sortSelect = document.querySelector('select');
+
+        let selectedCategories = ['Ingeniería de Sistemas'];
+        let selectedExperience = 'Mid';
+        let maxPrice = 500;
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                const cat = chip.dataset.category;
+                if (chip.classList.contains('active')) {
+                    chip.classList.remove('active');
+                    selectedCategories = selectedCategories.filter(c => c !== cat);
+                } else {
+                    chip.classList.add('active');
+                    selectedCategories.push(cat);
+                }
+                fetchJobs();
+            });
+        });
+
+        segmentBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                segmentBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedExperience = btn.dataset.exp;
+                fetchJobs();
+            });
+        });
+
+        if (priceRange) {
+            priceRange.addEventListener('input', (e) => {
+                maxPrice = e.target.value;
+                if (priceValue) priceValue.textContent = `S/ ${maxPrice}+`;
+                fetchJobs();
+            });
+        }
+
+        if (searchInput) searchInput.addEventListener('input', () => fetchJobs());
+        if (sortSelect) sortSelect.addEventListener('change', () => fetchJobs());
+
+        function clearFilters() {
+            filterChips.forEach(c => c.classList.remove('active'));
+            const firstChip = document.querySelector('.filter-chip');
+            if (firstChip) {
+                firstChip.classList.add('active');
+                selectedCategories = [firstChip.dataset.category];
+            } else {
+                selectedCategories = [];
+            }
+            
+            segmentBtns.forEach(b => b.classList.remove('active'));
+            const midBtn = document.querySelector('.segment-btn[data-exp="Mid"]');
+            if (midBtn) {
+                midBtn.classList.add('active');
+                selectedExperience = 'Mid';
+            }
+            
+            if (priceRange) {
+                priceRange.value = 500;
+                maxPrice = 500;
+                if (priceValue) priceValue.textContent = 'S/ 500+';
+            }
+            
+            if (searchInput) searchInput.value = '';
+            fetchJobs();
+        }
+
+        const clearBtn = document.querySelector('span.font-bold.text-\\[\\#D4AF37\\].cursor-pointer');
+        if (clearBtn) clearBtn.addEventListener('click', clearFilters);
+
+        // Initial Fetch
         fetchJobs();
 
         async function fetchJobs() {
             const feed = document.getElementById('jobs-feed');
-            const { data: jobs, error } = await supabase
+            if (!feed) return;
+
+            let query = supabase
                 .from('jobs')
                 .select('*, profiles(full_name, avatar_url, business_name)')
-                .eq('status', 'open')
-                .order('created_at', { ascending: false });
+                .eq('status', 'open');
+
+            // Apply Filters
+            if (selectedCategories.length > 0) {
+                query = query.in('category', selectedCategories);
+            }
+            if (selectedExperience) {
+                query = query.eq('experience_level', selectedExperience);
+            }
+            if (maxPrice) {
+                query = query.gte('salary', maxPrice);
+            }
+            
+            const searchTerm = searchInput?.value.trim();
+            if (searchTerm) {
+                query = query.ilike('title', `%${searchTerm}%`);
+            }
+
+            const sortBy = sortSelect?.value;
+            if (sortBy === 'Mayor presupuesto') {
+                query = query.order('salary', { ascending: false });
+            } else if (sortBy === 'Más recientes') {
+                query = query.order('created_at', { ascending: false });
+            }
+
+            const { data: jobs, error } = await query;
 
             if (error || !jobs || !jobs.length) {
-                feed.innerHTML = `<div class="p-12 text-center text-outline">No se encontraron convocatorias activas en la red de Cusco.</div>`;
+                feed.innerHTML = `<div class="p-16 text-center flex flex-col items-center opacity-40">
+                    <span class="material-symbols-outlined text-5xl mb-4">search_off</span>
+                    <p class="font-bold text-lg">No se encontraron proyectos con estos filtros.</p>
+                    <p class="text-sm">Prueba ajustando el rango de precio o cambiando de facultad.</p>
+                </div>`;
                 return;
             }
 

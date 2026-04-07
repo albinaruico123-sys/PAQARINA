@@ -74,6 +74,28 @@
             </div>
         </div>
         
+        <!-- Contact Info Section -->
+        <div class="glass-premium rounded-3xl p-8" id="contact-info-section">
+            <h3 class="text-sm font-black text-primary mb-6 flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm">contact_support</span>
+                Datos de Contacto
+            </h3>
+            <ul class="space-y-4 text-xs font-bold text-on-surface-variant">
+                <li class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-secondary text-lg">call</span>
+                    <span id="profile-phone-1">---</span>
+                </li>
+                <li id="phone-2-container" class="hidden flex items-center gap-3">
+                    <span class="material-symbols-outlined text-secondary text-lg">phone_iphone</span>
+                    <span id="profile-phone-2">---</span>
+                </li>
+                <li class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-secondary text-lg">mail</span>
+                    <span id="profile-email" class="truncate">---</span>
+                </li>
+            </ul>
+        </div>
+
         <!-- Document Preview Section -->
         <div class="glass-premium rounded-3xl p-8" id="verified-docs-section">
             <h3 class="text-sm font-black text-primary mb-6 flex items-center gap-2">
@@ -263,6 +285,16 @@
             
             // Location
             document.getElementById('profile-location').textContent = profile.location || 'Pendiente';
+
+            // Contact
+            document.getElementById('profile-phone-1').textContent = profile.phone || 'No disponible';
+            document.getElementById('profile-email').textContent = profile.email || 'No disponible';
+            
+            const extra = profile.vault_docs?._extra_contact;
+            if (extra && extra.phone_2) {
+                document.getElementById('profile-phone-2').textContent = extra.phone_2;
+                document.getElementById('phone-2-container').classList.remove('hidden');
+            }
 
             // Bio
             document.getElementById('profile-bio').textContent = profile.about_me || profile.bio || 'Sin descripción disponible por el momento.';
